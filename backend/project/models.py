@@ -1,6 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from sqlalchemy import Table, Column, Integer, ForeignKey
-from .app import app, db
+from app import app
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 class User(db.Model):
     __tablename__ = 'user'
