@@ -1,8 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Table, Column, Integer, ForeignKey
-from .app import app
-
-db = SQLAlchemy(app)
+from .app import app, db
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -15,10 +13,10 @@ class User(db.Model):
     password = db.Column(db.String())
     email_address = db.Column(db.String())
     image_url = db.Column(db.String())
-    
+
 
 class AudioRecording(db.Model):
-    __tablename_ = 'audio_recording'
+    __tablename__ = 'audio_recording'
 
     id = db.Column(db.Integer, primary_key = True)
 
