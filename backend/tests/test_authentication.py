@@ -3,6 +3,7 @@ import os
 import unittest
 from app import app
 import json
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from project.models import db, User
 
@@ -18,7 +19,7 @@ class RegisterTest(unittest.TestCase):
             "last_name": "user1",
             "username": "test1",
             "password": "testpassword",
-            "email_address": "test@soundgood.com"
+            "email_address": "test@soundgood.com",
         }
 
         response = self.app.post("/api/register", json=new_user_payload)
@@ -29,6 +30,7 @@ class RegisterTest(unittest.TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+
 
 class LoginTest(unittest.TestCase):
     def setUp(self):
@@ -42,7 +44,7 @@ class LoginTest(unittest.TestCase):
             "last_name": "user1",
             "username": "test1",
             "password": "testpassword",
-            "email_address": "test@soundgood.com"
+            "email_address": "test@soundgood.com",
         }
         register_response = self.app.post("/api/register", json=new_user_payload)
         self.assertEqual(register_response.status_code, 200)
@@ -67,12 +69,14 @@ class LoginTest(unittest.TestCase):
 
         login_response = self.app.post("/api/login", json=user_payload)
         self.assertEqual(login_response.status_code, 500)
-        self.assertEqual(login_response.json["status"], "Incorrect username or password")
+        self.assertEqual(
+            login_response.json["status"], "Incorrect username or password"
+        )
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
