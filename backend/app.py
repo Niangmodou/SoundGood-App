@@ -1,19 +1,93 @@
-from flask import Flask
+import os
+from flask import Flask, request, jsonify
 from dotenv import dotenv_values
+from config import app, SALT
+from flask_cors import CORS
+import sys
 
-# Model imports
-config = dotenv_values(".env")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from project.models import db, User
+from flask_jwt_extended import create_access_token, JWTManager
+import hashlib
 
-app = Flask(__name__)
-
-app.config["SQLALCHEMY_DATABASE_URI"] = config["POSTGRES_URI"]
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = config["SECRET_KEY"]
+JWT = JWTManager(app)
 
 
 @app.route("/")
 def home():
     return "Hello, World!"
+
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.get_json()
+
+    if data:
+        username = data["username"]
+        password = data["password"]
+
+        password_salt = password + SALT
+        password_hash = hashlib.sha256(password_salt.encode("utf-8")).hexdigest()
+
+        user = User.query.filter_by(username=username, password=password_hash).first()
+
+        if user:
+            access_token = create_access_token(identity={"username": username})
+            response = jsonify(
+                {"token": access_token, "status": "Succesfully logged in user"}
+            )
+            response.status_code = 200
+        else:
+            response = jsonify({"status": "Incorrect username or password"})
+            response.status_code = 500
+    else:
+        response = jsonify({"status": "error has occured"})
+        response.status_code = 500
+
+    return response
+
+
+@app.route("/api/register", methods=["POST"])
+def register():
+    data = request.get_json()
+
+    if data:
+        first_name = data["first_name"]
+        last_name = data["last_name"]
+        username = data["username"]
+        password = data["password"]
+        email_address = data["email_address"]
+
+        password_salt = password + SALT
+        password_hash = hashlib.sha256(password_salt.encode("utf-8")).hexdigest()
+
+        # Duplicate user
+        user = User.query.filter_by(username=username).first()
+
+        if user:
+            response = jsonify(
+                {"status": "there is already a user with the same username"}
+            )
+            response.status_code = 500
+        else:
+            new_user = User(
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                password=password_hash,
+                email_address=email_address,
+            )
+            db.session.add(new_user)
+            db.session.commit()
+
+            response = jsonify({"status": "succesfully created user"})
+            response.status_code = 200
+
+    else:
+        response = jsonify({"status": "error has occured"})
+        response.status_code = 500
+
+    return response
 
 
 if __name__ == "__main__":
