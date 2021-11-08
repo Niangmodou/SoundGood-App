@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template, jsonify
 from dotenv import dotenv_values
 from config import app, SALT
 from flask_cors import CORS
@@ -15,11 +15,18 @@ JWT = JWTManager(app)
 
 @app.route("/")
 def home():
-    return "Hello, World!"
+    return render_template("index.html")
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
 
 @app.route("/api/login", methods=["POST"])
-def login():
+def login_auth():
     data = request.get_json()
 
     if data:
@@ -48,7 +55,7 @@ def login():
 
 
 @app.route("/api/register", methods=["POST"])
-def register():
+def register_auth():
     data = request.get_json()
 
     if data:

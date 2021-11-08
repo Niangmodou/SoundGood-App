@@ -2,7 +2,7 @@
 
 {% block head %}
 
-	<title>Login</title>
+	<title>Register</title>
 {% endblock %}
 
 
@@ -10,10 +10,10 @@
 {% block navbar2 %}
 	<a class="nav-link" href="login.html"><button class="btn btn-primary" type="button" id="Login">Login</button> </a>
 	<a class="nav-link" href="register.html"><button class="btn btn-primary" type="button" id="Register">Register</button> </a>
-<% endblock %>
+{% endblock %}
 
 {% block content %} 
-<form action="/" method="POST">
+			<form>
 
 
           <!-- Email input -->
@@ -33,13 +33,9 @@
           
 
           <div class="text-center text-lg-start mt-4 pt-2">
-            <button type="submit" class="btn btn-primary btn-lg" value= "log">Login</button>
+            <button type="button" class="btn btn-primary btn-lg" id= "register">Register</button>
 
           </div>
 
-</form>
-<% endblock %>
-
-
-
-
+        </form>
+{% endblock %}
