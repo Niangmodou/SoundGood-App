@@ -21,10 +21,12 @@ ERROR = "error has occured"
 def home():
     return render_template("index.html")
 
+
 # Endpoint for login page
 @app.route("/login")
 def login():
     return render_template("login.html")
+
 
 # Endpoint for register page
 @app.route("/register")
