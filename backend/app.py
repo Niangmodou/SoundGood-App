@@ -7,7 +7,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from project.models import db, User
-from flask_jwt_extended import create_access_token, JWTManager
+from flask_jwt_extended import create_access_token, JWTManager, jwt_required, get_jwt_identity
 import hashlib
 
 JWT = JWTManager(app)
@@ -24,6 +24,17 @@ def login():
 @app.route("/register")
 def register():
     return render_template("register.html")
+
+@app.route("/api/current_user", methods=["GET"])
+@jwt_required
+def current_user():
+    current_username = get_jwt_identity()
+
+    user = User.query.filter_by(username=current_username)
+
+    return jsonify(user)
+
+
 
 @app.route("/api/login", methods=["POST"])
 def login_auth():
