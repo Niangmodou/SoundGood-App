@@ -7,7 +7,12 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from project.models import db, User
-from flask_jwt_extended import create_access_token, JWTManager, jwt_required, get_jwt_identity
+from flask_jwt_extended import (
+    create_access_token,
+    JWTManager,
+    jwt_required,
+    get_jwt_identity,
+)
 import hashlib
 
 JWT = JWTManager(app)
@@ -17,25 +22,33 @@ JWT = JWTManager(app)
 def home():
     return render_template("index.html")
 
+
 @app.route("/login")
 def login():
     return render_template("login.html")
+
 
 @app.route("/register")
 def register():
     return render_template("register.html")
 
+
+# Endpoint to retrieve the current logged in user
 @app.route("/api/current_user", methods=["GET"])
-@jwt_required
+@jwt_required()
 def current_user():
-    current_username = get_jwt_identity()
+    current_username = get_jwt_identity()["username"]
 
-    user = User.query.filter_by(username=current_username)
+    user = User.query.filter_by(username=current_username).first()
+    serialized_user = user.as_dict()
 
-    return jsonify(user)
+    response = jsonify(serialized_user)
+    response.status_code = 200
+
+    return response
 
 
-
+# Endpoint to login user
 @app.route("/api/login", methods=["POST"])
 def login_auth():
     data = request.get_json()
@@ -65,6 +78,7 @@ def login_auth():
     return response
 
 
+# Endpoint to register a new user
 @app.route("/api/register", methods=["POST"])
 def register_auth():
     data = request.get_json()
@@ -98,7 +112,11 @@ def register_auth():
             db.session.add(new_user)
             db.session.commit()
 
-            response = jsonify({"status": "succesfully created user"})
+            access_token = create_access_token(identity={"username": username})
+
+            response = jsonify(
+                {"status": "succesfully created user", "token": access_token}
+            )
             response.status_code = 200
 
     else:

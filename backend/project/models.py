@@ -19,6 +19,10 @@ class User(db.Model):
     email_address = db.Column(db.String())
     image_url = db.Column(db.String())
 
+    # Used for serialization
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != "password"}
+
 
 class AudioRecording(db.Model):
     __tablename__ = "audio_recording"
@@ -27,6 +31,9 @@ class AudioRecording(db.Model):
 
     user_id = Column(Integer, ForeignKey("user.id"))
     sound_url = db.Column(db.String())
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class Post(db.Model):
@@ -38,6 +45,9 @@ class Post(db.Model):
     audio_id = Column(Integer, ForeignKey("audio_recording.id"))
     text = db.Column(db.String())
     date_posted = db.Column(db.DateTime)
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class Comment(db.Model):
@@ -51,3 +61,6 @@ class Comment(db.Model):
     dislike_count = db.Column(db.Integer)
 
     date_posted = db.Column(db.DateTime)
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
