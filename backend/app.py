@@ -14,6 +14,7 @@ from flask_jwt_extended import (
 import hashlib
 
 JWT = JWTManager(app)
+ERROR = "error has occured"
 
 
 @app.route("/")
@@ -44,7 +45,7 @@ def current_user():
         response = jsonify(serialized_user)
         response.status_code = 200
     except Exception:
-        response = jsonify({"status": "error has occured"})
+        response = jsonify({"status": ERROR})
         response.status_code = 500
 
     return response
@@ -74,7 +75,7 @@ def login_auth():
             response = jsonify({"status": "Incorrect username or password"})
             response.status_code = 500
     else:
-        response = jsonify({"status": "error has occured"})
+        response = jsonify({"status": ERROR})
         response.status_code = 500
 
     return response
@@ -122,7 +123,7 @@ def register_auth():
             response.status_code = 200
 
     else:
-        response = jsonify({"status": "error has occured"})
+        response = jsonify({"status": ERROR})
         response.status_code = 500
 
     return response
