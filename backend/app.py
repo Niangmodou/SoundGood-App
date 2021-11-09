@@ -21,8 +21,8 @@ ERROR = "error has occured"
 @jwt_required()
 def home():
     current_username = get_jwt_identity()["username"]
-    
-    try: 
+
+    try:
         user = User.query.filter_by(username=current_username).first()
         serialized_user = user.as_dict()
 
