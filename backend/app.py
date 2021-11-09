@@ -37,11 +37,15 @@ def register():
 def current_user():
     current_username = get_jwt_identity()["username"]
 
-    user = User.query.filter_by(username=current_username).first()
-    serialized_user = user.as_dict()
+    try:
+        user = User.query.filter_by(username=current_username).first()
+        serialized_user = user.as_dict()
 
-    response = jsonify(serialized_user)
-    response.status_code = 200
+        response = jsonify(serialized_user)
+        response.status_code = 200
+    except Exception:
+        response = jsonify({"status": "error has occured"})
+        response.status_code = 500
 
     return response
 
