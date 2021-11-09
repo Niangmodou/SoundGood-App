@@ -1,30 +1,72 @@
 import os
-from flask import Flask, request, render_template, jsonify
-from dotenv import dotenv_values
+from flask import request, render_template, jsonify
 from config import app, SALT
-from flask_cors import CORS
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from project.models import db, User
-from flask_jwt_extended import create_access_token, JWTManager
+from flask_jwt_extended import (
+    create_access_token,
+    JWTManager,
+    jwt_required,
+    get_jwt_identity,
+)
 import hashlib
 
 JWT = JWTManager(app)
+ERROR = "error has occured"
 
-
+# Endpoint for homepage
 @app.route("/")
+@jwt_required()
 def home():
-    return render_template("index.html")
+    current_username = get_jwt_identity()["username"]
 
+    try:
+        user = User.query.filter_by(username=current_username).first()
+        serialized_user = user.as_dict()
+
+        response = jsonify(serialized_user)
+        response.status_code = 200
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 500
+
+    return response
+
+
+# Endpoint for login page
 @app.route("/login")
 def login():
     return render_template("login.html")
 
+
+# Endpoint for register page
 @app.route("/register")
 def register():
     return render_template("register.html")
 
+
+# Endpoint to retrieve the current logged in user
+@app.route("/api/current_user", methods=["GET"])
+@jwt_required()
+def current_user():
+    current_username = get_jwt_identity()["username"]
+
+    try:
+        user = User.query.filter_by(username=current_username).first()
+        serialized_user = user.as_dict()
+
+        response = jsonify(serialized_user)
+        response.status_code = 200
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 500
+
+    return response
+
+
+# Endpoint to login user
 @app.route("/api/login", methods=["POST"])
 def login_auth():
     data = request.get_json()
@@ -48,12 +90,13 @@ def login_auth():
             response = jsonify({"status": "Incorrect username or password"})
             response.status_code = 500
     else:
-        response = jsonify({"status": "error has occured"})
+        response = jsonify({"status": ERROR})
         response.status_code = 500
 
     return response
 
 
+# Endpoint to register a new user
 @app.route("/api/register", methods=["POST"])
 def register_auth():
     data = request.get_json()
@@ -87,11 +130,15 @@ def register_auth():
             db.session.add(new_user)
             db.session.commit()
 
-            response = jsonify({"status": "succesfully created user"})
+            access_token = create_access_token(identity={"username": username})
+
+            response = jsonify(
+                {"status": "succesfully created user", "token": access_token}
+            )
             response.status_code = 200
 
     else:
-        response = jsonify({"status": "error has occured"})
+        response = jsonify({"status": ERROR})
         response.status_code = 500
 
     return response

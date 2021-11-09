@@ -119,7 +119,8 @@ def pytest_unconfigure() -> None:
 
 
 def pytest_collect_file(
-    path: py.path.local, parent: Collector,
+    path: py.path.local,
+    parent: Collector,
 ) -> Optional[Union["DoctestModule", "DoctestTextfile"]]:
     config = parent.config
     if path.ext == ".py":
@@ -191,7 +192,11 @@ def _init_runner_class() -> Type["doctest.DocTestRunner"]:
             self.continue_on_failure = continue_on_failure
 
         def report_failure(
-            self, out, test: "doctest.DocTest", example: "doctest.Example", got: str,
+            self,
+            out,
+            test: "doctest.DocTest",
+            example: "doctest.Example",
+            got: str,
         ) -> None:
             failure = doctest.DocTestFailure(test, example, got)
             if self.continue_on_failure:
@@ -301,13 +306,14 @@ class DoctestItem(pytest.Item):
 
     # TODO: Type ignored -- breaks Liskov Substitution.
     def repr_failure(  # type: ignore[override]
-        self, excinfo: ExceptionInfo[BaseException],
+        self,
+        excinfo: ExceptionInfo[BaseException],
     ) -> Union[str, TerminalRepr]:
         import doctest
 
         failures: Optional[
             Sequence[Union[doctest.DocTestFailure, doctest.UnexpectedException]]
-        ] = (None)
+        ] = None
         if isinstance(
             excinfo.value, (doctest.DocTestFailure, doctest.UnexpectedException)
         ):
@@ -508,7 +514,9 @@ class DoctestModule(pytest.Module):
                     obj = getattr(obj, "fget", obj)
                 # Type ignored because this is a private function.
                 return doctest.DocTestFinder._find_lineno(  # type: ignore
-                    self, obj, source_lines,
+                    self,
+                    obj,
+                    source_lines,
                 )
 
             def _find(
