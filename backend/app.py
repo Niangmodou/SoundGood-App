@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, jsonify
+from flask import request, render_template, jsonify
 from config import app, SALT
 import sys
 
@@ -18,8 +18,21 @@ ERROR = "error has occured"
 
 # Endpoint for homepage
 @app.route("/")
+@jwt_required()
 def home():
-    return render_template("index.html")
+    current_username = get_jwt_identity()["username"]
+    
+    try: 
+        user = User.query.filter_by(username=current_username).first()
+        serialized_user = user.as_dict()
+
+        response = jsonify(serialized_user)
+        response.status_code = 200
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 500
+
+    return response
 
 
 # Endpoint for login page
