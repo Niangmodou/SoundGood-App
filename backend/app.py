@@ -1,8 +1,6 @@
 import os
 from flask import Flask, request, render_template, jsonify
-from dotenv import dotenv_values
 from config import app, SALT
-from flask_cors import CORS
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
