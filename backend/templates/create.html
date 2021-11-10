@@ -6,9 +6,10 @@
 {% endblock %}
 
 {% block navbar %}
-  	<a class="nav-link active" aria-current="page" href="/">Home</a>
+	<a class="nav-link active" aria-current="page" href="/">Home</a>
 	<a class="nav-link" href="/personal">Personal</a>
 	<a class="nav-link" href="/forum">Forum</a>
+	<a class="nav-link" href="/create">Create Post</a>
   <% endblock %>
 
 {% block navbar2 %}
@@ -16,7 +17,12 @@
 <% endblock %>
 
 {% block content %} 
-  home
+<form id="createpost" action="">
+    <input type="text" id="title" placeholder="Title">
+	<input type="text" id="content" placeholder="stuff">
+	<!-- some sort of way to input audio -->
+    <input type="submit" id="submit">
+</form>
 <% endblock %>
 
 
