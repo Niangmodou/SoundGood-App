@@ -46,6 +46,7 @@ def login():
 def register():
     return render_template("register.html")
 
+
 # Endpoint to retrieve all the recordings
 @app.route("/api/recordings")
 def get_all_recordings():
