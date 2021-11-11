@@ -1,0 +1,26 @@
+.discoveredSong {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0px;
+}
+
+.ratings {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.discoveredSongText {
+  /* background-color: red; */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  line-height: 0;
+  text-align: left;
+}
+
+.discoveredSongText > p {
+  font-size: 14px;
+}
