@@ -4,7 +4,7 @@ from config import app, SALT
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from project.models import db, User
+from project.models import db, User, AudioRecording
 from flask_jwt_extended import (
     create_access_token,
     JWTManager,
@@ -46,6 +46,20 @@ def login():
 def register():
     return render_template("register.html")
 
+# Endpoint to retrieve all the recordings
+@app.route("/api/recordings")
+def get_all_recordings():
+    recordings_list = list(AudioRecording.query.all())
+
+    # Serializing the recordings in the list
+    recordings_serialzied = [recording.as_dict() for recording in recordings_list]
+
+    data = {"recordings": recordings_serialzied}
+
+    response = jsonify(data)
+    response.status_code = 200
+
+    return response
 
 # Endpoint to retrieve the current logged in user
 @app.route("/api/current_user", methods=["GET"])
