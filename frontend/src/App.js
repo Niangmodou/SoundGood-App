@@ -9,19 +9,10 @@ import Background from './Images/Background.png';
 import LandingPage from './Pages/LandingPage';
 
 export default function App() {
-  const [isSignedIn, setIsSignedIn] = useState(true);
-
-  // onSignIn(googleUser){}
-  //   var profile = googleUser.getBasicProfile();
-  //   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  //   console.log('Name: ' + profile.getName());
-  //   console.log('Image URL: ' + profile.getImageUrl());
-  //   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  // }
-
+  // const [isSignedIn, setIsSignedIn] = useState(true);
   return (
     <div className='App' style={{ backgroundImage: `url(${Background})` }}>
-      {isSignedIn ? (
+      {true ? (
         <LandingPage />
       ) : (
         <header className='App-header'>
