@@ -4,6 +4,7 @@ import Forum from './Pages/Forum';
 import SavedSongs from './Pages/SavedSongs';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
+import DiscoveredSongs from './Pages/DiscoveredSongs';
 
 function App() {
   return (
@@ -13,8 +14,9 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/profile' element={<Profile />} />
-            <Route path='savedSongs' element={<SavedSongs />} />
-            <Route path='forum' element={<Forum />} />
+            <Route path='/savedSongs' element={<SavedSongs />} />
+            <Route path='/forum' element={<Forum />} />
+            <Route path='/discoveredSongs' element={<DiscoveredSongs />} />
           </Routes>
         </div>
       ) : (

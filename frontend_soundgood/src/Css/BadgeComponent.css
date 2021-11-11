@@ -1,0 +1,22 @@
+.badge {
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 9px;
+  /* width: 300px; */
+  /* height: 60px; */
+  color: black;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  line-height: 0;
+}
+
+.badge > h2 {
+  font-size: medium;
+}
+
+.badgeDescription {
+  display: flex;
+  flex-direction: column;
+  line-height: 0;
+}

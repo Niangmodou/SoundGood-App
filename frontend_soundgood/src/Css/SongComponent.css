@@ -1,0 +1,20 @@
+.songText {
+  line-height: 0;
+}
+.songComponent {
+  background-color: white;
+  border-radius: 19px;
+  border: solid black 2px;
+  color: black;
+  width: 150px;
+  height: 45px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.songText strong,
+.songText p {
+  font-size: 15px;
+}

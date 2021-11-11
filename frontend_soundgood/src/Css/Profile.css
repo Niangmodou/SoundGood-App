@@ -1,0 +1,32 @@
+/* image-cropper trophies badges navbar profilepic dividerHeader discoveredSong ratings */
+
+.image-cropper {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.navbar {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+
+.profilePic {
+  display: inline;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+}
+
+.dividerHeader {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  border-bottom: solid #fff 1px;
+  padding-bottom: 1px;
+  text-align: left;
+}

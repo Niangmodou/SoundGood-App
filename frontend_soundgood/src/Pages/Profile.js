@@ -3,10 +3,14 @@ import { IconContext } from 'react-icons';
 import { FaPen, FaTimesCircle, FaTrophy } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Badge from '../Components/Badge.js';
+import DiscoveredSong from '../Components/DiscoveredSong.js';
+import '../Css/Profile.css';
+import DiscoveredSongs from './DiscoveredSongs.js';
+import { Route, Routes } from 'react-router';
 
 const tracks = [
   {
-    name: 'profile1',
+    name: 'Miina Tarjamo',
     date: '1 day ago',
     song: "You're beautiful",
     likes: 500,
@@ -14,7 +18,7 @@ const tracks = [
     comments: 37,
   },
   {
-    name: 'profile2',
+    name: 'Modou Niang',
     date: '2 day ago',
     song: 'I saw your face',
     likes: 400,
@@ -22,7 +26,7 @@ const tracks = [
     comments: 27,
   },
   {
-    name: 'profile3',
+    name: 'Jide',
     date: '3 day ago',
     song: 'In a crowded place',
     likes: 300,
@@ -68,16 +72,19 @@ export default function Profile() {
       <section>
         <div className='dividerHeader'>
           <h2>Discovered Songs</h2>
-          <p>View More</p>
+          <Link to='/discoveredSongs'>
+            <p>View More</p>
+          </Link>
         </div>
         {tracks.map((song) => {
-          return (
-            <div>
-              <p>{song.name}</p>
-              <p>{song.song}</p>
-            </div>
-          );
+          return <DiscoveredSong song={song} />;
         })}
+        <Routes>
+          <Route
+            path='/discoveredSongs'
+            element={<DiscoveredSongs tracks={tracks} />}
+          />
+        </Routes>
       </section>
     </div>
   );
