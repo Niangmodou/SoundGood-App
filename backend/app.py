@@ -118,7 +118,7 @@ def login_auth():
 @app.route("/api/register", methods=["POST"])
 def register_auth():
     data = request.get_json()
-
+    print(data)
     if data:
         first_name = data["first_name"]
         last_name = data["last_name"]
@@ -136,7 +136,7 @@ def register_auth():
             response = jsonify(
                 {"status": "there is already a user with the same username"}
             )
-            response.status_code = 500
+            response.status_code = 200
         else:
             new_user = User(
                 username=username,
@@ -151,7 +151,7 @@ def register_auth():
             access_token = create_access_token(identity={"username": username})
 
             response = jsonify(
-                {"status": "succesfully created user", "token": access_token}
+                {"status": "Succesfully created user", "token": access_token}
             )
             response.status_code = 200
 

@@ -17,10 +17,13 @@ const Login = () => {
 
     axios.post(URL, payload)
     .then(response => {
-
-      if (response["data"]["status"] === "Succesfully logged in user") {
+      console.log(response["data"]["status"])
+      const status = response["data"]["status"]
+      
+      if (status.trim() === "Succesfully logged in user") {
         const token = response["data"]["token"]
         localStorage.setItem("userToken", token)
+        console.log("SUCCESS")
       }
     }).catch(err => {
       console.log(err)
