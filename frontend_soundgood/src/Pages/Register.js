@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import axios from 'axios'
-import Redirect from 'react-router-dom'
 
 const Register = () => {
 
@@ -24,11 +23,10 @@ const Register = () => {
 
     axios.post(URL, payload)
       .then(response => {
-        console.log(response["data"]["status"])
+
         if (response["data"]["status"] === "Succesfully created user") {
           const token = response["data"]["token"]
           localStorage.setItem("userToken", token) 
-          console.log("SUCESS")
         }
       })
       .catch(err => {
