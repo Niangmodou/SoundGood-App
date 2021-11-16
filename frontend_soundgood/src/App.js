@@ -6,6 +6,7 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import DiscoveredSongs from './Pages/DiscoveredSongs';
 import Register from './Pages/Register.js';
+import Login from './Pages/Login.js';
 
 function App() {
   return (
@@ -22,8 +23,10 @@ function App() {
         </div>
       ) : (
         <div>
-          {/* <Login /> */}
-          <Register />
+          <Routes>
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+          </Routes>
         </div>
       )}
     </div>

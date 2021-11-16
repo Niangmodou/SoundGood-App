@@ -3,12 +3,12 @@ import React from 'react';
 export default function Register() {
   return (
     <div>
-      <a class='nav-link' href='login.html'>
+      <a class='nav-link' href='/login'>
         <button class='btn btn-primary' type='button' id='Login'>
           Login
         </button>{' '}
       </a>
-      <a class='nav-link' href='register.html'>
+      <a class='nav-link' href='/register'>
         <button class='btn btn-primary' type='button' id='Register'>
           Register
         </button>{' '}
