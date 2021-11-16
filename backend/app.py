@@ -11,10 +11,12 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity,
 )
+from flask_cors import CORS
 import hashlib
 
 JWT = JWTManager(app)
 ERROR = "error has occured"
+CORS(app)
 
 # Endpoint for homepage
 @app.route("/")
@@ -86,7 +88,7 @@ def current_user():
 @app.route("/api/login", methods=["POST"])
 def login_auth():
     data = request.get_json()
-
+    print(data)
     if data:
         username = data["username"]
         password = data["password"]
@@ -104,7 +106,7 @@ def login_auth():
             response.status_code = 200
         else:
             response = jsonify({"status": "Incorrect username or password"})
-            response.status_code = 500
+            response.status_code = 200
     else:
         response = jsonify({"status": ERROR})
         response.status_code = 500

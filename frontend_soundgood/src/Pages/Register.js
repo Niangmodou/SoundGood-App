@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Register() {
+const Register = () => {
   return (
     <div>
       <a class='nav-link' href='/login'>
@@ -51,3 +51,5 @@ export default function Register() {
     </div>
   );
 }
+
+export default Register
