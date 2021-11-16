@@ -5,11 +5,12 @@ import SavedSongs from './Pages/SavedSongs';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import DiscoveredSongs from './Pages/DiscoveredSongs';
+import Register from './Pages/Register.js';
 
 function App() {
   return (
     <div className='App'>
-      {true ? (
+      {false ? (
         <div>
           <Routes>
             <Route path='/' element={<Home />} />
@@ -20,7 +21,10 @@ function App() {
           </Routes>
         </div>
       ) : (
-        <div>Not signed in: Authentication</div>
+        <div>
+          {/* <Login /> */}
+          <Register />
+        </div>
       )}
     </div>
   );
