@@ -15,28 +15,38 @@ export default function Register() {
       </a>
 
       <form>
-        <div class='form-outline mb-4'>
+        <div>
+        <label class='form-label'>First Name</label>
+          <input
+            type='text'
+            placeholder='First Name'
+          /> <br/>
+
+          <label class='form-label'>Last Name</label>
+          <input
+            type='text'
+            placeholder='Last Name'
+          /> <br/>
+
+          <label class='form-label'>Email address</label>
           <input
             type='email'
-            class='form-control form-control-lg'
             placeholder='Email'
-          />
-          <label class='form-label'>Email address</label>
-        </div>
-        <div class='form-outline mb-3'>
+          /> <br/>
+
+          <label class='form-label'>Password</label>
           <input
             type='password'
-            class='form-control form-control-lg'
             placeholder='Enter password'
           />
-          <label class='form-label'>Password</label>
         </div>
 
         <div class='text-center text-lg-start mt-4 pt-2'>
-          <button type='button' class='btn btn-primary btn-lg' id='register'>
+          <button type='button' id='register'>
             Register
           </button>
         </div>
+
       </form>
     </div>
   );
