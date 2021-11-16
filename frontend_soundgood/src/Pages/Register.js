@@ -1,53 +1,98 @@
-import React from 'react';
+import React, {useState} from 'react';
+import axios from 'axios'
 
-export default function Register() {
+const Register = () => {
+
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+
+  const registerUser = () => {
+    const payload = {
+      "first_name": firstName,
+      "last_name": lastName,
+      "email_address": email,
+      "password": password,
+      "username": username
+    }
+
+    const URL = "http://127.0.0.1:5000/api/register"
+
+    axios.post(URL, payload)
+      .then(response => {
+
+        if (response["data"]["status"] === "Succesfully created user") {
+          const token = response["data"]["token"]
+          localStorage.setItem("userToken", token) 
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }
+
   return (
     <div>
-      <a class='nav-link' href='/login'>
-        <button class='btn btn-primary' type='button' id='Login'>
+      <a href='/login'>
+        <button type='button' id='Login'>
           Login
         </button>{' '}
       </a>
-      <a class='nav-link' href='/register'>
-        <button class='btn btn-primary' type='button' id='Register'>
+      <a href='/register'>
+        <button type='button' id='Register'>
           Register
         </button>{' '}
       </a>
 
-      <form>
         <div>
-        <label class='form-label'>First Name</label>
+        <label >Username</label>
           <input
             type='text'
+            onChange={e => setUsername(e.target.value)}
+            placeholder='Username'
+          /> <br/>
+
+          <label >First Name</label>
+          <input
+            type='text'
+            onChange={e => setFirstName(e.target.value)}
             placeholder='First Name'
           /> <br/>
 
-          <label class='form-label'>Last Name</label>
+          <label>Last Name</label>
           <input
             type='text'
+            onChange={e => setLastName(e.target.value)}
             placeholder='Last Name'
           /> <br/>
 
-          <label class='form-label'>Email address</label>
+          <label >Email address</label>
           <input
             type='email'
+            onChange={e => setEmail(e.target.value)}
             placeholder='Email'
           /> <br/>
 
-          <label class='form-label'>Password</label>
+          <label>Password</label>
           <input
             type='password'
+            onChange={e => setPassword(e.target.value)}
             placeholder='Enter password'
           />
         </div>
 
-        <div class='text-center text-lg-start mt-4 pt-2'>
-          <button type='button' id='register'>
-            Register
-          </button>
+        <div>
+    
+            <button type='button' id='register' onClick={registerUser}>
+              Register
+            </button>
+  
         </div>
-
-      </form>
     </div>
   );
 }
+
+export default Register

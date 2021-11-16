@@ -11,10 +11,12 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity,
 )
+from flask_cors import CORS
 import hashlib
 
 JWT = JWTManager(app)
 ERROR = "error has occured"
+CORS(app)
 
 # Endpoint for homepage
 @app.route("/")
@@ -86,7 +88,7 @@ def current_user():
 @app.route("/api/login", methods=["POST"])
 def login_auth():
     data = request.get_json()
-
+    print(data)
     if data:
         username = data["username"]
         password = data["password"]
@@ -104,7 +106,7 @@ def login_auth():
             response.status_code = 200
         else:
             response = jsonify({"status": "Incorrect username or password"})
-            response.status_code = 500
+            response.status_code = 200
     else:
         response = jsonify({"status": ERROR})
         response.status_code = 500
@@ -116,7 +118,7 @@ def login_auth():
 @app.route("/api/register", methods=["POST"])
 def register_auth():
     data = request.get_json()
-
+    print(data)
     if data:
         first_name = data["first_name"]
         last_name = data["last_name"]
@@ -134,7 +136,7 @@ def register_auth():
             response = jsonify(
                 {"status": "there is already a user with the same username"}
             )
-            response.status_code = 500
+            response.status_code = 200
         else:
             new_user = User(
                 username=username,
@@ -149,7 +151,7 @@ def register_auth():
             access_token = create_access_token(identity={"username": username})
 
             response = jsonify(
-                {"status": "succesfully created user", "token": access_token}
+                {"status": "Succesfully created user", "token": access_token}
             )
             response.status_code = 200
 
