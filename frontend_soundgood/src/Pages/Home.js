@@ -6,6 +6,10 @@ import ForumIcon from '../Icons/ForumIcon.png';
 import RecordButton from '../Icons/RecordButton.png';
 
 export default function Home() {
+  const signOut = () => {
+    localStorage.setItem("userToken", null)
+  }
+
   return (
     <div>
       <header className='navbar'>
@@ -24,6 +28,13 @@ export default function Home() {
           <h1>Tap to Record</h1>
           <img src={RecordButton} />
         </div>
+
+      <a href="/login">
+        <button onClick={signOut}>
+          Logout
+        </button>
+      </a>
+
       </main>
     </div>
   );
