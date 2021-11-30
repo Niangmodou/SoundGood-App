@@ -1,0 +1,3 @@
+Setting up file upload to google drive is demonstrated in this article: https://towardsdatascience.com/uploading-files-to-google-drive-directly-from-the-terminal-using-curl-2b89db28bb06
+
+Then a bash script will push to the google drive every time a file is uploaded to the directory as shown here:https://www.howtogeek.com/405468/how-to-perform-a-task-when-a-new-file-is-added-to-a-directory-in-linux/
