@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+<a id="download">Download</a>
+<button id = 'start'>Start</button> 
+<button id="stop">Stop</button>
+<script>
+  const downloadLink = document.getElementById('download');
+  const stopButton = document.getElementById('stop');
+  const startButton = document.getElementById("start");
+
+
+  const handleSuccess = function(stream) {
+    const options = {mimeType: 'audio/webm'};
+    const recordedChunks = [];
+    const mediaRecorder = new MediaRecorder(stream, options);
+
+    mediaRecorder.addEventListener('dataavailable', function(e) {
+      if (e.data.size > 0) recordedChunks.push(e.data);
+    });
+
+    mediaRecorder.addEventListener('stop', function() {
+      downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
+      downloadLink.download = 'acetest.wav';
+    });
+
+    stopButton.addEventListener('click', function() {
+      mediaRecorder.stop();
+    });
+    startButton.addEventListener('click', function() {
+      mediaRecorder.start();
+    });
+  };
+
+  navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+      .then(handleSuccess);
+
+</script>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+ <form id="uploadForm"
+         enctype="multipart/form-data"
+         action="/api/audio"
+         method="post">
+      <input type="file" name="userAudio" />
+      <input type="submit" value="Upload Audio" name="submit">
+      <span id = "status"></span>
+    </form>
+  <script>
+  $(document).ready(function() {
+
+     $('#uploadForm').submit(function() {
+        $("#status").empty().text("File is uploading...");
+        $(this).ajaxSubmit({
+
+            error: function(xhr) {
+        status('Error: ' + xhr.status);
+            },
+
+            success: function(response) {
+        $("#status").empty().text(response);
+                console.log(response);
+            }
+    });
+        //Very important line, it disable the page refresh.
+    return false;
+    });    
+});
+</script>
+<!--
+
+  <button> id="upload-button" onclick="uploadFile()"> Upload </button>
+<script>
+async function uploadFile() {
+    let formData = new FormData();           
+    formData.append("file", fileupload.files[0]);
+    await fetch('/upload.php', {
+      method: "POST", 
+      body: formData
+    });    
+    alert('The file has been uploaded successfully.');
+}
+-->
+</script>
+</body>
