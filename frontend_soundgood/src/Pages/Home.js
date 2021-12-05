@@ -5,6 +5,10 @@ import RecordIcon from '../Icons/RecordIcon.png';
 import ForumIcon from '../Icons/ForumIcon.png';
 import RecordButton from '../Icons/RecordButton.png';
 
+const recordAudio = () => {
+  
+}
+
 export default function Home() {
   const signOut = () => {
     localStorage.setItem("userToken", null)
@@ -26,7 +30,7 @@ export default function Home() {
       <main>
         <div>
           <h1>Tap to Record</h1>
-          <img src={RecordButton} />
+          <img src={RecordButton} onClick={recordAudio}/>
         </div>
 
       <a href="/login">

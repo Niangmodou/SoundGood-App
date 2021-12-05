@@ -4,6 +4,7 @@ import Post from "../Components/Post.js"
 
 // Function to retrieve a text representation of time passed
 const retrieveTime = (datePosted) => {
+    console.log(datePosted)
 }
 
 // Function to redirect to the post that was clicked on

@@ -1,6 +1,7 @@
 from ctypes import resize
 import os
 from flask import request, render_template, jsonify
+from sqlalchemy.sql.expression import true
 from config import app, SALT
 from sqlalchemy import desc
 import heapq
@@ -223,16 +224,55 @@ def like_comment():
             # Retrieve user from user token
             # TODO: Keep track of which comment user has liked
             # Prevent double counting
-            loggedin_user = get_jwt_identity()["username"]
+            _ = get_jwt_identity()["username"]
 
             comment = Comment.query.filter(id = comment_id).first()
             comment.like_count += 1
 
             db.session.commit()
+
+            response = jsonify({"status": "success"})
+            response.status_code = 200
+
+            return response
         else:
             response = jsonify({"status": ERROR})
             response.status_code = 400
 
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 400
+
+    return response
+
+
+@app.route("/api/dislikecomment", methods=["POST"])
+def dislike_comment():
+    try:
+        comment_id = int(request.args.get("commentid"))
+
+        request_json = request.get_json()
+        if request_json:
+            # Retrieve user from user token
+            # TODO: Keep track of which comment user has disliked
+            # Prevent double counting
+            _ = get_jwt_identity()["username"]
+
+            comment = Comment.query.filter(id = comment_id).first()
+            comment.dislike_count += 1
+
+            db.session.commit()
+
+            response = jsonify({"status": "success"})
+            response.status_code = 200
+
+            return response
+        
+        else:
+            response = jsonify({"status": "success"})
+            response.status_code = 200
+
+            return response
     except Exception:
         response = jsonify({"status": ERROR})
         response.status_code = 400

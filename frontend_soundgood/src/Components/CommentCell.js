@@ -12,18 +12,28 @@ const isLoggedIn = () => {
 const retrieveTime = (datePosted) => {
 }
 
+// Function to increment the like of a comment
 const incrementLikeCount = (commentId) => {
     if(!isLoggedIn) return 
 
+    // TODO: Send the user token as a bearer token with the Axios request
     const userToken = localStorage.getItem('userToken')
 
     const URL = `http://127.0.0.1:5000/api/likecomment?commentid=${commentId}`
     axios.post(URL, {"user": userToken})
+         .then(response => assert(response["data"]["status"] === "success"))
+         .catch(err => console.log(err))
 }
 
+// Function to increment the dislike of a comment
 const incrementDislikeCount = (commentId) => {
-    if(!isLoggedIn) return 
+    if(!isLoggedIn) return      
 
+    // TODO: Send the user token as a bearer token with the Axios request
+    const URL = `http://127.0.0.1:5000/api/dislikecomment?commentid=${commentId}`
+    axios.post(URL, {"user": userToken})
+         .then(response => assert(response["data"]["status"] === "success"))
+         .catch(err => console.log(err))
 }
 
 const CommentCell = ({commentId, username, image, datePosted, text, likeCount, dislikeCount}) => {
@@ -44,7 +54,6 @@ const CommentCell = ({commentId, username, image, datePosted, text, likeCount, d
                 <img src={DislikeIcon}/>
                 <p>{dislikeCount}</p>
             </div>
-        
             
         </div>
     )
