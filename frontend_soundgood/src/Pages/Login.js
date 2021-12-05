@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import axios from 'axios'
 
 const Login = () => {
-  var error = ''
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 

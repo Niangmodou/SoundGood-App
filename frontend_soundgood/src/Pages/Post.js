@@ -26,6 +26,8 @@ class Post extends Component {
                 userImage: response["data"]["user_id"]["image_url"],
                 postText: response["data"]["text"],
                 postDescription = response["data"]["description"],
+                recentResults: recentResults,
+
 
             })
         }).catch((err) => console.log(err))
@@ -36,9 +38,7 @@ class Post extends Component {
     }
 
     // Method to retrieve a text representation of time passed
-    retrieveTime = (datePosted) => {
-    }
-
+    retrieveTime = (datePosted) => {}
 
     render() {
 
