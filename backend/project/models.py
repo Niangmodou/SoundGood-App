@@ -43,6 +43,7 @@ class Post(db.Model):
 
     user_id = Column(Integer, ForeignKey("user.id"))
     audio_id = Column(Integer, ForeignKey("audio_recording.id"))
+    description = db.Column(db.String())
     text = db.Column(db.String())
     date_posted = db.Column(db.DateTime)
 

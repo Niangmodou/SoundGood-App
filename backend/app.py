@@ -1,6 +1,9 @@
+from ctypes import resize
 import os
 from flask import request, render_template, jsonify
 from config import app, SALT
+from sqlalchemy import desc
+import heapq
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -148,33 +151,65 @@ def register_auth():
 # Endpoint to retrieve all the recordings
 @app.route("/api/recordings", methods=["GET"])
 def get_all_recordings():
-    recordings_list = list(AudioRecording.query.all())
+    try:
+        recordings_list = list(AudioRecording.query.all())
 
-    # Serializing the recordings in the list
-    recordings_serialzied = [recording.as_dict() for recording in recordings_list]
+        # Serializing the recordings in the list
+        recordings_serialzied = [recording.as_dict() for recording in recordings_list]
 
-    data = {"recordings": recordings_serialzied}
+        data = {"recordings": recordings_serialzied}
 
-    response = jsonify(data)
-    response.status_code = 200
+        response = jsonify(data)
+        response.status_code = 200
 
-    return response
+    except Exception:
+        response = jsonify({"Error": "Error has occured"})
+        response.status_code = 400
+    
+    return response 
 
 
 @app.route("/api/forum", methods=["GET"])
 def retrieve_forum_posts():
-    all_posts = list(Post.query.all())
+    try:
+        all_posts = list(Post.query.all())
 
-    # Serialization
-    serialized_posts = [post.as_dict() for post in all_posts]
+        # Serialization
+        serialized_posts = [post.as_dict() for post in all_posts]
 
-    data = {"posts": serialized_posts}
+        data = {"posts": serialized_posts}
 
-    response = jsonify(data)
-    response.status_code = 200
+        response = jsonify(data)
+        response.status_code = 200
 
-    return response
+    except Exception:
+        response = jsonify({"Error": "Error has occured"})
+        response.status_code = 400
+    
+    return response 
 
+
+# Function to retrieve the details of a post given the ID
+@app.route("/api/post", methods=["GET"])
+def retrieve_post_given_id():   
+    try:
+        post_id = int(request.args.get("postid"))
+
+        requested_post = Post.query.filter(id = post_id).first()
+
+        # Sorting in descending order
+        recent_results = list(requested_post.comments.order_by(desc('date_posted')))
+
+        data = {"post": requested_post.as_dict(), "recentResults": recent_results, "topResults": top_results}
+
+        response = jsonify(data)
+        response.status_code = 200
+
+    except Exception:
+        response = jsonify({"Error": "Error has occured"})
+        response.status_code = 400
+    
+    return response 
 
 if __name__ == "__main__":
     app.run(debug=True)

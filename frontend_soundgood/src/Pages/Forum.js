@@ -35,7 +35,7 @@ class Forum extends Component {
                   username = {post["user_id"]["username"]}
                   image = {post["image_url"]}
                   datePosted = {post["date_posted"]}
-                  text = {post[text]}
+                  text = {post["description"]}
                   postID = {post["id"]}
                 />
               </div>
