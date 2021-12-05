@@ -165,7 +165,7 @@ def get_all_recordings():
         response.status_code = 200
 
     except Exception:
-        response = jsonify({"Error": "Error has occured"})
+        response = jsonify({"status": ERROR})
         response.status_code = 400
 
     return response
@@ -185,7 +185,7 @@ def retrieve_forum_posts():
         response.status_code = 200
 
     except Exception:
-        response = jsonify({"Error": "Error has occured"})
+        response = jsonify({"status": ERROR})
         response.status_code = 400
 
     return response
