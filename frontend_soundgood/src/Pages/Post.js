@@ -48,8 +48,14 @@ class Post extends Component {
         <div>
             <h3 className="post-title">{postDescription}</h3>
 
-            <h3>Recent Results</h3>
+            <img src={userImage}/>
 
+            <div className="messageArea">
+                <h3>{username}</h3>
+                <p>{postText}</p>
+            </div>
+
+            <h3>Recent Results</h3>
             {
                 this.state.recentResults.map((comment, idx) => {
                     return (
