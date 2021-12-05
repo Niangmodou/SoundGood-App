@@ -30,7 +30,7 @@ class Forum extends Component {
         {
           this.state.forumPosts.map((post, idx) => {
             return (
-              <div className="post-area" key={idx}>
+              <div className="post-cell" key={idx}>
                 <PostCell
                   username = {post["user_id"]["username"]}
                   image = {post["image_url"]}

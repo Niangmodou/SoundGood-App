@@ -7,7 +7,7 @@ import heapq
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from project.models import db, User, AudioRecording, Post
+from project.models import db, User, AudioRecording, Post, Comment
 from flask_jwt_extended import (
     create_access_token,
     JWTManager,
@@ -206,10 +206,39 @@ def retrieve_post_given_id():
         response.status_code = 200
 
     except Exception:
-        response = jsonify({"Error": "Error has occured"})
+        response = jsonify({"status": ERROR})
         response.status_code = 400
     
     return response 
+
+
+@app.route("/api/likecomment", methods=["POST"])
+@jwt_required()
+def like_comment():
+    try:
+        comment_id = int(request.args.get("commentid"))
+
+        request_json = request.get_json()  
+        if request_json:
+            # Retrieve user from user token
+            # TODO: Keep track of which comment user has liked
+            # Prevent double counting
+            loggedin_user = get_jwt_identity()["username"]
+
+            comment = Comment.query.filter(id = comment_id).first()
+            comment.like_count += 1
+
+            db.session.commit()
+        else:
+            response = jsonify({"status": ERROR})
+            response.status_code = 400
+
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 400
+
+    return response
+
 
 if __name__ == "__main__":
     app.run(debug=True)

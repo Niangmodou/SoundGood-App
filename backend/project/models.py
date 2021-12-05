@@ -58,6 +58,8 @@ class Comment(db.Model):
 
     post_id = db.Column(db.Integer, ForeignKey("post.id"))
 
+    text = db.Column(db.String())
+
     like_count = db.Column(db.Integer)
     dislike_count = db.Column(db.Integer)
 
