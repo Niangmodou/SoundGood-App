@@ -10,7 +10,7 @@ import Register from './Pages/Register.js';
 function App() {
   return (
     <div className='App'>
-      {false ? (
+      {true ? (
         <div>
           <Routes>
             <Route path='/' element={<Home />} />
