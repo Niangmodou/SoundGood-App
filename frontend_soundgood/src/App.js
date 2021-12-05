@@ -10,7 +10,7 @@ import Register from './Pages/Register.js';
 function App() {
   return (
     <div className='App'>
-      {true ? (
+      {localStorage.getItem('userToken') != null ? (
         <div>
           <Routes>
             <Route path='/' element={<Home />} />
