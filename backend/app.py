@@ -149,6 +149,7 @@ def register_auth():
 
     return response
 
+
 # Endpoint to retrieve all the recordings
 @app.route("/api/recordings", methods=["GET"])
 def get_all_recordings():
@@ -166,8 +167,8 @@ def get_all_recordings():
     except Exception:
         response = jsonify({"Error": "Error has occured"})
         response.status_code = 400
-    
-    return response 
+
+    return response
 
 
 @app.route("/api/forum", methods=["GET"])
@@ -186,22 +187,26 @@ def retrieve_forum_posts():
     except Exception:
         response = jsonify({"Error": "Error has occured"})
         response.status_code = 400
-    
-    return response 
+
+    return response
 
 
 # Function to retrieve the details of a post given the ID
 @app.route("/api/post", methods=["GET"])
-def retrieve_post_given_id():   
+def retrieve_post_given_id():
     try:
         post_id = int(request.args.get("postid"))
 
-        requested_post = Post.query.filter(id = post_id).first()
+        requested_post = Post.query.filter(id=post_id).first()
 
         # Sorting in descending order
-        recent_results = list(requested_post.comments.order_by(desc('date_posted')))
+        recent_results = list(requested_post.comments.order_by(desc("date_posted")))
 
-        data = {"post": requested_post.as_dict(), "recentResults": recent_results, "topResults": top_results}
+        data = {
+            "post": requested_post.as_dict(),
+            "recentResults": recent_results,
+            "topResults": top_results,
+        }
 
         response = jsonify(data)
         response.status_code = 200
@@ -209,8 +214,8 @@ def retrieve_post_given_id():
     except Exception:
         response = jsonify({"status": ERROR})
         response.status_code = 400
-    
-    return response 
+
+    return response
 
 
 @app.route("/api/likecomment", methods=["POST"])
@@ -219,14 +224,14 @@ def like_comment():
     try:
         comment_id = int(request.args.get("commentid"))
 
-        request_json = request.get_json()  
+        request_json = request.get_json()
         if request_json:
             # Retrieve user from user token
             # TODO: Keep track of which comment user has liked
             # Prevent double counting
             _ = get_jwt_identity()["username"]
 
-            comment = Comment.query.filter(id = comment_id).first()
+            comment = Comment.query.filter(id=comment_id).first()
             comment.like_count += 1
 
             db.session.commit()
@@ -258,7 +263,7 @@ def dislike_comment():
             # Prevent double counting
             _ = get_jwt_identity()["username"]
 
-            comment = Comment.query.filter(id = comment_id).first()
+            comment = Comment.query.filter(id=comment_id).first()
             comment.dislike_count += 1
 
             db.session.commit()
@@ -267,7 +272,7 @@ def dislike_comment():
             response.status_code = 200
 
             return response
-        
+
         else:
             response = jsonify({"status": "success"})
             response.status_code = 200
