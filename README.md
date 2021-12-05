@@ -5,4 +5,23 @@ https://developers.google.com/assistant/sdk
 2) Forum - socal media posting, getting, etc.
 3) User Profile - names, list of songs they've found, reward points
 4) Extracting the song metadata from API (Spotify or iTunes API)
-
+The project consist of a front and backend.
+# Frontend Installation Process
+Uses Python Flask as the backend
+pip install flask
+pip install python-dotenv
+pip install flask-cors
+pip install flask_sqlalchemy
+pip install flask_migrate
+pip install flask_jwt_extended
+pip install psycopg2
+Can now run python app.py for the backend
+# Backend Installation Process
+download Node.js
+npm install react-scripts
+# Opening site
+have 2 terminal open 
+cd into the backend folder on 1 terminal
+python app.py
+on another terminal cd into the frontend folder
+npm start
