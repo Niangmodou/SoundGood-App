@@ -170,7 +170,7 @@ def get_all_recordings():
 
     return response
 
-
+# Endpoint to retrieve all of the posts for the forum
 @app.route("/api/forum", methods=["GET"])
 def retrieve_forum_posts():
     try:
@@ -218,6 +218,7 @@ def retrieve_post_given_id():
     return response
 
 
+# Endpoint to like a comment given the ID
 @app.route("/api/likecomment", methods=["POST"])
 @jwt_required()
 def like_comment():
@@ -251,6 +252,7 @@ def like_comment():
     return response
 
 
+# Endpoint to dislike a comment given the ID
 @app.route("/api/dislikecomment", methods=["POST"])
 def dislike_comment():
     try:
