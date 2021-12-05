@@ -9,9 +9,12 @@ import Register from './Pages/Register.js';
 import Login from './Pages/Login.js';
 
 function App() {
+  const isLoggedIn = () => {
+    return localStorage.getItem('userToken') !== null
+  }
   return (
     <div className='App'>
-      {localStorage.getItem('userToken') != null ? (
+      {isLoggedIn() ? (
         <div>
           <Routes>
             <Route path='/' element={<Home />} />
@@ -22,12 +25,7 @@ function App() {
           </Routes>
         </div>
       ) : (
-        <div>
-          <Routes>
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-          </Routes>
-        </div>
+        <Login />
       )}
     </div>
   );
