@@ -7,6 +7,7 @@ class Post extends Component {
         super(props)
 
         this.state = {
+            username: '',
             userImage: '',
             postText: '',
             postComment: '',
@@ -23,10 +24,12 @@ class Post extends Component {
             let recentResults = response["data"]["recentResults"]
             
             this.setState({
+                username: response["data"]["user_id"]["username"],
                 userImage: response["data"]["user_id"]["image_url"],
                 postText: response["data"]["text"],
-                postDescription = response["data"]["description"],
+                postDescription: response["data"]["description"],
                 recentResults: recentResults,
+                audioUrl: response["data"]["audio_id"]["sound_url"]
 
 
             })
@@ -41,14 +44,12 @@ class Post extends Component {
     retrieveTime = (datePosted) => {}
 
     render() {
-
         return (
         <div>
             <h3 className="post-title">{postDescription}</h3>
 
-
             <h3>Recent Results</h3>
-            
+
             {
                 this.state.recentResults.map((comment, idx) => {
                     return (
