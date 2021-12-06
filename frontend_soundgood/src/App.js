@@ -10,7 +10,7 @@ import Login from './Pages/Login.js';
 
 function App() {
   const isLoggedIn = () => {
-    return localStorage.getItem('userToken') !== null
+    return localStorage.getItem('userToken') !== 'null'
   }
   
   return (
