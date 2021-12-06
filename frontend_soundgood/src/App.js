@@ -5,12 +5,13 @@ import SavedSongs from './Pages/SavedSongs';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import DiscoveredSongs from './Pages/DiscoveredSongs';
+import Landing from './Pages/Landing';
 import Register from './Pages/Register.js';
 import Login from './Pages/Login.js';
 
 function App() {
   const isLoggedIn = () => {
-    return localStorage.getItem('userToken') !== null
+    return localStorage.getItem('userToken') !== 'null'
   }
   
   return (
@@ -26,7 +27,11 @@ function App() {
           </Routes>
         </div>
       ) : (
-        <Login />
+        <Routes>
+          <Route path='/' element={<Landing />} />
+          <Route path="/login" element={<Login />}/>
+          <Route path="/register" element={<Register />}/>
+        </Routes>
       )}
     </div>
   );
