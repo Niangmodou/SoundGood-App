@@ -11,6 +11,7 @@ from ctypes import resize
 import os
 from flask import request, render_template, jsonify
 from sqlalchemy.sql.expression import true
+from sqlalchemy.sql.functions import user
 from config import app, SALT
 from sqlalchemy import desc
 import heapq
@@ -74,7 +75,40 @@ def current_user():
     return response
 
 
+# Endpoint to update the user
+@app.route("/api/update_user", methods=["POST"])
+@jwt_required
+def update_user_data():
+    current_username = get_jwt_identity()["username"]
+
+    request_json = request.get_json()
+    if request_json:
+        username = request_json["data"]["username"]
+        first_name = request_json["data"]["firstName"]
+        last_name = request_json["data"]["lastName"]
+        email = request_json["data"]["email"]
+
+        # Retrieve current user
+        user = User.query.filter_by(username=current_username).first()
+
+        user.username = username
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
+
+        db.session.commit()
+
+        response = jsonify({"status": "Succesfully edited user"})
+        response.status_code = 200
+
+    response = jsonify({"status": ERROR})
+    response.status_code = 500
+
+    return response
+
 # Endpoint to login user
+
+
 @app.route("/api/login", methods=["POST"])
 def login_auth():
     print(request)
@@ -249,7 +283,6 @@ def like_comment():
             response = jsonify({"status": "success"})
             response.status_code = 200
 
-            return response
         else:
             response = jsonify({"status": ERROR})
             response.status_code = 400
@@ -283,40 +316,71 @@ def dislike_comment():
             response = jsonify({"status": "success"})
             response.status_code = 200
 
-            return response
-
         else:
             response = jsonify({"status": "success"})
             response.status_code = 200
 
-            return response
     except Exception:
         response = jsonify({"status": ERROR})
         response.status_code = 400
 
     return response
 
+# Endpoint to create a new post
 
-# Endpoint to retrieve all the posts of a user
-@app.route("/api/userposts", methods=["GET"])
+
+@app.route("/api/createpost", methods=["POST"])
 @jwt_required
-def retrieve_user_posts():
-    try:
-        current_user = get_jwt_identity()["username"]
+def create_new_post():
+    request_json = request.get_json()
 
-        user_posts = Post.query.filter(user_id=current_user.id)
+    if request_json:
+        username = get_jwt_identity()["username"]
 
-        serialized_posts = [post.as_dict() for post in user_posts]
+        current_user = User.query.filter(username=username).first()
 
-        data = {"posts": serialized_posts}
-        response = jsonify(data)
+        new_audio = AudioRecording(
+            user_id=current_user.id, sound_url=request_json["data"]["soundUrl"]
+        )
+
+        new_post = Post(
+            user_id=current_user.id, audio_id=new_audio.id, description=request_json[
+                "data"]["title"], text=request_json["data"]["description"]
+        )
+
+        db.session.commit()
+
+        response = jsonify({"status": "success"})
         response.status_code = 200
-    except Exception:
+
+    else:
         response = jsonify({"status": ERROR})
         response.status_code = 400
 
     return response
 
+
+# test
+
+# # Endpoint to retrieve all the posts of a user
+# @app.route("/api/userposts", methods=["GET"])
+# @jwt_required
+# def retrieve_user_posts():
+#     try:
+#         current_user = get_jwt_identity()["username"]
+
+#         user_posts = Post.query.filter(user_id=current_user.id)
+
+#         serialized_posts = [post.as_dict() for post in user_posts]
+
+#         data = {"posts": serialized_posts}
+#         response = jsonify(data)
+#         response.status_code = 200
+#     except Exception:
+#         response = jsonify({"status": ERROR})
+#         response.status_code = 400
+
+#     return response
 
 # test
 if __name__ == "__main__":
