@@ -4,24 +4,55 @@ import PersonIcon from '../Icons/PersonIcon.png';
 import RecordIcon from '../Icons/RecordIcon.png';
 import ForumIcon from '../Icons/ForumIcon.png';
 import RecordButton from '../Icons/RecordButton.png';
+import MicRecorder from 'mic-recorder-to-mp3'
+
+const MP3Recorder = new MicRecorder({bitRate: 128})
 
 class Home extends Component {
   constructor() {
     super()
 
     this.state = {
-      isRecording: false
+      isRecording: false,
+      blobURL: '',
+      permissionGranted: false
     }
   }
 
+  componentDidMount() {
+    // Check for permission
+    navigator.getUserMedia({audio: true}), 
+      () => {
+        console.log("Permission Granted!")
+        this.setState({permissionGranted: true})
+      }, 
+      () => {
+        console.log("Permission Denied!")
+        this.setState({permissionGranted: false})
+      },
+    )
+  }
+
   recordAudio = () => {
+    if (!this.state.permissionGranted) return
+
     // Start Recording process
-    this.setState({isRecording: true})
+    MP3Recorder.start().then(() => {
+     this.setState({isRecording: true})
+
+    }).catch((err) => console.error(err))
   }
 
   stopRecording = () => {
     // Stop Recording process
-    this.setState({isRecording: false})
+    MP3Recorder.stop().getMp3().then(([bugger, blob]) => {
+      const file = new File(buffer, 'me-at-thevoice.mp3', {type: blob.type, lastModified: Date.now()})
+
+      const player = new Audio(URL.createObjectURL(file))
+
+      player.play()
+      this.setState({isRecording: false})
+    })
   }
 
   signOut = () => {
