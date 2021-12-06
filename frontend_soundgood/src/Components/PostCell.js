@@ -1,6 +1,6 @@
 import React from 'react'
 import PlayIcon from "../Icons/RecordIcon.png"
-import Post from "../Components/Post.js"
+import Post from "../Pages/Post.js"
 
 // Function to retrieve a text representation of time passed
 const retrieveTime = (datePosted) => {

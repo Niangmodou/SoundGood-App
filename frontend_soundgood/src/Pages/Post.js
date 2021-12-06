@@ -1,9 +1,9 @@
+import React, {Component} from 'react'
 import axios from 'axios'
-import React, {Component} from 'react.js'
 import CommentCell from '../Components/CommentCell'
 
 class Post extends Component {
-    constructor() {
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -46,13 +46,13 @@ class Post extends Component {
     render() {
         return (
         <div>
-            <h3 className="post-title">{postDescription}</h3>
+            <h3 className="post-title">{this.state.postDescription}</h3>
 
-            <img src={userImage}/>
+            <img src={this.state.userImage}/>
 
             <div className="messageArea">
-                <h3>{username}</h3>
-                <p>{postText}</p>
+                <h3>{this.state.username}</h3>
+                <p>{this.state.postText}</p>
             </div>
 
             <h3>Recent Results</h3>

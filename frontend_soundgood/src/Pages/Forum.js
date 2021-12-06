@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-import PostCell from "../Components/Cell"
+import PostCell from "../Components/PostCell.js"
 
 
 class Forum extends Component {

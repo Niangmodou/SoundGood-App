@@ -21,16 +21,16 @@ class Home extends Component {
 
   componentDidMount() {
     // Check for permission
-    navigator.getUserMedia({audio: true}), 
-      () => {
-        console.log("Permission Granted!")
-        this.setState({permissionGranted: true})
-      }, 
-      () => {
-        console.log("Permission Denied!")
-        this.setState({permissionGranted: false})
-      },
-    )
+    // navigator.getUserMedia({audio: true}), 
+    //   () => {
+    //     console.log("Permission Granted!")
+    //     this.setState({permissionGranted: true})
+    //   }, 
+    //   () => {
+    //     console.log("Permission Denied!")
+    //     this.setState({permissionGranted: false})
+    //   },
+    // )
   }
 
   recordAudio = () => {
@@ -45,7 +45,7 @@ class Home extends Component {
 
   stopRecording = () => {
     // Stop Recording process
-    MP3Recorder.stop().getMp3().then(([bugger, blob]) => {
+    MP3Recorder.stop().getMp3().then(([buffer, blob]) => {
       const file = new File(buffer, 'me-at-thevoice.mp3', {type: blob.type, lastModified: Date.now()})
 
       const player = new Audio(URL.createObjectURL(file))
@@ -66,7 +66,7 @@ class Home extends Component {
             <div>
               Currently recording.......
 
-              <button onClick={stopRecording}>Stop Recording</button>
+              <button onClick={this.stopRecording}>Stop Recording</button>
             </div>
           ) : (
             <div>
@@ -84,11 +84,11 @@ class Home extends Component {
             <main>
               <div>
                 <h1>Tap to Record</h1>
-                <img src={RecordButton} onClick={recordAudio}/>
+                <img src={RecordButton} onClick={this.recordAudio}/>
               </div>
       
             <a href="/login">
-              <button onClick={signOut}>
+              <button onClick={this.signOut}>
                 Logout
               </button>
             </a>

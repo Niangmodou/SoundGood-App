@@ -1,16 +1,17 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 
-import LikeIcon from '../Icons/LikeIcon.js'
-import DislikeIcon from '../Icons/DislikeIcon.js'
+import LikeIcon from '../Icons/LikeIcon.png'
+import DislikeIcon from '../Icons/DislikeIcon.png'
+
+import assert from 'assert'
 
 const isLoggedIn = () => {
     return localStorage.getItem("userToken") !== null
 }
 
 // Function to retrieve a text representation of time passed
-const retrieveTime = (datePosted) => {
-}
+const retrieveTime = (datePosted) => {}
 
 // Function to increment the like of a comment
 const incrementLikeCount = (commentId) => {
@@ -27,7 +28,10 @@ const incrementLikeCount = (commentId) => {
 
 // Function to increment the dislike of a comment
 const incrementDislikeCount = (commentId) => {
-    if(!isLoggedIn) return      
+    if(!isLoggedIn) return    
+    
+    // TODO: Send the user token as a bearer token with the Axios request
+    const userToken = localStorage.getItem('userToken')
 
     // TODO: Send the user token as a bearer token with the Axios request
     const URL = `http://127.0.0.1:5000/api/dislikecomment?commentid=${commentId}`
@@ -38,7 +42,7 @@ const incrementDislikeCount = (commentId) => {
 
 const CommentCell = ({commentId, username, image, datePosted, text, likeCount, dislikeCount}) => {
     return (
-        <div className="comment-cell" key={idx}>
+        <div className="comment-cell">
             <h3 className="comment-name">{username}</h3>
             <img className="comment-image" src={image} />
             <h3 className="comment-time">{retrieveTime(datePosted)}</h3>
