@@ -92,20 +92,15 @@ def login_auth():
             username=username, password=password_hash).first()
 
         if user:
-            print("VALIDDDDDD")
             access_token = create_access_token(identity={"username": username})
             response = jsonify(
                 {"token": access_token, "status": "Succesfully logged in user"}
             )
             response.status_code = 200
         else:
-            print("INCORRECT ERROR")
-
             response = jsonify({"status": "Incorrect username or password"})
             response.status_code = 200
     else:
-        print("NO USER DATA")
-
         response = jsonify({"status": ERROR})
         response.status_code = 500
 
