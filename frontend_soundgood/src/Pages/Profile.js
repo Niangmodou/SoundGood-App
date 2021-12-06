@@ -111,11 +111,13 @@ handlePictureSelected(event) {
       <main>
         <div className='image-cropper'>
           {this.state.editing ? (<span></span>) : (
-          <input
-            type="file"
-            onChange={this.handlePictureSelected.bind(this)}
-          />
-          <button onClick={this.upload.bind(this)}>Upload</button>
+            <div>
+              <input
+                type="file"
+                onChange={this.handlePictureSelected.bind(this)}
+              />
+              <button onClick={this.upload.bind(this)}>Upload</button>
+            </div>
             )}
           <img
             className='profilePic'
