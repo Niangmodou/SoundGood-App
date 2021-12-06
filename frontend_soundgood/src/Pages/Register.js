@@ -29,6 +29,7 @@ const Register = () => {
         if (response["data"]["status"] === "Succesfully created user") {
           const token = response["data"]["token"]
           localStorage.setItem("userToken", token) 
+          navigate("/home")
         }
       })
       .catch(err => {

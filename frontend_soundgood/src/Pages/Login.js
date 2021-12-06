@@ -22,8 +22,12 @@ const Login = () => {
       
       if (status.trim() === "Succesfully logged in user") {
         const token = response["data"]["token"]
-        localStorage.setItem("userToken", token)
+        localStorage.setItem('userToken', token)
+        console.log("YERRRRR")
+        navigate("/home")
+        
       }
+
     }).catch(err => {
       console.log(err)
     })

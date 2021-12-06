@@ -28,7 +28,7 @@ class Forum extends Component {
   render() {
     return (
       <div>
-        <header>Forum</header>
+        <h1>Forum</h1>
         <div className="forum-area">
           {
             this.state.forumPosts.map((post, idx) => {
