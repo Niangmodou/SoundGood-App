@@ -14,28 +14,11 @@ class Home extends Component {
 
     this.state = {
       isRecording: false,
-      blobURL: '',
-      permissionGranted: false
+      blobURL: ''
     }
   }
 
-  componentDidMount() {
-    // Check for permission
-    // navigator.getUserMedia({audio: true}), 
-    //   () => {
-    //     console.log("Permission Granted!")
-    //     this.setState({permissionGranted: true})
-    //   }, 
-    //   () => {
-    //     console.log("Permission Denied!")
-    //     this.setState({permissionGranted: false})
-    //   },
-    // )
-  }
-
   recordAudio = () => {
-    if (!this.state.permissionGranted) return
-
     // Start Recording process
     MP3Recorder.start().then(() => {
      this.setState({isRecording: true})
@@ -48,10 +31,16 @@ class Home extends Component {
     MP3Recorder.stop().getMp3().then(([buffer, blob]) => {
       const file = new File(buffer, 'me-at-thevoice.mp3', {type: blob.type, lastModified: Date.now()})
 
-      const player = new Audio(URL.createObjectURL(file))
+      const blobURL = URL.createObjectURL(blob)
 
+      const player = new Audio(blobURL)
       player.play()
-      this.setState({isRecording: false})
+
+      // Create a new post page/popup that user can enter information
+      // When submit button is clicked you can make call to /api/createpost
+      
+
+      this.setState({isRecording: false, blobURL: blobURL})
     })
   }
 
@@ -65,7 +54,6 @@ class Home extends Component {
           {this.state.isRecording ? (
             <div>
               Currently recording.......
-
               <button onClick={this.stopRecording}>Stop Recording</button>
             </div>
           ) : (
