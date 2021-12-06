@@ -170,6 +170,7 @@ def get_all_recordings():
 
     return response
 
+
 # Endpoint to retrieve all of the posts for the forum
 @app.route("/api/forum", methods=["GET"])
 def retrieve_forum_posts():
@@ -287,6 +288,7 @@ def dislike_comment():
 
     return response
 
+
 # Endpoint to retrieve all the posts of a user
 @app.route("/api/userposts", methods=["GET"])
 @jwt_required
@@ -294,7 +296,7 @@ def retrieve_user_posts():
     try:
         current_user = get_jwt_identity()["username"]
 
-        user_posts = Post.query.filter(user_id = current_user.id)
+        user_posts = Post.query.filter(user_id=current_user.id)
 
         serialized_posts = [post.as_dict() for post in user_posts]
 
@@ -307,6 +309,6 @@ def retrieve_user_posts():
 
     return response
 
-
+#test
 if __name__ == "__main__":
     app.run(debug=True)
