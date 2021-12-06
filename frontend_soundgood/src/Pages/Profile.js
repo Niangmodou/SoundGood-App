@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { IconContext } from 'react-icons';
 import { FaPen, FaTimesCircle, FaTrophy } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import DiscoveredSong from '../Components/DiscoveredSong.js';
 import '../Css/Profile.css';
 import DiscoveredSongs from './DiscoveredSongs.js';
 import { Route, Routes } from 'react-router';
+import $ from 'jquery';
 
 const tracks = [
   {
@@ -35,7 +36,50 @@ const tracks = [
   },
 ];
 
-export default function Profile() {
+class Profile extends Component {
+constructor(props) {
+    super(props);
+    this.state = {
+      editing: true,
+      pic: false,
+      src: false
+    };
+    this.newName = "";
+  }
+
+  editing = () => {
+        this.setState({editing: false});
+    }
+
+handlePictureSelected(event) {
+    var picture = event.target.files[0];
+    var src     = URL.createObjectURL(picture);
+
+    this.setState({
+      picture: picture,
+      src: src
+    });
+  }
+
+  upload() {
+    var formData = new FormData();
+
+    formData.append("file", this.state.picture);
+
+    $.ajax({
+      url: "/api/photo",
+      method: "POST",
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+      }
+    });
+  }
+
+  render() {
+  const {name}= this.props;
   return (
     <div>
       <header>
@@ -49,12 +93,30 @@ export default function Profile() {
               </div>
             </IconContext.Provider>
           </Link>
+            {this.state.editing ? (
+              <span className="name">{name}</span>
+            ) : (
+              <input
+                type="text"
+                defaultValue={name}
+                ref={node => {
+                  this.newName = node;
+                }}
+            />
+            )} 
           <h1>Kendrick Lamar</h1>
-          <FaPen />
+          <button onClick={this.editing}><FaPen/></button>
         </div>
       </header>
       <main>
         <div className='image-cropper'>
+          {this.state.editing ? (<span></span>) : (
+          <input
+            type="file"
+            onChange={this.handlePictureSelected.bind(this)}
+          />
+          <button onClick={this.upload.bind(this)}>Upload</button>
+            )}
           <img
             className='profilePic'
             src='https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg'
@@ -89,3 +151,6 @@ export default function Profile() {
     </div>
   );
 }
+}
+
+export default Profile
