@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import axios from 'axios'
+import { useNavigate } from 'react-router';
 
 const Register = () => {
+  const navigate = useNavigate()
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -36,6 +38,7 @@ const Register = () => {
 
   return (
     <div>
+      <h1 onClick={() => navigate("/")}>SoundGood</h1>
       <a href='/login'>
         <button type='button' id='Login'>
           Login
