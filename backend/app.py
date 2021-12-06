@@ -23,23 +23,23 @@ JWT = JWTManager(app)
 ERROR = "error has occured"
 CORS(app)
 
-# Endpoint for homepage
-@app.route("/")
-@jwt_required()
-def home():
-    current_username = get_jwt_identity()["username"]
+# # Endpoint for homepage
+# @app.route("/")
+# @jwt_required()
+# def home():
+#     current_username = get_jwt_identity()["username"]
 
-    try:
-        user = User.query.filter_by(username=current_username).first()
-        serialized_user = user.as_dict()
+#     try:
+#         user = User.query.filter_by(username=current_username).first()
+#         serialized_user = user.as_dict()
 
-        response = jsonify(serialized_user)
-        response.status_code = 200
-    except Exception:
-        response = jsonify({"status": ERROR})
-        response.status_code = 500
+#         response = jsonify(serialized_user)
+#         response.status_code = 200
+#     except Exception:
+#         response = jsonify({"status": ERROR})
+#         response.status_code = 500
 
-    return response
+#     return response
 
 
 # Endpoint for login page
@@ -57,14 +57,17 @@ def register():
 # Endpoint to retrieve the current logged in user
 @app.route("/api/current_user", methods=["GET"])
 @jwt_required()
-def current_user():
+def retrieve_current_user():
     current_username = get_jwt_identity()["username"]
 
     try:
         user = User.query.filter_by(username=current_username).first()
-        serialized_user = user.as_dict()
 
-        response = jsonify(serialized_user)
+        user_posts = Post.query.filter_by(user_id = user).id
+        data = {"user": user.as_dict(), "posts": user_posts}
+        
+
+        response = jsonify(data)
         response.status_code = 200
     except Exception:
         response = jsonify({"status": ERROR})
@@ -316,6 +319,7 @@ def dislike_comment():
         response.status_code = 400
 
     return response
+
 
 # Endpoint to create a new post
 @app.route("/api/createpost", methods=["POST"])

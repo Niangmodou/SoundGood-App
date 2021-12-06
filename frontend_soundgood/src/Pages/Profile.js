@@ -125,13 +125,7 @@ handlePictureSelected(event) {
             alt='Profile picture'
           />
         </div>
-        <div className='trophies'>
-          <FaTrophy />
-          <strong>13,459</strong>
-        </div>
-        <div className='badges'>
-          <Badge />
-        </div>
+  
       </main>
       <section>
         <div className='dividerHeader'>
