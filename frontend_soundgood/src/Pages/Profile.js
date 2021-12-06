@@ -40,18 +40,20 @@ class Profile extends Component {
 constructor(props) {
     super(props);
     this.state = {
-      editing: true,
-      pic: false,
-      src: false
+      editing: false,
+      username: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      imageUrl
     };
-    this.newName = "";
   }
 
-  editing = () => {
-        this.setState({editing: false});
-    }
+  doneEditing = () => {
+    this.setState({editing: false});
+  }
 
-handlePictureSelected(event) {
+  handlePictureSelected(event) {
     var picture = event.target.files[0];
     var src     = URL.createObjectURL(picture);
 
@@ -104,7 +106,7 @@ handlePictureSelected(event) {
                 }}
             />
             )} 
-          <h1>Kendrick Lamar</h1>
+          <h1>{this.state.username}</h1>
           <button onClick={this.editing}><FaPen/></button>
         </div>
       </header>
@@ -121,7 +123,7 @@ handlePictureSelected(event) {
             )}
           <img
             className='profilePic'
-            src='https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg'
+            src={this.state.imageUrl}
             alt='Profile picture'
           />
         </div>
