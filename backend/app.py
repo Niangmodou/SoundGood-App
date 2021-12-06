@@ -217,6 +217,7 @@ def get_all_recordings():
 @app.route("/api/forum", methods=["GET"])
 def retrieve_forum_posts():
     try:
+        print("FORUM!!!")
         all_posts = list(Post.query.all())
 
         # Serialization
@@ -330,26 +331,28 @@ def dislike_comment():
 
 
 @app.route("/api/createpost", methods=["POST"])
-@jwt_required
+@jwt_required()
 def create_new_post():
+    print("INNNNNN - create_new_post")
+    username = get_jwt_identity()["username"]
+    print(username)
     request_json = request.get_json()
-
+    print(request_json)
     if request_json:
-        username = get_jwt_identity()["username"]
-
-        current_user = User.query.filter(username=username).first()
+        current_user = User.query.filter_by(username=username).first()
 
         new_audio = AudioRecording(
-            user_id=current_user.id, sound_url=request_json["data"]["soundUrl"]
+            user_id=current_user.id, sound_url=request_json["soundUrl"]
         )
 
         new_post = Post(
             user_id=current_user.id, audio_id=new_audio.id, description=request_json[
-                "data"]["title"], text=request_json["data"]["description"]
+                "title"], text=request_json["description"]
         )
-
+        db.session.add(new_audio)
+        db.session.add(new_post)
         db.session.commit()
-
+        print("DFASHUFAHSDUHFU")
         response = jsonify({"status": "success"})
         response.status_code = 200
 

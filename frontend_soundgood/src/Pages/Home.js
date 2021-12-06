@@ -6,6 +6,7 @@ import ForumIcon from '../Icons/ForumIcon.png';
 import RecordButton from '../Icons/RecordButton.png';
 import MicRecorder from 'mic-recorder-to-mp3';
 import axios from 'axios';
+import { FaMeteor } from 'react-icons/fa';
 
 const MP3Recorder = new MicRecorder({ bitRate: 128 });
 
@@ -61,15 +62,20 @@ class Home extends Component {
     let res = {};
     res['title'] = this.state.title;
     res['description'] = this.state.description;
+    res['soundUrl'] = this.state.blobURL;
+    console.log(localStorage['userToken']);
     const config = {
       headers: { Authorization: `Bearer ${localStorage['userToken']}` },
     };
+    console.log('CREATE POST');
     axios
       .post('http://127.0.0.1:5000/api/createpost', res, config)
       .then((promise) => {
-        if (promise['data']['status'] === 'success')
-          this.setState({ recorded: false });
-        console.log('sucess boyyyyy');
+        console.log(promise);
+        if (promise['data']['status'] === 'success') {
+          //this.setState({ recorded: false });
+          console.log('sucess boyyyyy');
+        }
       });
   };
 
@@ -82,7 +88,7 @@ class Home extends Component {
       <div>
         {this.state.isRecording ? (
           this.state.recorded ? (
-            <form onSubmit={this.createPost}>
+            <div>
               <input
                 placeholder='Title'
                 className='input'
@@ -105,8 +111,8 @@ class Home extends Component {
                   this.setState({ description: e.target.value });
                 }}
               />
-              <input type='submit' value='Submit' />
-            </form>
+              <button onClick={this.createPost}>Submit</button>
+            </div>
           ) : (
             <div>
               Currently recording.......

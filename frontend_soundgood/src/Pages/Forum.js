@@ -1,54 +1,55 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
-import PostCell from "../Components/PostCell.js"
-
+import axios from 'axios';
+import PostCell from '../Components/PostCell.js';
 
 class Forum extends Component {
   constructor() {
-    super()
+    super();
 
     this.state = {
-      forumPosts: []
-    }
+      forumPosts: [],
+    };
   }
 
   componentDidMount() {
+    console.log('mounted succesffully');
     // Pull all recordings from the backend
-    axios.get("http://127.0.0.1:5000/api/forum")
+    axios
+      .get('http://127.0.0.1:5000/api/forum')
       .then((response) => {
-        const posts = response["data"]["posts"]
+        console.log(response);
+        const posts = response['data']['posts'];
 
-        this.setState({forumPosts: posts})
-      }).catch((err) => {
-        console.error(err)
+        this.setState({ forumPosts: posts });
       })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   render() {
     return (
       <div>
         <h1>Forum</h1>
-        <div className="forum-area">
-          {
-            this.state.forumPosts.map((post, idx) => {
-              return (
-                <div className="post-cell" key={idx}>
-                  <PostCell
-                    username = {post["user_id"]["username"]}
-                    image = {post["image_url"]}
-                    datePosted = {post["date_posted"]}
-                    text = {post["description"]}
-                    postID = {post["id"]}
-                  />
-                </div>
-              )
-            })
-          }
+        <div className='forum-area'>
+          {this.state.forumPosts.map((post, idx) => {
+            return (
+              <div className='post-cell' key={idx}>
+                <PostCell
+                  username={post['user_id']['username']}
+                  image={post['image_url']}
+                  datePosted={post['date_posted']}
+                  text={post['description']}
+                  postID={post['id']}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Forum
+export default Forum;
