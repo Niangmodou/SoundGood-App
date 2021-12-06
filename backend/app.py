@@ -152,6 +152,7 @@ def register_auth():
             response = jsonify(
                 {"status": "Succesfully created user", "token": access_token}
             )
+            print(response)
             response.status_code = 200
 
     else:
@@ -218,8 +219,7 @@ def retrieve_post_given_id():
 
         data = {
             "post": requested_post.as_dict(),
-            "recentResults": recent_results,
-            "topResults": top_results,
+            "recentResults": recent_results
         }
 
         response = jsonify(data)

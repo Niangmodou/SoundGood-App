@@ -156,7 +156,26 @@ class Profile extends Component {
                 ref={(node) => {
                   this.newName = node;
                 }}
+<<<<<<< HEAD
               />
+=======
+            />
+            )} 
+          <h1>Kendrick Lamar</h1>
+          <button onClick={this.editing}><FaPen/></button>
+        </div>
+      </header>
+      <main>
+        <div className='image-cropper'>
+          {this.state.editing ? (<span></span>) : (
+            <div>
+              <input
+                type="file"
+                onChange={this.handlePictureSelected.bind(this)}
+              />
+              <button onClick={this.upload.bind(this)}>Upload</button>
+            </div>
+>>>>>>> a7c21ebfd4ff7f56243ee10557acda2b4d8b15ac
             )}
             <h1>{this.state.username}</h1>
             <button onClick={this.editing}>

@@ -6,6 +6,7 @@ import ForumIcon from '../Icons/ForumIcon.png';
 import RecordButton from '../Icons/RecordButton.png';
 import MicRecorder from 'mic-recorder-to-mp3'
 
+
 const MP3Recorder = new MicRecorder({bitRate: 128})
 
 class Home extends Component {

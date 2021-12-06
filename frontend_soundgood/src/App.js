@@ -19,7 +19,7 @@ function App() {
       {isLoggedIn() ? (
         <div>
           <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/home' element={<Home />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/savedSongs' element={<SavedSongs />} />
             <Route path='/forum' element={<Forum />} />
