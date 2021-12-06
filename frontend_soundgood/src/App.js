@@ -9,6 +9,7 @@ import Landing from './Pages/Landing';
 import Register from './Pages/Register.js';
 import Login from './Pages/Login.js';
 import Post from './Pages/Post';
+import Post_func from './Pages/Post_func';
 
 function App() {
   const isLoggedIn = () => {
@@ -25,7 +26,7 @@ function App() {
             <Route path='/savedSongs' element={<SavedSongs />} />
             <Route path='/forum' element={<Forum />} />
             <Route path='/discoveredSongs' element={<DiscoveredSongs />} />
-            <Route path='/post' element={<Post />} />
+            <Route path='/post' element={<Post_func />} />
           </Routes>
         </div>
       ) : (

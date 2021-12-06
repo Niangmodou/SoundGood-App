@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 class Post extends Component {
   constructor(props) {
-    const location = useLocation();
+    // const location = useLocation();
     super(props);
 
     this.state = {
@@ -17,7 +17,7 @@ class Post extends Component {
       postDescription: '',
 
       recentResults: [],
-      postID: location.state,
+      //   postID: location.state,
     };
   }
 

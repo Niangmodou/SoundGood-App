@@ -238,22 +238,26 @@ def retrieve_forum_posts():
 # Function to retrieve the details of a post given the ID
 @app.route("/api/post", methods=["GET"])
 def retrieve_post_given_id():
+    print("POST-----------")
     try:
         post_id = int(request.args.get("postid"))
-
-        requested_post = Post.query.filter(id=post_id).first()
-
+        print("Post ID", post_id)
+        print(Post.query.all())
+        requested_post = Post.query.filter_by(id=post_id).first()
+        print(requested_post.as_dict())
         # Sorting in descending order
         recent_results = list(
-            requested_post.comments.order_by(desc("date_posted")))
-
+            requested_post.comments.query.all())
+        print(recent_results)
         data = {
             "post": requested_post.as_dict(),
             "recentResults": recent_results
         }
-
+        print("DATA")
+        print(data)
         response = jsonify(data)
         response.status_code = 200
+        print("RESP", response)
 
     except Exception:
         response = jsonify({"status": ERROR})

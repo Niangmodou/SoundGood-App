@@ -73,7 +73,7 @@ class Home extends Component {
       .then((promise) => {
         console.log(promise);
         if (promise['data']['status'] === 'success') {
-          //this.setState({ recorded: false });
+          this.setState({ recorded: false });
           console.log('sucess boyyyyy');
         }
       });
