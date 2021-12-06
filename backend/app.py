@@ -1,3 +1,12 @@
+import hashlib
+from flask_cors import CORS
+from flask_jwt_extended import (
+    create_access_token,
+    JWTManager,
+    jwt_required,
+    get_jwt_identity,
+)
+from project.models import db, User, AudioRecording, Post, Comment
 from ctypes import resize
 import os
 from flask import request, render_template, jsonify
@@ -8,21 +17,14 @@ import heapq
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from project.models import db, User, AudioRecording, Post, Comment
-from flask_jwt_extended import (
-    create_access_token,
-    JWTManager,
-    jwt_required,
-    get_jwt_identity,
-)
-from flask_cors import CORS
-import hashlib
 
 JWT = JWTManager(app)
 ERROR = "error has occured"
 CORS(app)
 
 # Endpoint for homepage
+
+
 @app.route("/")
 @jwt_required()
 def home():
@@ -75,6 +77,7 @@ def current_user():
 # Endpoint to login user
 @app.route("/api/login", methods=["POST"])
 def login_auth():
+    print(request)
     data = request.get_json()
     print(data)
     if data:
@@ -82,20 +85,27 @@ def login_auth():
         password = data["password"]
 
         password_salt = password + SALT
-        password_hash = hashlib.sha256(password_salt.encode("utf-8")).hexdigest()
+        password_hash = hashlib.sha256(
+            password_salt.encode("utf-8")).hexdigest()
 
-        user = User.query.filter_by(username=username, password=password_hash).first()
+        user = User.query.filter_by(
+            username=username, password=password_hash).first()
 
         if user:
+            print("VALIDDDDDD")
             access_token = create_access_token(identity={"username": username})
             response = jsonify(
                 {"token": access_token, "status": "Succesfully logged in user"}
             )
             response.status_code = 200
         else:
+            print("INCORRECT ERROR")
+
             response = jsonify({"status": "Incorrect username or password"})
             response.status_code = 200
     else:
+        print("NO USER DATA")
+
         response = jsonify({"status": ERROR})
         response.status_code = 500
 
@@ -115,7 +125,8 @@ def register_auth():
         email_address = data["email_address"]
 
         password_salt = password + SALT
-        password_hash = hashlib.sha256(password_salt.encode("utf-8")).hexdigest()
+        password_hash = hashlib.sha256(
+            password_salt.encode("utf-8")).hexdigest()
 
         # Duplicate user
         user = User.query.filter_by(username=username).first()
@@ -157,7 +168,8 @@ def get_all_recordings():
         recordings_list = list(AudioRecording.query.all())
 
         # Serializing the recordings in the list
-        recordings_serialzied = [recording.as_dict() for recording in recordings_list]
+        recordings_serialzied = [recording.as_dict()
+                                 for recording in recordings_list]
 
         data = {"recordings": recordings_serialzied}
 
@@ -201,7 +213,8 @@ def retrieve_post_given_id():
         requested_post = Post.query.filter(id=post_id).first()
 
         # Sorting in descending order
-        recent_results = list(requested_post.comments.order_by(desc("date_posted")))
+        recent_results = list(
+            requested_post.comments.order_by(desc("date_posted")))
 
         data = {
             "post": requested_post.as_dict(),
@@ -309,6 +322,7 @@ def retrieve_user_posts():
 
     return response
 
-#test
+
+# test
 if __name__ == "__main__":
     app.run(debug=True)

@@ -3,6 +3,9 @@ import React from 'react';
 export default function Landing() {
 return (
   <div>
+    <h1>SoundGood</h1>
+    <h3>Welcome to the place that will help you find that song stuck in your head!</h3>
+    
     <a href='/login'>
       <button type='button' id='Login'>
         Login
@@ -13,8 +16,6 @@ return (
         Register
       </button>
     </a>
-    <h1>SoundGood</h1>
-    <body>Welcome to our website</body>
   </div>
    );
   }

@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
+import { useNavigate } from 'react-router';
 import axios from 'axios'
 
 const Login = () => {
+  const navigate = useNavigate()
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -29,6 +32,7 @@ const Login = () => {
 
   return (
     <div>
+      <h1 onClick={() => navigate("/")}>SoundGood</h1>
       <a href='/login'>
         <button type='button' id='Login'>
           Login
