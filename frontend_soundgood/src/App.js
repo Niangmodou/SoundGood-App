@@ -26,7 +26,10 @@ function App() {
           </Routes>
         </div>
       ) : (
-        <Login />
+        <Routes>
+          <Route path="/login" element={<Login />}/>
+          <Route path="/register" element={<Register />}/>
+        </Routes>
       )}
     </div>
   );

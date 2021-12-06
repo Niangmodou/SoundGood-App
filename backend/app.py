@@ -254,6 +254,7 @@ def like_comment():
 
 # Endpoint to dislike a comment given the ID
 @app.route("/api/dislikecomment", methods=["POST"])
+@jwt_required()
 def dislike_comment():
     try:
         comment_id = int(request.args.get("commentid"))
@@ -280,6 +281,26 @@ def dislike_comment():
             response.status_code = 200
 
             return response
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 400
+
+    return response
+
+# Endpoint to retrieve all the posts of a user
+@app.route("/api/userposts", methods=["GET"])
+@jwt_required
+def retrieve_user_posts():
+    try:
+        current_user = get_jwt_identity()["username"]
+
+        user_posts = Post.query.filter(user_id = current_user.id)
+
+        serialized_posts = [post.as_dict() for post in user_posts]
+
+        data = {"posts": serialized_posts}
+        response = jsonify(data)
+        response.status_code = 200
     except Exception:
         response = jsonify({"status": ERROR})
         response.status_code = 400
