@@ -7,6 +7,7 @@ import DiscoveredSong from '../Components/DiscoveredSong.js';
 import '../Css/Profile.css';
 import DiscoveredSongs from './DiscoveredSongs.js';
 import { Route, Routes } from 'react-router';
+import axios from 'axios';
 
 const tracks = [
   {
@@ -36,6 +37,12 @@ const tracks = [
 ];
 
 export default function Profile() {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage['token']}` },
+  };
+  axios.get(URL, config).then((response) => {
+    console.log(response);
+  });
   return (
     <div>
       <header>

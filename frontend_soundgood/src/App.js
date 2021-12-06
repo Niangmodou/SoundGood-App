@@ -11,9 +11,9 @@ import Login from './Pages/Login.js';
 
 function App() {
   const isLoggedIn = () => {
-    return localStorage.getItem('userToken') !== 'null'
-  }
-  
+    return localStorage.getItem('userToken') !== 'null';
+  };
+
   return (
     <div className='App'>
       {isLoggedIn() ? (
@@ -29,8 +29,8 @@ function App() {
       ) : (
         <Routes>
           <Route path='/' element={<Landing />} />
-          <Route path="/login" element={<Login />}/>
-          <Route path="/register" element={<Register />}/>
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
         </Routes>
       )}
     </div>
