@@ -1,3 +1,12 @@
+import hashlib
+from flask_cors import CORS
+from flask_jwt_extended import (
+    create_access_token,
+    JWTManager,
+    jwt_required,
+    get_jwt_identity,
+)
+from project.models import db, User, AudioRecording, Post, Comment
 from ctypes import resize
 import os
 from flask import request, render_template, jsonify
@@ -9,19 +18,11 @@ import heapq
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from project.models import db, User, AudioRecording, Post, Comment
-from flask_jwt_extended import (
-    create_access_token,
-    JWTManager,
-    jwt_required,
-    get_jwt_identity,
-)
-from flask_cors import CORS
-import hashlib
 
 JWT = JWTManager(app)
 ERROR = "error has occured"
 CORS(app)
+
 
 # # Endpoint for homepage
 # @app.route("/")
@@ -108,8 +109,11 @@ def update_user_data():
     return response
 
 # Endpoint to login user
+
+
 @app.route("/api/login", methods=["POST"])
 def login_auth():
+    print(request)
     data = request.get_json()
     print(data)
     if data:
@@ -117,9 +121,11 @@ def login_auth():
         password = data["password"]
 
         password_salt = password + SALT
-        password_hash = hashlib.sha256(password_salt.encode("utf-8")).hexdigest()
+        password_hash = hashlib.sha256(
+            password_salt.encode("utf-8")).hexdigest()
 
-        user = User.query.filter_by(username=username, password=password_hash).first()
+        user = User.query.filter_by(
+            username=username, password=password_hash).first()
 
         if user:
             access_token = create_access_token(identity={"username": username})
@@ -150,7 +156,8 @@ def register_auth():
         email_address = data["email_address"]
 
         password_salt = password + SALT
-        password_hash = hashlib.sha256(password_salt.encode("utf-8")).hexdigest()
+        password_hash = hashlib.sha256(
+            password_salt.encode("utf-8")).hexdigest()
 
         # Duplicate user
         user = User.query.filter_by(username=username).first()
@@ -193,7 +200,8 @@ def get_all_recordings():
         recordings_list = list(AudioRecording.query.all())
 
         # Serializing the recordings in the list
-        recordings_serialzied = [recording.as_dict() for recording in recordings_list]
+        recordings_serialzied = [recording.as_dict()
+                                 for recording in recordings_list]
 
         data = {"recordings": recordings_serialzied}
 
@@ -211,6 +219,7 @@ def get_all_recordings():
 @app.route("/api/forum", methods=["GET"])
 def retrieve_forum_posts():
     try:
+        print("FORUM!!!")
         all_posts = list(Post.query.all())
 
         # Serialization
@@ -231,21 +240,26 @@ def retrieve_forum_posts():
 # Function to retrieve the details of a post given the ID
 @app.route("/api/post", methods=["GET"])
 def retrieve_post_given_id():
+    print("POST-----------")
     try:
         post_id = int(request.args.get("postid"))
-
-        requested_post = Post.query.filter(id=post_id).first()
-
+        print("Post ID", post_id)
+        print(Post.query.all())
+        requested_post = Post.query.filter_by(id=post_id).first()
+        print(requested_post.as_dict())
         # Sorting in descending order
-        recent_results = list(requested_post.comments.order_by(desc("date_posted")))
-
+        recent_results = list(
+            requested_post.comments.query.all())
+        print(recent_results)
         data = {
             "post": requested_post.as_dict(),
             "recentResults": recent_results
         }
-
+        print("DATA")
+        print(data)
         response = jsonify(data)
         response.status_code = 200
+        print("RESP", response)
 
     except Exception:
         response = jsonify({"status": ERROR})
@@ -313,7 +327,6 @@ def dislike_comment():
             response = jsonify({"status": "success"})
             response.status_code = 200
 
-        
     except Exception:
         response = jsonify({"status": ERROR})
         response.status_code = 400
@@ -322,37 +335,42 @@ def dislike_comment():
 
 
 # Endpoint to create a new post
+
+
 @app.route("/api/createpost", methods=["POST"])
-@jwt_required
+@jwt_required()
 def create_new_post():
+    print("INNNNNN - create_new_post")
+    username = get_jwt_identity()["username"]
+    print(username)
     request_json = request.get_json()
-
+    print(request_json)
     if request_json:
-        username = get_jwt_identity()["username"]
-
-        current_user = User.query.filter(username=username).first()
+        current_user = User.query.filter_by(username=username).first()
 
         new_audio = AudioRecording(
-            user_id=current_user.id, sound_url=request_json["data"]["soundUrl"]
+            user_id=current_user.id, sound_url=request_json["soundUrl"]
         )
 
         new_post = Post(
-            user_id=current_user.id, audio_id=new_audio.id, description=request_json["data"]["title"], text=request_json["data"]["description"]
+            user_id=current_user.id, audio_id=new_audio.id, description=request_json[
+                "title"], text=request_json["description"]
         )
-
+        db.session.add(new_audio)
+        db.session.add(new_post)
         db.session.commit()
-
-
+        print("DFASHUFAHSDUHFU")
         response = jsonify({"status": "success"})
         response.status_code = 200
 
     else:
         response = jsonify({"status": ERROR})
         response.status_code = 400
-    
+
     return response
 
 
+# test
 
 # # Endpoint to retrieve all the posts of a user
 # @app.route("/api/userposts", methods=["GET"])
@@ -374,6 +392,6 @@ def create_new_post():
 
 #     return response
 
-#test
+# test
 if __name__ == "__main__":
     app.run(debug=True)
