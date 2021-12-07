@@ -56,6 +56,7 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
+    user_id = db.Column(db.Integer)
     post_id = db.Column(db.Integer, ForeignKey("post.id"))
 
     text = db.Column(db.String())
