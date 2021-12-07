@@ -37,13 +37,6 @@ const tracks = [
   },
 ];
 
-// function Profile() {
-//   const config = {
-//     headers: { Authorization: `Bearer ${localStorage['userToken']}` },
-//   };
-//   axios.get(URL, config).then((response) => {
-//     console.log(response);
-//   });
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -58,7 +51,6 @@ class Profile extends Component {
       imageUrl: '',
       songPosts: [],
     };
-    this.newName = '';
   }
 
   editing = () => {
@@ -69,7 +61,9 @@ class Profile extends Component {
     const URL = 'http://127.0.0.1:5000/api/current_user';
     const token = localStorage.getItem('userToken');
     // TODO: add the bearer token in the configs
-    const configs = {};
+    const configs = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
     axios
       .get(URL, configs)
       .then((response) => {
@@ -81,7 +75,7 @@ class Profile extends Component {
           email: response['data']['email'],
           imageUrl: response['data']['image_url'],
           songPosts: response['data']['song_posts'],
-        });
+        })
       })
       .catch((err) => console.log(err));
   }
@@ -91,8 +85,10 @@ class Profile extends Component {
   editUserInfo = () => {
     const URL = 'http:://127.0.0.1:5000/api/update_user';
     // TODO: add the bearer token in the configs
-    const token = localStorage.get;
-    const config = {};
+    const token = localStorage.getItem('userToken');
+    const configs = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
     const data = {
       username: this.state.username,
       email: this.state.email,
@@ -100,13 +96,12 @@ class Profile extends Component {
       lastName: this.state.lastName,
     };
     axios
-      .post(URL, (data = data), (config = config))
+      .post(URL, data,  config)
       .then((response) => {
         console.log(response);
       })
       .catch((err) => console.log(err));
-  };
-}
+  }
 
   doneEditing = () => {
     this.setState({editing: false});
@@ -141,6 +136,7 @@ class Profile extends Component {
 
   render() {
     const { name } = this.props;
+
     return (
       <div>
         <header>
@@ -177,6 +173,7 @@ class Profile extends Component {
                 type="file"
                 onChange={this.handlePictureSelected.bind(this)}
               />
+              </div>
             )}
 
             <h1>{this.state.username}</h1>
@@ -184,7 +181,7 @@ class Profile extends Component {
               <FaPen />
             </button>
           </div>
-        </header>
+      </main>
         <main>
           <div className='image-cropper'>
             {this.state.editing ? (
@@ -213,6 +210,7 @@ class Profile extends Component {
             <Badge />
           </div>
         </main>
+
         <section>
           <div className='dividerHeader'>
             <h2>Discovered Songs</h2>
@@ -232,8 +230,6 @@ class Profile extends Component {
         </section>
       </div>
     );
-  }
-
 }
 
 export default Profile;
