@@ -23,26 +23,6 @@ JWT = JWTManager(app)
 ERROR = "error has occured"
 CORS(app)
 
-
-# # Endpoint for homepage
-# @app.route("/")
-# @jwt_required()
-# def home():
-#     current_username = get_jwt_identity()["username"]
-
-#     try:
-#         user = User.query.filter_by(username=current_username).first()
-#         serialized_user = user.as_dict()
-
-#         response = jsonify(serialized_user)
-#         response.status_code = 200
-#     except Exception:
-#         response = jsonify({"status": ERROR})
-#         response.status_code = 500
-
-#     return response
-
-
 # Endpoint for login page
 @app.route("/login")
 def login():
@@ -335,8 +315,6 @@ def dislike_comment():
 
 
 # Endpoint to create a new post
-
-
 @app.route("/api/createpost", methods=["POST"])
 @jwt_required()
 def create_new_post():
@@ -373,24 +351,27 @@ def create_new_post():
 # test
 
 # # Endpoint to retrieve all the posts of a user
-# @app.route("/api/userposts", methods=["GET"])
-# @jwt_required
-# def retrieve_user_posts():
-#     try:
-#         current_user = get_jwt_identity()["username"]
+@app.route("/api/userposts", methods=["GET"])
+@jwt_required()
+def retrieve_user_posts():
+    
+    try:
+        username = get_jwt_identity()["username"]
+        print(username)
+        current_user = User.query.filter_by(username = username)
+        print(current_user.id)
+        user_posts = Post.query.filter(user_id=current_user.id)
+        print("GOT USER POSTS", user_posts)
+        serialized_posts = [post.as_dict() for post in user_posts]
 
-#         user_posts = Post.query.filter(user_id=current_user.id)
+        data = {"posts": serialized_posts}
+        response = jsonify(data)
+        response.status_code = 200
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 400
 
-#         serialized_posts = [post.as_dict() for post in user_posts]
-
-#         data = {"posts": serialized_posts}
-#         response = jsonify(data)
-#         response.status_code = 200
-#     except Exception:
-#         response = jsonify({"status": ERROR})
-#         response.status_code = 400
-
-#     return response
+    return response
 
 # test
 if __name__ == "__main__":

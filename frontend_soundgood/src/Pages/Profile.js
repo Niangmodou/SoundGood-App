@@ -96,7 +96,7 @@ class Profile extends Component {
       lastName: this.state.lastName,
     };
     axios
-      .post(URL, data,  config)
+      .post(URL, data,  configs)
       .then((response) => {
         console.log(response);
       })
@@ -230,6 +230,6 @@ class Profile extends Component {
         </section>
       </div>
     );
+  }
 }
-
 export default Profile;

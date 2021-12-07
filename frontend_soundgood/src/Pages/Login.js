@@ -8,6 +8,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setErrorMessage] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const loginUser = () => {
     const payload = {
@@ -25,6 +26,11 @@ const Login = () => {
         if (status.trim() === 'Succesfully logged in user') {
           const token = response['data']['token'];
           localStorage.setItem('userToken', token);
+
+          setIsLoggedIn(true)
+
+        } else {
+          setErrorMessage(status)
         }
       })
       .catch((err) => {
@@ -32,19 +38,12 @@ const Login = () => {
       });
   };
 
+  // Checking whether user succesfully logged in
+  if (isLoggedIn) navigate('/home')
+
   return (
     <div>
       <h1 onClick={() => navigate('/')}>SoundGood</h1>
-      <a href='/login'>
-        <button type='button' id='Login'>
-          Login
-        </button>
-      </a>
-      <a href='/register'>
-        <button type='button' id='Register'>
-          Register
-        </button>
-      </a>
 
       <div>
         <label>Username</label>
@@ -67,7 +66,16 @@ const Login = () => {
           Login
         </button>
       </div>
+
+      <p>{error}</p>
+
+      Already have an account? 
+      <a href='/register'>
+        Register Instead
+      </a>
     </div>
+
+    
   );
 };
 

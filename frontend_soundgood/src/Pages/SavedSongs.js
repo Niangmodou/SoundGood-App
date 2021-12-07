@@ -22,7 +22,10 @@ class SavedSongs extends Component {
     axios
       .get(URL, config)
       .then((response) => {
-        this.setState({ posts: response['data']['posts'] });
+        console.log(response)
+        const posts = response['data']['posts']
+        console.log(posts)
+        this.setState({ posts: posts });
       })
       .catch((err) => console.error(err));
   }
