@@ -49,12 +49,12 @@ class Profile extends Component {
     super(props);
     this.state = {
       editing: false,
-      pic: false,
-      src: false,
+
       username: '',
       firstName: '',
       lastName: '',
       email: '',
+
       imageUrl: '',
       songPosts: [],
     };
@@ -86,6 +86,7 @@ class Profile extends Component {
       .catch((err) => console.log(err));
   }
 
+
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
     const URL = 'http:://127.0.0.1:5000/api/update_user';
@@ -105,6 +106,12 @@ class Profile extends Component {
       })
       .catch((err) => console.log(err));
   };
+}
+
+  doneEditing = () => {
+    this.setState({editing: false});
+  }
+
 
   handlePictureSelected(event) {
     var picture = event.target.files[0];
@@ -156,8 +163,22 @@ class Profile extends Component {
                 ref={(node) => {
                   this.newName = node;
                 }}
+            />
+            )} 
+          <h1>{this.state.username}</h1>
+          <button onClick={this.editing}><FaPen/></button>
+        </div>
+      </header>
+      <main>
+        <div className='image-cropper'>
+          {this.state.editing ? (<span></span>) : (
+            <div>
+              <input
+                type="file"
+                onChange={this.handlePictureSelected.bind(this)}
               />
             )}
+
             <h1>{this.state.username}</h1>
             <button onClick={this.editing}>
               <FaPen />
@@ -212,6 +233,7 @@ class Profile extends Component {
       </div>
     );
   }
+
 }
 
 export default Profile;

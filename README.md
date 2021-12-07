@@ -12,7 +12,8 @@ pip install -r requirements.txt
 Can now run python app.py for the backend
 # Backend Installation Process
 download Node.js
-npm install 
+npm install react-scripts
+npm install jquery
 # Opening site
 have 2 terminal open 
 cd into the backend folder on 1 terminal
