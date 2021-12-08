@@ -11,11 +11,7 @@ from project.models import db, User, AudioRecording, Post, Comment
 from ctypes import resize
 import os
 from flask import request, render_template, jsonify
-from sqlalchemy.sql.expression import true
-from sqlalchemy.sql.functions import user
 from config import app, SALT
-from sqlalchemy import desc
-import heapq
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -107,7 +103,9 @@ def login_auth():
         user = User.query.filter_by(username=username, password=password_hash).first()
 
         if user:
-            access_token = create_access_token(identity={"username": username}, expires_delta=False)
+            access_token = create_access_token(
+                identity={"username": username}, expires_delta=False
+            )
             response = jsonify(
                 {"token": access_token, "status": "Succesfully logged in user"}
             )
@@ -156,7 +154,9 @@ def register_auth():
             db.session.add(new_user)
             db.session.commit()
 
-            access_token = create_access_token(identity={"username": username}, expires_delta=False)
+            access_token = create_access_token(
+                identity={"username": username}, expires_delta=False
+            )
 
             response = jsonify(
                 {"status": "Succesfully created user", "token": access_token}
@@ -347,11 +347,9 @@ def dislike_comment():
 @app.route("/api/createpost", methods=["POST"])
 @jwt_required()
 def create_new_post():
-    print("INNNNNN - create_new_post")
     username = get_jwt_identity()["username"]
-    print(username)
+
     request_json = request.get_json()
-    print(request_json)
     if request_json:
         current_user = User.query.filter_by(username=username).first()
 
@@ -368,7 +366,6 @@ def create_new_post():
         db.session.add(new_audio)
         db.session.add(new_post)
         db.session.commit()
-        print("DFASHUFAHSDUHFU")
         response = jsonify({"status": "success"})
         response.status_code = 200
 
@@ -379,19 +376,16 @@ def create_new_post():
     return response
 
 
-# test
-
 # # Endpoint to retrieve all the posts of a user
 @app.route("/api/userposts", methods=["GET"])
 @jwt_required()
 def retrieve_user_posts():
     try:
         username = get_jwt_identity()["username"]
-        print(username)
         current_user = User.query.filter_by(username=username)
-        print(current_user.id)
+
         user_posts = Post.query.filter(user_id=current_user.id)
-        print("GOT USER POSTS", user_posts)
+
         serialized_posts = [post.as_dict() for post in user_posts]
 
         data = {"posts": serialized_posts}
@@ -404,6 +398,5 @@ def retrieve_user_posts():
     return response
 
 
-# test
 if __name__ == "__main__":
     app.run(debug=True)
