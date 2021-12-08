@@ -107,7 +107,7 @@ def login_auth():
         user = User.query.filter_by(username=username, password=password_hash).first()
 
         if user:
-            access_token = create_access_token(identity={"username": username})
+            access_token = create_access_token(identity={"username": username}, expires_delta=False)
             response = jsonify(
                 {"token": access_token, "status": "Succesfully logged in user"}
             )
@@ -156,7 +156,7 @@ def register_auth():
             db.session.add(new_user)
             db.session.commit()
 
-            access_token = create_access_token(identity={"username": username})
+            access_token = create_access_token(identity={"username": username}, expires_delta=False)
 
             response = jsonify(
                 {"status": "Succesfully created user", "token": access_token}
@@ -385,7 +385,6 @@ def create_new_post():
 @app.route("/api/userposts", methods=["GET"])
 @jwt_required()
 def retrieve_user_posts():
-
     try:
         username = get_jwt_identity()["username"]
         print(username)

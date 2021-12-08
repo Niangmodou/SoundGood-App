@@ -35,15 +35,17 @@ class SavedSongs extends Component {
       <div>
         <h1>Saved Posts </h1>
         {this.state.posts.map((post, idx) => {
+          return (
           <div className='post-cell' key={idx}>
-            <PostCell
+           <PostCell
               username={post['user_id']['username']}
               image={post['image_url']}
               datePosted={post['date_posted']}
               text={post['description']}
               postID={post['id']}
             />
-          </div>;
+          </div>
+          )
         })}
       </div>
     );

@@ -39,6 +39,7 @@ export default function Post_func() {
         <h3>{userName}</h3>
         <p>{postText}</p>
       </div>
+      
       <h3>Recent Results</h3>
       {recentResults.map((comment, idx) => {
         return (
