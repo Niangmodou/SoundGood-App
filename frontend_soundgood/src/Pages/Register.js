@@ -40,16 +40,6 @@ const Register = () => {
   return (
     <div>
       <h1 onClick={() => navigate("/")}>SoundGood</h1>
-      <a href='/login'>
-        <button type='button' id='Login'>
-          Login
-        </button>{' '}
-      </a>
-      <a href='/register'>
-        <button type='button' id='Register'>
-          Register
-        </button>{' '}
-      </a>
 
         <div>
         <label >Username</label>
@@ -93,7 +83,9 @@ const Register = () => {
             <button type='button' id='register' onClick={registerUser}>
               Register
             </button>
-  
+
+          <p>Have an account?  <a href='/login'>Login Instead</a>  </p>
+
         </div>
     </div>
   );

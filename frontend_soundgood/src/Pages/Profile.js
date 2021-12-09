@@ -38,8 +38,9 @@ const tracks = [
 ];
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super() 
+
     this.state = {
       editing: false,
 
@@ -47,23 +48,25 @@ class Profile extends Component {
       firstName: '',
       lastName: '',
       email: '',
+      score: 0,
 
       imageUrl: '',
       songPosts: [],
     };
   }
 
-  editing = () => {
+  doneEditing = () => {
     this.setState({ editing: false });
   };
 
   componentDidMount() {
     const URL = 'http://127.0.0.1:5000/api/current_user';
     const token = localStorage.getItem('userToken');
-    // TODO: add the bearer token in the configs
+   
     const configs = {
       headers: { Authorization: `Bearer ${token}` },
     };
+
     axios
       .get(URL, configs)
       .then((response) => {
@@ -83,19 +86,21 @@ class Profile extends Component {
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
     const URL = 'http:://127.0.0.1:5000/api/update_user';
-    // TODO: add the bearer token in the configs
+   
     const token = localStorage.getItem('userToken');
     const configs = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    const data = {
+
+    const newData = {
       username: this.state.username,
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
     };
+
     axios
-      .post(URL, data, configs)
+      .post(URL, newData, configs)
       .then((response) => {
         console.log(response);
       })
@@ -106,39 +111,15 @@ class Profile extends Component {
     this.setState({ editing: false });
   };
 
-  handlePictureSelected(event) {
-    var picture = event.target.files[0];
-    var src = URL.createObjectURL(picture);
-
-    this.setState({
-      picture: picture,
-      src: src,
-    });
-  }
-
-  upload() {
-    var formData = new FormData();
-
-    formData.append('file', this.state.picture);
-
-    $.ajax({
-      url: '/api/photo',
-      method: 'POST',
-      data: formData,
-      cache: false,
-      contentType: false,
-      processData: false,
-      success: function (response) {},
-    });
-  }
-
   render() {
-    const { name } = this.props;
+    // Allow user to edit their fields
+    if(this.state.editing) this.doneEditing()
 
     return (
       <div>
         <header>
           <div className='navbar'>
+
             <Link to='/home'>
               <IconContext.Provider
                 value={{ style: { color: 'rgb(255, 255, 255)' } }}
@@ -148,81 +129,49 @@ class Profile extends Component {
                 </div>
               </IconContext.Provider>
             </Link>
-            {this.state.editing ? (
-              <span className='name'>{name}</span>
-            ) : (
-              <input
-                type='text'
-                defaultValue={name}
-                ref={(node) => {
-                  this.newName = node;
-                }}
-              />
-            )}
-            <h1>{this.state.username}</h1>
-            <button onClick={this.editing}>
+
+            <h1>kendrick Lamar</h1>
+
+            <button onClick={() => this.setState({editing: true})}>
               <FaPen />
             </button>
+
           </div>
         </header>
-        <main>
-          <div className='image-cropper'>
-            {this.state.editing ? (
-              <span></span>
-            ) : (
-              <div>
-                <input
-                  type='file'
-                  onChange={this.handlePictureSelected.bind(this)}
-                />
-              </div>
-            )}
 
-            <h1>{this.state.username}</h1>
-            <button onClick={this.editing}>
-              <FaPen />
-            </button>
-          </div>
-        </main>
         <main>
           <div className='image-cropper'>
-            {this.state.editing ? (
-              <span></span>
-            ) : (
-              <div>
-                <input
-                  type='file'
-                  onChange={this.handlePictureSelected.bind(this)}
-                />
-                <button onClick={this.upload.bind(this)}>Upload</button>
-              </div>
-            )}
             <img
               className='profilePic'
-              src={this.state.imageUrl}
-              //src='https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg'
+              //src={this.state.imageUrl}
+              src='https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg'
               alt='Profile picture'
             />
           </div>
+
           <div className='trophies'>
             <FaTrophy />
             <strong>13,459</strong>
-          </div>
-          <div className='badges'>
-            <Badge />
           </div>
         </main>
 
         <section>
           <div className='dividerHeader'>
             <h2>Discovered Songs</h2>
-            <Link to='/discoveredSongs'>
+            {tracks.length != 0 ? 
+            (<Link to='/discoveredSongs'>
               <p>View More</p>
-            </Link>
+            </Link>) 
+            : <div></div> }
+            
           </div>
-          {tracks.map((song) => {
-            return <DiscoveredSong song={song} />;
-          })}
+
+          {tracks.length != 0 ? (tracks.map((song) => {
+            return <DiscoveredSong song={song} />
+          })) : (<div><h3>You have not created any posts :(</h3></div>)
+          
+        }
+
           <Routes>
             <Route
               path='/discoveredSongs'
@@ -230,6 +179,7 @@ class Profile extends Component {
             />
           </Routes>
         </section>
+
       </div>
     );
   }

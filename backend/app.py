@@ -41,9 +41,12 @@ def retrieve_current_user():
     try:
         user = User.query.filter_by(username=current_username).first()
 
-        user_posts = Post.query.filter_by(user_id=user).id
-        data = {"user": user.as_dict(), "posts": user_posts}
+        user_posts = Post.query.filter_by(user_id=user.id)
 
+        serialized_posts = [post.as_dict() for post in user_posts]
+        
+        data = {"user": user.as_dict(), "posts": serialized_posts}
+        print(data)
         response = jsonify(data)
         response.status_code = 200
     except Exception:
