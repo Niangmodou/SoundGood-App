@@ -371,6 +371,9 @@ def create_new_post():
             user_id=current_user.id, sound_url=request_json["soundUrl"]
         )
 
+        db.session.add(new_audio)
+        db.session.commit()
+
         new_post = Post(
             user_id=current_user.id,
             audio_id=new_audio.id,
@@ -378,7 +381,8 @@ def create_new_post():
             text=request_json["description"],
             date_posted=datetime.datetime.now()
         )
-        db.session.add(new_audio)
+        
+        print(new_post.as_dict())
         db.session.add(new_post)
         db.session.commit()
         response = jsonify({"status": "success"})

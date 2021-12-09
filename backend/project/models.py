@@ -29,7 +29,7 @@ class AudioRecording(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    user_id = Column(Integer, ForeignKey("user.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     sound_url = db.Column(db.String())
 
     def as_dict(self):
@@ -41,8 +41,8 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    user_id = Column(Integer, ForeignKey("user.id"))
-    audio_id = Column(Integer, ForeignKey("audio_recording.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    audio_id = db.Column(db.Integer, db.ForeignKey("audio_recording.id"))
     description = db.Column(db.String())
     text = db.Column(db.String())
     date_posted = db.Column(db.DateTime)
@@ -57,7 +57,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     user_id = db.Column(db.Integer)
-    post_id = db.Column(db.Integer, ForeignKey("post.id"))
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
 
     text = db.Column(db.String())
 
