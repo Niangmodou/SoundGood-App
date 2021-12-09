@@ -21,6 +21,7 @@ class Home extends Component {
       description: '',
       title: '',
     };
+    console.log('We are in home');
   }
 
   recordAudio = () => {

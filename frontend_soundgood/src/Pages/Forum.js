@@ -20,8 +20,10 @@ class Forum extends Component {
       .then((response) => {
         console.log(response);
         const posts = response['data']['posts'];
+        console.log(posts);
 
         this.setState({ forumPosts: posts });
+        console.log(this.state.forumPosts);
       })
       .catch((err) => {
         console.error(err);
@@ -34,8 +36,9 @@ class Forum extends Component {
         <h1>Forum</h1>
         <div className='forum-area'>
           {this.state.forumPosts.map((post, idx) => {
+            console.log(post);
             return (
-              <div className='post-cell' key={idx}>
+              <div key={idx}>
                 <PostCell
                   username={post['user_id']['username']}
                   image={post['image_url']}
