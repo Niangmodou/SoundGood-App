@@ -1,0 +1,9 @@
+.forum-area {
+  display: flex;
+  /* background-color: yellowgreen; */
+  flex-wrap: wrap;
+}
+
+h1 {
+  font-size: 3.5em;
+}

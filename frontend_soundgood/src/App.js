@@ -15,6 +15,7 @@ function App() {
   const isLoggedIn = () => {
     return localStorage.getItem('userToken') !== null;
   };
+  console.log(localStorage.getItem('userToken') !== null);
 
   return (
     <div className='App'>

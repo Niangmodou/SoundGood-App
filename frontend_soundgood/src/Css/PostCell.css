@@ -2,8 +2,26 @@
   background-color: white;
   padding: 15px;
   border-radius: 14px;
-  width: auto;
-  height: 5vh;
   margin: 10px;
+  width: 30vw;
+}
+
+.topLevel {
   display: flex;
+  flex-direction: row;
+  align-items: left;
+  text-align: left;
+  justify-content: space-between;
+}
+
+.bottomLevel {
+  /* background-color: tomato; */
+  display: flex;
+  flex-direction: row;
+}
+
+.post-description {
+  /* background-color: yellowgreen; */
+  inline-size: 22vw;
+  overflow-wrap: break-word;
 }

@@ -57,11 +57,10 @@ class Home extends Component {
   createPost = () => {
     this.setState({ recording: false });
     const data = {
-      "title": this.state.title,
-      'description': this.state.description,
-      'soundUrl': this.state.blobURL
-
-    }
+      title: this.state.title,
+      description: this.state.description,
+      soundUrl: this.state.blobURL,
+    };
 
     const config = {
       headers: { Authorization: `Bearer ${localStorage['userToken']}` },
@@ -77,7 +76,7 @@ class Home extends Component {
   };
 
   signOut = () => {
-    localStorage.setItem('userToken', 'null');
+    localStorage.setItem('userToken', null);
   };
 
   render() {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PostCell from '../Components/PostCell.js';
+import '../Css/Forum.css';
 
 class Forum extends Component {
   constructor() {
@@ -33,14 +34,14 @@ class Forum extends Component {
   render() {
     return (
       <div>
-        <h1>Forum</h1>
+        <h1>Forums</h1>
         <div className='forum-area'>
           {this.state.forumPosts.map((post, idx) => {
             console.log(post);
             return (
               <div key={idx}>
                 <PostCell
-                  username={post['user_id']['username']}
+                  username={post['user']['username']}
                   image={post['image_url']}
                   datePosted={post['date_posted']}
                   text={post['description']}
