@@ -200,9 +200,23 @@ def retrieve_forum_posts():
         all_posts = list(Post.query.all())
 
         # Serialization
-        serialized_posts = [post.as_dict() for post in all_posts]
+        serialized_posts = []
+        for post in all_posts:
+            post_dict = post.as_dict()
+            
+            # Retrieving the user
+            user_id = post_dict['user_id']
+
+            user = User.query.filter_by(id=user_id).first()
+
+            post_dict['user'] = user.as_dict()
+
+            del post_dict['user_id']
+
+            serialized_posts.append(post_dict)
 
         data = {"posts": serialized_posts}
+        print(data)
 
         response = jsonify(data)
         response.status_code = 200
@@ -362,6 +376,7 @@ def create_new_post():
             audio_id=new_audio.id,
             description=request_json["title"],
             text=request_json["description"],
+            date_posted=datetime.datetime.now()
         )
         db.session.add(new_audio)
         db.session.add(new_post)
