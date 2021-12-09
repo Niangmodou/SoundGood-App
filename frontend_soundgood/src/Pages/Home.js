@@ -55,7 +55,7 @@ class Home extends Component {
   };
 
   createPost = () => {
-    this.setState({ recording: false });
+    this.setState({ isRecording: false });
     const data = {
       title: this.state.title,
       description: this.state.description,

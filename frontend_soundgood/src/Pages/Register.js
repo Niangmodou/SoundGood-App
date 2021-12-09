@@ -63,7 +63,7 @@ const Register = () => {
             placeholder='Last Name'
           /> <br/>
 
-          <label >Email address</label>
+          <label>Email</label>
           <input
             type='email'
             onChange={e => setEmail(e.target.value)}

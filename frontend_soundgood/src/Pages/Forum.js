@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PostCell from '../Components/PostCell.js';
+import { IconContext } from 'react-icons';
+import { FaPen, FaTimesCircle, FaTrophy } from 'react-icons/fa';
 import '../Css/Forum.css';
 
 class Forum extends Component {
@@ -35,6 +37,7 @@ class Forum extends Component {
     return (
       <div>
         <h1>Forums</h1>
+ 
         <div className='forum-area'>
           {this.state.forumPosts.map((post, idx) => {
             console.log(post);

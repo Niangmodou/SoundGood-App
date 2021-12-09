@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import CommentCell from '../Components/CommentCell';
-import { useLocation } from 'react-router-dom';
 
 class Post extends Component {
   constructor(props) {

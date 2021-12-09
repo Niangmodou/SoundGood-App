@@ -13,9 +13,8 @@ import Post_func from './Pages/Post_func';
 
 function App() {
   const isLoggedIn = () => {
-    return localStorage.getItem('userToken') !== null;
+    return localStorage.getItem('userToken') !== 'null';
   };
-  console.log(localStorage.getItem('userToken') !== null);
 
   return (
     <div className='App'>
