@@ -75,11 +75,10 @@ class Profile extends Component {
           email: response['data']['email'],
           imageUrl: response['data']['image_url'],
           songPosts: response['data']['song_posts'],
-        })
+        });
       })
       .catch((err) => console.log(err));
   }
-
 
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
@@ -96,17 +95,16 @@ class Profile extends Component {
       lastName: this.state.lastName,
     };
     axios
-      .post(URL, data,  configs)
+      .post(URL, data, configs)
       .then((response) => {
         console.log(response);
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   doneEditing = () => {
-    this.setState({editing: false});
-  }
-
+    this.setState({ editing: false });
+  };
 
   handlePictureSelected(event) {
     var picture = event.target.files[0];
@@ -141,7 +139,7 @@ class Profile extends Component {
       <div>
         <header>
           <div className='navbar'>
-            <Link to='/'>
+            <Link to='/home'>
               <IconContext.Provider
                 value={{ style: { color: 'rgb(255, 255, 255)' } }}
               >
@@ -159,20 +157,24 @@ class Profile extends Component {
                 ref={(node) => {
                   this.newName = node;
                 }}
-            />
-            )} 
-          <h1>{this.state.username}</h1>
-          <button onClick={this.editing}><FaPen/></button>
-        </div>
-      </header>
-      <main>
-        <div className='image-cropper'>
-          {this.state.editing ? (<span></span>) : (
-            <div>
-              <input
-                type="file"
-                onChange={this.handlePictureSelected.bind(this)}
               />
+            )}
+            <h1>{this.state.username}</h1>
+            <button onClick={this.editing}>
+              <FaPen />
+            </button>
+          </div>
+        </header>
+        <main>
+          <div className='image-cropper'>
+            {this.state.editing ? (
+              <span></span>
+            ) : (
+              <div>
+                <input
+                  type='file'
+                  onChange={this.handlePictureSelected.bind(this)}
+                />
               </div>
             )}
 
@@ -181,7 +183,7 @@ class Profile extends Component {
               <FaPen />
             </button>
           </div>
-      </main>
+        </main>
         <main>
           <div className='image-cropper'>
             {this.state.editing ? (

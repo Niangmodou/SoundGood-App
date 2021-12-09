@@ -1,0 +1,9 @@
+.post-cell {
+  background-color: white;
+  padding: 15px;
+  border-radius: 14px;
+  width: auto;
+  height: 5vh;
+  margin: 10px;
+  display: flex;
+}
