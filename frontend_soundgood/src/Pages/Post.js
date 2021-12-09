@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import CommentCell from '../Components/CommentCell';
 
+/*const postComment = ()=>{
+  const payload = {
+    'user_id' = ,
+    'post_id': this.props.postId,
+
+  }
+}
+*/
 class Post extends Component {
   constructor(props) {
     // const location = useLocation();
@@ -18,6 +26,7 @@ class Post extends Component {
       recentResults: [],
     };
   }
+
 
   componentDidMount() {
     const URL = 'http://127.0.0.1:5000/api/forum?postid=' + this.props.postId;
@@ -55,6 +64,15 @@ class Post extends Component {
         <div className='messageArea'>
           <h3>{this.state.username}</h3>
           <p>{this.state.postText}</p>
+        </div>
+        <div >
+          <label>Comment/br</label>
+          <textarea rows = "5" cols = "40" name = "Comment">
+            enter comment
+          </textarea>
+          <button type='button' id='comment' onClick={console.log("hi")}>
+            Comment
+          </button>
         </div>
 
         <h3>Recent Results</h3>
