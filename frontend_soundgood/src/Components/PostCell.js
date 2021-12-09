@@ -8,6 +8,7 @@ import { FaRegPlayCircle } from 'react-icons/fa';
 
 // Function to retrieve a text representation of time passed
 const retrieveTime = (datePosted) => {
+  if (datePosted == null) return "4h"
   // Removing GMT from time
   const timeString = datePosted.replace(" GMT", "")
 
@@ -40,24 +41,22 @@ const retrieveTime = (datePosted) => {
   // the rest of timeDiff is number of days
   let days = timeDiff;
 
-  if (days != 0){
+  if (days !== 0){
 
     return String(days) + "d"
-  } else if (hours != 0) {
+  } else if (hours !== 0) {
 
     return String(hours) + "h"
-  } else if (minutes != 0) {
+  } else if (minutes !== 0) {
 
     return String(minutes) + "m"
-  } else if (seconds != 0) {
+  } else if (seconds !== 0) {
 
     return String(seconds) + "s"
   }
 
   // TODO: Account for the possibility of mmonths
-};
-
-// Function to redirect to the post that was clicked on
+}
 
 const PostCell = ({ username, image, datePosted, text, postID }) => {
   const [postId, setPostId] = useState('');
@@ -80,7 +79,7 @@ const PostCell = ({ username, image, datePosted, text, postID }) => {
             <h3 className='post-name-area'>{username}</h3>
             <p className='post-description'>{text}</p>
           </div>
-          <h3 className='post-time'>{retrieveTime(datePosted)}4h</h3>
+          <h3 className='post-time'>{retrieveTime(datePosted)}</h3>
         </div>
         {/* <img className='post-play-btn' src={PlayIcon} /> */}
         <div className='bottomLevel'>

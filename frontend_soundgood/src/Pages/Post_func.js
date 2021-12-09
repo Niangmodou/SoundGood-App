@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import CommentCell from '../Components/CommentCell';
 import { useLocation } from 'react-router-dom';
@@ -14,9 +14,7 @@ export default function Post_func() {
   const [postDescription, setPostDescription] = useState('');
   const [recentResults, setRecentResults] = useState([]);
   const [audioUrl, setAudioUrl] = useState('');
-  const isUserLoggedIn = () => {
-    return localStorage.getItem('userToken') !== null;
-  };
+
   useEffect(() => {
     const URL = 'http://127.0.0.1:5000/api/post?postid=' + postID;
     axios
@@ -39,7 +37,7 @@ export default function Post_func() {
         <h3>{userName}</h3>
         <p>{postText}</p>
       </div>
-      
+
       <h3>Recent Results</h3>
       {recentResults.map((comment, idx) => {
         return (

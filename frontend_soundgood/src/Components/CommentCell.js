@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import axios from 'axios'
 
 import LikeIcon from '../Icons/LikeIcon.png'
@@ -11,7 +11,54 @@ const isLoggedIn = () => {
 }
 
 // Function to retrieve a text representation of time passed
-const retrieveTime = (datePosted) => {}
+const retrieveTime = (datePosted) => {
+    if (datePosted == null) return "4h"
+    // Removing GMT from time
+    const timeString = datePosted.replace(" GMT", "")
+  
+    const endTime = Date.now()
+    const startTime = Date.parse(timeString)
+  
+    // time difference in ms
+    let timeDiff = endTime - startTime;
+    // strip the ms
+    timeDiff /= 1000;
+  
+    // get seconds 
+    let seconds = Math.round(timeDiff % 60);
+  
+    // remove seconds from the date
+    timeDiff = Math.floor(timeDiff / 60);
+  
+    // get minutes
+    let minutes = Math.round(timeDiff % 60);
+  
+    // remove minutes from the date
+    timeDiff = Math.floor(timeDiff / 60);
+  
+    // get hours
+    let hours = Math.round(timeDiff % 24);
+  
+    // remove hours from the date
+    timeDiff = Math.floor(timeDiff / 24);
+  
+    // the rest of timeDiff is number of days
+    let days = timeDiff;
+  
+    if (days !== 0){
+  
+      return String(days) + "d"
+    } else if (hours !== 0) {
+  
+      return String(hours) + "h"
+    } else if (minutes !== 0) {
+  
+      return String(minutes) + "m"
+    } else if (seconds !== 0) {
+  
+      return String(seconds) + "s"
+    }
+}
 
 // Function to increment the like of a comment
 const incrementLikeCount = (commentId) => {

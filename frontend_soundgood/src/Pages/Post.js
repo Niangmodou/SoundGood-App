@@ -16,7 +16,6 @@ class Post extends Component {
       postDescription: '',
 
       recentResults: [],
-      //   postID: location.state,
     };
   }
 

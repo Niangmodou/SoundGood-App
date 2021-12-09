@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PersonIcon from '../Icons/PersonIcon.png';
-import RecordIcon from '../Icons/RecordIcon.png';
-import ForumIcon from '../Icons/ForumIcon.png';
-import RecordButton from '../Icons/RecordButton.png';
-import MicRecorder from 'mic-recorder-to-mp3';
-import axios from 'axios';
-import { FaMeteor } from 'react-icons/fa';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import PersonIcon from '../Icons/PersonIcon.png'
+import RecordIcon from '../Icons/RecordIcon.png'
+import ForumIcon from '../Icons/ForumIcon.png'
+import RecordButton from '../Icons/RecordButton.png'
+import MicRecorder from 'mic-recorder-to-mp3'
+import axios from 'axios'
 
 const MP3Recorder = new MicRecorder({ bitRate: 128 });
 

@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import PostCell from '../Components/PostCell.js';
-import { IconContext } from 'react-icons';
-import { FaPen, FaTimesCircle, FaTrophy } from 'react-icons/fa';
-import '../Css/Forum.css';
+import React, { Component } from 'react'
+import axios from 'axios'
+import PostCell from '../Components/PostCell.js'
+import '../Css/Forum.css'
 
 class Forum extends Component {
   constructor() {

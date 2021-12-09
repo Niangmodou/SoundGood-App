@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { IconContext } from 'react-icons';
 import { FaPen, FaTimesCircle, FaTrophy } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import Badge from '../Components/Badge.js';
 import DiscoveredSong from '../Components/DiscoveredSong.js';
 import '../Css/Profile.css';
 import DiscoveredSongs from './DiscoveredSongs.js';
 import { Route, Routes } from 'react-router';
 import axios from 'axios';
-import $ from 'jquery';
 
 const tracks = [
   {
@@ -145,7 +143,7 @@ class Profile extends Component {
               className='profilePic'
               //src={this.state.imageUrl}
               src='https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg'
-              alt='Profile picture'
+              alt='Profilepicture'
             />
           </div>
 
@@ -158,7 +156,7 @@ class Profile extends Component {
         <section>
           <div className='dividerHeader'>
             <h2>Discovered Songs</h2>
-            {tracks.length != 0 ? 
+            {tracks.length !== 0 ? 
             (<Link to='/discoveredSongs'>
               <p>View More</p>
             </Link>) 
@@ -166,7 +164,7 @@ class Profile extends Component {
             
           </div>
 
-          {tracks.length != 0 ? (tracks.map((song) => {
+          {tracks.length !== 0 ? (tracks.map((song) => {
             return <DiscoveredSong song={song} />
           })) : (<div><h3>You have not created any posts :(</h3></div>)
           

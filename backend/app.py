@@ -44,7 +44,7 @@ def retrieve_current_user():
         user_posts = Post.query.filter_by(user_id=user.id)
 
         serialized_posts = [post.as_dict() for post in user_posts]
-        
+
         data = {"user": user.as_dict(), "posts": serialized_posts}
         print(data)
         response = jsonify(data)
@@ -199,7 +199,6 @@ def get_all_recordings():
 @app.route("/api/forum", methods=["GET"])
 def retrieve_forum_posts():
     try:
-        print("FORUM!!!")
         all_posts = list(Post.query.all())
 
         # Serialization
@@ -218,8 +217,9 @@ def retrieve_forum_posts():
 
             serialized_posts.append(post_dict)
 
-        data = {"posts": serialized_posts}
-        print(data)
+        # Reverse to sort in ascending order
+        reverse_posts = serialized_posts[::-1]
+        data = {"posts": reverse_posts}
 
         response = jsonify(data)
         response.status_code = 200

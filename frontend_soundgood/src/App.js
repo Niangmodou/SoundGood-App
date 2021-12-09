@@ -1,15 +1,14 @@
-import Home from './Pages/Home';
-import Profile from './Pages/Profile';
-import Forum from './Pages/Forum';
-import SavedSongs from './Pages/SavedSongs';
-import './App.css';
-import { Route, Routes } from 'react-router-dom';
-import DiscoveredSongs from './Pages/DiscoveredSongs';
-import Landing from './Pages/Landing';
-import Register from './Pages/Register.js';
-import Login from './Pages/Login.js';
-import Post from './Pages/Post';
-import Post_func from './Pages/Post_func';
+import Home from './Pages/Home'
+import Profile from './Pages/Profile'
+import Forum from './Pages/Forum'
+import SavedSongs from './Pages/SavedSongs'
+import './App.css'
+import { Route, Routes } from 'react-router-dom'
+import DiscoveredSongs from './Pages/DiscoveredSongs'
+import Landing from './Pages/Landing'
+import Register from './Pages/Register.js'
+import Login from './Pages/Login.js'
+import Post_func from './Pages/Post_func'
 
 function App() {
   const isLoggedIn = () => {

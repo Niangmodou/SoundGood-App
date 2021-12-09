@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import DiscoveredSong from '../Components/DiscoveredSong';
 
 export default function DiscoveredSongs(props) {
