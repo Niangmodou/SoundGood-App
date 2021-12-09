@@ -35,14 +35,13 @@ class Home extends Component {
 
   stopRecording = () => {
     // Stop Recording process
-    console.log('in stop');
     MP3Recorder.stop()
       .getMp3()
       .then(([buffer, blob]) => {
-        const file = new File(buffer, 'me-at-thevoice.mp3', {
-          type: blob.type,
-          lastModified: Date.now(),
-        });
+        // const file = new File(buffer, 'audio.mp3', {
+        //   type: blob.type,
+        //   lastModified: Date.now(),
+        // });
         this.setState({ recorded: true });
         console.log(this.state.recorded);
 
@@ -51,31 +50,28 @@ class Home extends Component {
         const player = new Audio(blobURL);
         player.play();
 
-        // Create a new post page/popup that user can enter information
-        // When submit button is clicked you can make call to /api/createpost
-
         this.setState({ blobURL: blobURL });
       });
   };
 
   createPost = () => {
     this.setState({ recording: false });
-    let res = {};
-    res['title'] = this.state.title;
-    res['description'] = this.state.description;
-    res['soundUrl'] = this.state.blobURL;
-    console.log(localStorage['userToken']);
+    const data = {
+      "title": this.state.title,
+      'description': this.state.description,
+      'soundUrl': this.state.blobURL
+
+    }
+
     const config = {
       headers: { Authorization: `Bearer ${localStorage['userToken']}` },
     };
     console.log('CREATE POST');
     axios
-      .post('http://127.0.0.1:5000/api/createpost', res, config)
+      .post('http://127.0.0.1:5000/api/createpost', data, config)
       .then((promise) => {
-        console.log(promise);
         if (promise['data']['status'] === 'success') {
           this.setState({ recorded: false });
-          console.log('sucess boyyyyy');
         }
       });
   };
