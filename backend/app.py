@@ -123,12 +123,14 @@ def login_auth():
 @app.route("/api/register", methods=["POST"])
 def register_auth():
     data = request.get_json()
+    print(data)
     if data:
         first_name = data["first_name"]
         last_name = data["last_name"]
         username = data["username"]
         password = data["password"]
         email_address = data["email_address"]
+        image_url = data["image_url"]
 
         password_salt = password + SALT
         password_hash = hashlib.sha256(password_salt.encode("utf-8")).hexdigest()
@@ -148,6 +150,7 @@ def register_auth():
                 last_name=last_name,
                 password=password_hash,
                 email_address=email_address,
+                image_url=image_url
             )
             db.session.add(new_user)
             db.session.commit()

@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import axios from 'axios'
 import { useNavigate } from 'react-router';
 
+const fs = require('fs')
+const AWS = require('aws-sdk')
+
 const Register = () => {
   const navigate = useNavigate()
 
@@ -10,15 +13,57 @@ const Register = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [isFilePicked, setIsFilePicked] = useState(false)
 
+
+  // Function to upload an image to Amazon S3 bucket and retrieve the url
+  const uploadImageToAWS = (fileToUpload) => {
+    // S3 bucket configurations 
+    const ID = "us-east-1:a5ed82ab-852e-4099-b87b-949ef005b381"
+    const bucketRegion = "us-east-1"
+    const bucketName = "soundgoodimages"
+
+    AWS.config.update({
+      region: bucketRegion,
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: ID
+      })
+    })
+
+    const s3 = new AWS.S3({
+      apiVersion: '2006-03-01',
+      params: {Bucket: bucketName}
+    })
+
+     // S3 Upload parameters
+     const params = {
+      Bucket: bucketName,
+      Key: fileToUpload.name,
+      Body: fileToUpload,
+    }
+
+    let upload = new AWS.S3.ManagedUpload({
+      params: params
+    })
+
+    upload.promise().then((response) => {
+      setImageUrl(response.location)
+    })
+    
+  }
 
   const registerUser = () => {
+    uploadImageToAWS(selectedFile)
+
     const payload = {
       "first_name": firstName,
       "last_name": lastName,
       "email_address": email,
       "password": password,
-      "username": username
+      "username": username,
+      "image_url": imageUrl
     }
 
     const URL = "http://127.0.0.1:5000/api/register"
@@ -35,6 +80,12 @@ const Register = () => {
       .catch(err => {
         console.error(err)
       })
+  }
+
+  const processUserImageUpload = (event) => {
+    setSelectedFile(event.target.files[0])
+
+    setIsFilePicked(true)
   }
 
   return (
@@ -75,7 +126,15 @@ const Register = () => {
             type='password'
             onChange={e => setPassword(e.target.value)}
             placeholder='Enter password'
+          /> <br/>
+
+          <label>Profile Picture</label>
+          <input
+            type="file"
+            name="filename"
+            onChange={processUserImageUpload}
           />
+        
         </div>
 
         <div>
