@@ -46,7 +46,7 @@ def retrieve_current_user():
         serialized_posts = [post.as_dict() for post in user_posts]
 
         data = {"user": user.as_dict(), "posts": serialized_posts}
-        print(data)
+
         response = jsonify(data)
         response.status_code = 200
     except Exception:
@@ -89,13 +89,9 @@ def update_user_data():
 
 
 # Endpoint to login user
-
-
 @app.route("/api/login", methods=["POST"])
 def login_auth():
-    print(request)
     data = request.get_json()
-    print(data)
     if data:
         username = data["username"]
         password = data["password"]
@@ -127,7 +123,6 @@ def login_auth():
 @app.route("/api/register", methods=["POST"])
 def register_auth():
     data = request.get_json()
-    print(data)
     if data:
         first_name = data["first_name"]
         last_name = data["last_name"]
@@ -234,22 +229,16 @@ def retrieve_forum_posts():
 # Function to retrieve the details of a post given the ID
 @app.route("/api/post", methods=["GET"])
 def retrieve_post_given_id():
-    print("POST-----------")
     try:
         post_id = int(request.args.get("postid"))
-        print("Post ID", post_id)
-        print(Post.query.all())
         requested_post = Post.query.filter_by(id=post_id).first()
-        print(requested_post.as_dict())
+
         # Sorting in descending order
-        recent_results = list(requested_post.comments.query.all())
-        print(recent_results)
+        recent_results = list(requested_post.comments.query.all())[::-1]
         data = {"post": requested_post.as_dict(), "recentResults": recent_results}
-        print("DATA")
-        print(data)
+
         response = jsonify(data)
         response.status_code = 200
-        print("RESP", response)
 
     except Exception:
         response = jsonify({"status": ERROR})
@@ -385,7 +374,6 @@ def create_new_post():
             date_posted=datetime.datetime.now()
         )
         
-        print(new_post.as_dict())
         db.session.add(new_post)
         db.session.commit()
         response = jsonify({"status": "success"})

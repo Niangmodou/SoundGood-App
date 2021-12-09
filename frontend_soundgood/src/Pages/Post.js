@@ -4,7 +4,6 @@ import CommentCell from '../Components/CommentCell';
 
 class Post extends Component {
   constructor(props) {
-    // const location = useLocation();
     super(props);
 
     this.state = {
