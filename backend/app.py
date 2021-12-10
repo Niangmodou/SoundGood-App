@@ -150,7 +150,7 @@ def register_auth():
                 last_name=last_name,
                 password=password_hash,
                 email_address=email_address,
-                image_url=image_url
+                image_url=image_url,
             )
             db.session.add(new_user)
             db.session.commit()
@@ -162,7 +162,6 @@ def register_auth():
             response = jsonify(
                 {"status": "Succesfully created user", "token": access_token}
             )
-            print(response)
             response.status_code = 200
 
     else:
@@ -203,15 +202,15 @@ def retrieve_forum_posts():
         serialized_posts = []
         for post in all_posts:
             post_dict = post.as_dict()
-            
+
             # Retrieving the user
-            user_id = post_dict['user_id']
+            user_id = post_dict["user_id"]
 
             user = User.query.filter_by(id=user_id).first()
 
-            post_dict['user'] = user.as_dict()
+            post_dict["user"] = user.as_dict()
 
-            del post_dict['user_id']
+            del post_dict["user_id"]
 
             serialized_posts.append(post_dict)
 
@@ -374,9 +373,9 @@ def create_new_post():
             audio_id=new_audio.id,
             description=request_json["title"],
             text=request_json["description"],
-            date_posted=datetime.datetime.now()
+            date_posted=datetime.datetime.now(),
         )
-        
+
         db.session.add(new_post)
         db.session.commit()
         response = jsonify({"status": "success"})
