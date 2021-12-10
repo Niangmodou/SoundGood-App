@@ -32,11 +32,6 @@ const Register = () => {
       })
     })
 
-    const s3 = new AWS.S3({
-      apiVersion: '2006-03-01',
-      params: {Bucket: bucketName}
-    })
-
      // S3 Upload parameters
      const params = {
       Bucket: bucketName,
@@ -48,38 +43,42 @@ const Register = () => {
       params: params
     })
 
-    upload.promise().then((response) => {
-      setImageUrl(response.location)
-    })
-    
+    return upload.promise()
   }
 
   const registerUser = () => {
-    uploadImageToAWS(selectedFile)
+    // Waiting for image to be uploaded to Amazon S3
+    const awsPromise = uploadImageToAWS(selectedFile)
 
-    const payload = {
-      "first_name": firstName,
-      "last_name": lastName,
-      "email_address": email,
-      "password": password,
-      "username": username,
-      "image_url": imageUrl
-    }
+    awsPromise.then((response) => {
+      const url = response["Location"]
 
-    const URL = "http://127.0.0.1:5000/api/register"
+      const payload = {
+        "first_name": firstName,
+        "last_name": lastName,
+        "email_address": email,
+        "password": password,
+        "username": username,
+        "image_url": url
+      }
+      
+      const URL = "http://127.0.0.1:5000/api/register"
 
-    axios.post(URL, payload)
-      .then(response => {
+      axios
+        .post(URL, payload)
+        .then((resp) => {
 
-        if (response["data"]["status"] === "Succesfully created user") {
-          const token = response["data"]["token"]
-          localStorage.setItem("userToken", token) 
-          navigate("/home")
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
+          if (resp["data"]["status"] === "Succesfully created user") {
+            const token = resp["data"]["token"]
+            localStorage.setItem("userToken", token) 
+            navigate("/home")
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+      
+    })
   }
 
   const processUserImageUpload = (event) => {

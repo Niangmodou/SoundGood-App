@@ -123,7 +123,7 @@ def login_auth():
 @app.route("/api/register", methods=["POST"])
 def register_auth():
     data = request.get_json()
-    print(data)
+
     if data:
         first_name = data["first_name"]
         last_name = data["last_name"]
