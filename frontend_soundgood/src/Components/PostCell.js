@@ -1,25 +1,25 @@
-import React from 'react';
-import PlayIcon from '../Icons/RecordIcon.png';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import '../Css/PostCell.css';
-import { FaRegPlayCircle } from 'react-icons/fa';
+import React from "react";
+import PlayIcon from "../Icons/RecordIcon.png";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "../Css/PostCell.css";
+import { FaRegPlayCircle } from "react-icons/fa";
 
 // Function to retrieve a text representation of time passed
 const retrieveTime = (datePosted) => {
-  if (datePosted == null) return "4h"
+  if (datePosted == null) return "4h";
   // Removing GMT from time
-  const timeString = datePosted.replace(" GMT", "")
+  const timeString = datePosted.replace(" GMT", "");
 
-  const endTime = Date.now()
-  const startTime = Date.parse(timeString)
+  const endTime = Date.now();
+  const startTime = Date.parse(timeString);
 
   // time difference in ms
   let timeDiff = endTime - startTime;
   // strip the ms
   timeDiff /= 1000;
 
-  // get seconds 
+  // get seconds
   let seconds = Math.round(timeDiff % 60);
 
   // remove seconds from the date
@@ -40,42 +40,38 @@ const retrieveTime = (datePosted) => {
   // the rest of timeDiff is number of days
   let days = timeDiff;
 
-  if (days !== 0){
-
-    return String(days) + "d"
+  if (days !== 0) {
+    return String(days) + "d";
   } else if (hours !== 0) {
-
-    return String(hours) + "h"
+    return String(hours) + "h";
   } else if (minutes !== 0) {
-
-    return String(minutes) + "m"
+    return String(minutes) + "m";
   } else if (seconds !== 0) {
-
-    return String(seconds) + "s"
+    return String(seconds) + "s";
   }
 
   // TODO: Account for the possibility of mmonths
-}
+};
 
 const PostCell = ({ username, image, datePosted, text, postID }) => {
-  const [postId, setPostId] = useState('');
+  const [postId, setPostId] = useState("");
   useEffect(() => {
     setPostId(postId);
   }, []);
 
   return (
-    <Link to='/post' state={postID}>
-      <div className='post-cell'>
-        <div className='topLevel'>
+    <Link to="/post" state={postID}>
+      <div className="post-cell">
+        <div className="topLevel">
           <div>
-            <h3 className='post-name-area'>{username}</h3>
-            <p className='post-description'>{text}</p>
+            <h3 className="post-name-area">{username}</h3>
+            <p className="post-description">{text}</p>
           </div>
-          <h3 className='post-time'>{retrieveTime(datePosted)}</h3>
+          <h3 className="post-time">{retrieveTime(datePosted)}</h3>
         </div>
         {/* <img className='post-play-btn' src={PlayIcon} /> */}
-        <div className='bottomLevel'>
-          <img className='post-image' src={image} />
+        <div className="bottomLevel">
+          <img className="post-image" src={image} />
           <div>Picture</div>
           <FaRegPlayCircle />
         </div>
