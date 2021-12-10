@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 export default function Post() {
   const location = useLocation();
   const postID = location.state;
-  console.log(postID);
+
   const [userName, setUserName] = useState('');
   const [userImage, setUserImage] = useState('');
   const [postText, setPostText] = useState('');
@@ -15,12 +15,12 @@ export default function Post() {
   const [recentResults, setRecentResults] = useState([]);
   const [audioUrl, setAudioUrl] = useState('');
 
-  /*const postComment = ()=>{
-  const payload = {
-    'user_id' = ,
-    'post_id': this.props.postId,
-
-  }
+/*
+  const postComment = () => {
+    const payload = {
+      'user_id' = ,
+      'post_id': this.props.postId,
+    }
 }
 */
 
