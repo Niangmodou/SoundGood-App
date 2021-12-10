@@ -18,12 +18,9 @@ class Forum extends Component {
     axios
       .get('http://127.0.0.1:5000/api/forum')
       .then((response) => {
-        console.log(response);
         const posts = response['data']['posts'];
-        console.log(posts);
 
         this.setState({ forumPosts: posts });
-        console.log(this.state.forumPosts);
       })
       .catch((err) => {
         console.error(err);

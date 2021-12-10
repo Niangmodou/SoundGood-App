@@ -1,6 +1,5 @@
 import React from 'react';
 import PlayIcon from '../Icons/RecordIcon.png';
-import Post from '../Pages/Post.js';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../Css/PostCell.css';
@@ -63,13 +62,6 @@ const PostCell = ({ username, image, datePosted, text, postID }) => {
   useEffect(() => {
     setPostId(postId);
   }, []);
-
-  const redirectToPost = () => {
-    setPostId(postId);
-    return <Post postId={postID} />;
-  };
-
-  console.log(text);
 
   return (
     <Link to='/post' state={postID}>
