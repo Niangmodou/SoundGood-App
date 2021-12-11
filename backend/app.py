@@ -236,13 +236,14 @@ def retrieve_post_given_id():
         requested_post = Post.query.filter_by(id=post_id).first()
 
         # Sorting in descending order
-        recent_results = list(Comment.query.filter_by(post_id=requested_post.id))[::-1]
+        recent_results = list(Comment.query.filter_by(post_id=post_id).all())[::-1]
         data = {"post": requested_post.as_dict(), "recentResults": recent_results}
 
         response = jsonify(data)
         response.status_code = 200
 
-    except Exception:
+    except Exception as e:
+        print("EXCEPTION:", e)
         response = jsonify({"status": ERROR})
         response.status_code = 400
 
