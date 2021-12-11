@@ -76,7 +76,8 @@ class Home extends Component {
   };
 
   signOut = () => {
-    localStorage.setItem('userToken', null);
+    // localStorage.setItem('userToken', null);
+    localStorage.clear();
   };
 
   render() {

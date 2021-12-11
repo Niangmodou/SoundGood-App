@@ -39,7 +39,7 @@ const tracks = [
 
 class Profile extends Component {
   constructor() {
-    super() 
+    super();
 
     this.state = {
       editing: false,
@@ -62,7 +62,7 @@ class Profile extends Component {
   componentDidMount() {
     const URL = 'http://127.0.0.1:5000/api/current_user';
     const token = localStorage.getItem('userToken');
-   
+
     const configs = {
       headers: { Authorization: `Bearer ${token}` },
     };
@@ -86,7 +86,7 @@ class Profile extends Component {
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
     const URL = 'http:://127.0.0.1:5000/api/update_user';
-   
+
     const token = localStorage.getItem('userToken');
     const configs = {
       headers: { Authorization: `Bearer ${token}` },
@@ -113,13 +113,12 @@ class Profile extends Component {
 
   render() {
     // Allow user to edit their fields
-    if(this.state.editing) this.doneEditing()
+    if (this.state.editing) this.doneEditing();
 
     return (
       <div>
         <header>
           <div className='navbar'>
-
             <Link to='/home'>
               <IconContext.Provider
                 value={{ style: { color: 'rgb(255, 255, 255)' } }}
@@ -132,10 +131,9 @@ class Profile extends Component {
 
             <h1>kendrick Lamar</h1>
 
-            <button onClick={() => this.setState({editing: true})}>
+            <button onClick={() => this.setState({ editing: true })}>
               <FaPen />
             </button>
-
           </div>
         </header>
 
@@ -158,19 +156,24 @@ class Profile extends Component {
         <section>
           <div className='dividerHeader'>
             <h2>Discovered Songs</h2>
-            {tracks.length != 0 ? 
-            (<Link to='/discoveredSongs'>
-              <p>View More</p>
-            </Link>) 
-            : <div></div> }
-            
+            {tracks.length != 0 ? (
+              <Link to='/discoveredSongs'>
+                <p>View More</p>
+              </Link>
+            ) : (
+              <div></div>
+            )}
           </div>
 
-          {tracks.length != 0 ? (tracks.map((song) => {
-            return <DiscoveredSong song={song} />
-          })) : (<div><h3>You have not created any posts :(</h3></div>)
-          
-        }
+          {tracks.length != 0 ? (
+            tracks.map((song) => {
+              return <DiscoveredSong song={song} />;
+            })
+          ) : (
+            <div>
+              <h3>You have not created any posts :(</h3>
+            </div>
+          )}
 
           <Routes>
             <Route
@@ -179,7 +182,6 @@ class Profile extends Component {
             />
           </Routes>
         </section>
-
       </div>
     );
   }

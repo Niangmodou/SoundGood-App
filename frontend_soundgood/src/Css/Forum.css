@@ -1,6 +1,5 @@
 .forum-area {
   display: flex;
-  /* background-color: yellowgreen; */
   flex-wrap: wrap;
 }
 
