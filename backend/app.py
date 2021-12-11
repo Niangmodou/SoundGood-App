@@ -419,7 +419,27 @@ def retrieve_user_posts():
 @jwt_required()
 def approve_answer():
     try:
-        pass
+        request_json = request.get_json()
+        if request_json:
+            post_id = int(request_json["postId"])
+            comment_id = int(request_json["commentId"])
+
+            # Setting all the other comments as unfavorited
+            post = Post.query.filter_by(id = post_id).first()
+            comments = Comment.query.filter_by(post_id = post.id)
+
+            for comment in comments:
+                if comment.id == comment_id:
+                    print("Found")
+                    comment.is_approved = True
+                else:
+                    comment.is_approved = False
+
+            # TODO: Check whether we should commit after each individual transaction
+            # or after we have assigned evverything
+            db.session.commit()
+
+
     except Exception:
         response = jsonify({"status": ERROR})
         response.status_code = 400

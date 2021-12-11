@@ -58,7 +58,7 @@ class Comment(db.Model):
 
     user_id = db.Column(db.Integer)
     post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
-
+    is_approved = db.Column(db.Boolean) 
     text = db.Column(db.String())
 
     like_count = db.Column(db.Integer)
