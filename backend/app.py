@@ -236,13 +236,14 @@ def retrieve_post_given_id():
         requested_post = Post.query.filter_by(id=post_id).first()
 
         # Sorting in descending order
-        recent_results = list(requested_post.comments.query.all())[::-1]
+        recent_results = list(Comment.query.filter_by(post_id=post_id).all())[::-1]
         data = {"post": requested_post.as_dict(), "recentResults": recent_results}
-
+        print(data);
         response = jsonify(data)
         response.status_code = 200
 
-    except Exception:
+    except Exception as e:
+        print("EXCEPTION:", e)
         response = jsonify({"status": ERROR})
         response.status_code = 400
 
@@ -388,7 +389,7 @@ def create_new_post():
     return response
 
 
-# # Endpoint to retrieve all the posts of a user
+# Endpoint to retrieve all the posts of a user
 @app.route("/api/userposts", methods=["GET"])
 @jwt_required()
 def retrieve_user_posts():
@@ -400,9 +401,46 @@ def retrieve_user_posts():
 
         serialized_posts = [post.as_dict() for post in user_posts]
 
+        # Retrieve all the comments of each post
+        for post in serialized_posts:
+            post["comments"] = list(Comment.query.filter_by(post_id=int(post["id"])))
+
         data = {"posts": serialized_posts}
         response = jsonify(data)
         response.status_code = 200
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 400
+
+    return response
+
+
+# Endpoint to select a comment as an approved answer
+@app.route("/api/approveanswer", methods=["POST"])
+@jwt_required()
+def approve_answer():
+    try:
+        request_json = request.get_json()
+        if request_json:
+            post_id = int(request_json["postId"])
+            comment_id = int(request_json["commentId"])
+
+            # Setting all the other comments as unfavorited
+            post = Post.query.filter_by(id = post_id).first()
+            comments = Comment.query.filter_by(post_id = post.id)
+
+            for comment in comments:
+                if comment.id == comment_id:
+                    print("Found")
+                    comment.is_approved = True
+                else:
+                    comment.is_approved = False
+
+            # TODO: Check whether we should commit after each individual transaction
+            # or after we have assigned evverything
+            db.session.commit()
+
+
     except Exception:
         response = jsonify({"status": ERROR})
         response.status_code = 400

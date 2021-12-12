@@ -29,12 +29,12 @@ export default function Post() {
     axios
       .get(URL)
       .then((response) => {
-        setUserName(userName);
-        setUserImage(userImage);
-        setPostText(postText);
-        setPostDescription(postDescription);
-        setRecentResults(recentResults);
-        setAudioUrl(audioUrl);
+        setUserName(response["data"]["post"]["user_id"]);
+        //setUserImage(response["data"]["post"]["userImage"]);
+        setPostText(response["data"]["post"]["text"]);
+        setPostDescription(response["data"]["post"]["description"]);
+        //setRecentResults(response["data"]["recentResults"]);
+        setAudioUrl(response["data"]["post"]["audioid"]);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -42,7 +42,9 @@ export default function Post() {
   return (
     <div>
       <h3 className="post-title">{postDescription}</h3>
+      {/*
       <img src={userImage} />
+      */}
       <div className="messageArea">
         <h3>{userName}</h3>
         <p>{postText}</p>
@@ -50,9 +52,9 @@ export default function Post() {
 
       <div className="comment-area">
         <label>Comment</label> <br />
-        <textarea rows="5" cols="40" name="Comment">
-          enter comment
+        <textarea rows="5" cols="40" name="Comment" placeholder="Enter password">
         </textarea>
+        <br/>
         <button type="button" id="comment" onClick={console.log("hi")}>
           Comment
         </button>
