@@ -238,7 +238,7 @@ def retrieve_post_given_id():
         # Sorting in descending order
         recent_results = list(Comment.query.filter_by(post_id=post_id).all())[::-1]
         data = {"post": requested_post.as_dict(), "recentResults": recent_results}
-
+        print(data);
         response = jsonify(data)
         response.status_code = 200
 

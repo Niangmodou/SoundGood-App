@@ -29,12 +29,12 @@ export default function Post() {
     axios
       .get(URL)
       .then((response) => {
-        setUserName(response["userid"]);
-        //setUserImage(response["userImage"]);
-        setPostText(response["text"]);
-        setPostDescription(response["description"]);
+        setUserName(response["post"]["userid"]);
+        //setUserImage(response["post"]["userImage"]);
+        setPostText(response["post"]["text"]);
+        setPostDescription(response["post"]["description"]);
         //setRecentResults(response["recentResults"]);
-        setAudioUrl(response["audioid"]);
+        setAudioUrl(response["post"]["audioid"]);
       })
       .catch((err) => console.log(err));
   }, []);
