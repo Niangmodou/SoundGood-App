@@ -29,12 +29,12 @@ export default function Post() {
     axios
       .get(URL)
       .then((response) => {
-        setUserName(response["post"]["userid"]);
-        //setUserImage(response["post"]["userImage"]);
-        setPostText(response["post"]["text"]);
-        setPostDescription(response["post"]["description"]);
-        //setRecentResults(response["recentResults"]);
-        setAudioUrl(response["post"]["audioid"]);
+        setUserName(response["data"]["post"]["user_id"]);
+        //setUserImage(response["data"]["post"]["userImage"]);
+        setPostText(response["data"]["post"]["text"]);
+        setPostDescription(response["data"]["post"]["description"]);
+        //setRecentResults(response["data"]["recentResults"]);
+        setAudioUrl(response["data"]["post"]["audioid"]);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -42,7 +42,9 @@ export default function Post() {
   return (
     <div>
       <h3 className="post-title">{postDescription}</h3>
+      {/*
       <img src={userImage} />
+      */}
       <div className="messageArea">
         <h3>{userName}</h3>
         <p>{postText}</p>
