@@ -1,0 +1,64 @@
+.post-title {
+  font-size: 2.5em;
+}
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 1.75em;
+  border-bottom: 1px solid white;
+  padding: 10px 0px;
+  text-align: left;
+}
+
+.messageArea {
+  background-color: white;
+  border-radius: 20px;
+  padding: 2px;
+  color: black;
+  /* width: 40vw; */
+  height: auto;
+}
+
+.image-cropper {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+img {
+  display: inline;
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
+  /* transform: translate(50%, 50%); */
+}
+
+.imageAndMessage {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playBtn {
+  font-size: 20vw;
+  margin-left: 40px;
+}
+
+.comment-area {
+  margin-top: 10px;
+  text-align: left;
+  margin: 40px 0px;
+}
+
+.comment-area textarea {
+  border-radius: 10px;
+  height: 5vh;
+  padding: 2px;
+  width: 66vw;
+}

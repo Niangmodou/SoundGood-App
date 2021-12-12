@@ -69,7 +69,7 @@ const Register = () => {
           if (resp["data"]["status"] === "Succesfully created user") {
             const token = resp["data"]["token"];
             localStorage.setItem("userToken", token);
-            navigate("/home");
+            navigate("/");
           }
         })
         .catch((err) => {

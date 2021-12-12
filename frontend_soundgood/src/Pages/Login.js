@@ -38,7 +38,7 @@ const Login = () => {
   };
 
   // Checking whether user succesfully logged in
-  if (isLoggedIn) navigate("/home");
+  if (isLoggedIn) navigate("/");
 
   return (
     <div>
