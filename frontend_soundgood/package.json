@@ -6,7 +6,9 @@
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "aws-sdk": "^2.1046.0",
     "axios": "^0.24.0",
+    "fs": "^0.0.1-security",
     "jquery": "^3.6.0",
     "mic-recorder-to-mp3": "^2.2.2",
     "react": "^17.0.2",
@@ -39,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "2.5.1"
   }
 }

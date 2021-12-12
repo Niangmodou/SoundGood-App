@@ -1,83 +1,79 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import CommentCell from '../Components/CommentCell';
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import axios from "axios";
+import CommentCell from "../Components/CommentCell";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-class Post extends Component {
-  constructor(props) {
-    // const location = useLocation();
-    super(props);
+export default function Post() {
+  const location = useLocation();
+  const postID = location.state;
 
-    this.state = {
-      username: '',
-      userImage: '',
-      postText: '',
-      postComment: '',
-      audioUrl: '',
-      postDescription: '',
+  const [userName, setUserName] = useState("");
+  const [userImage, setUserImage] = useState("");
+  const [postText, setPostText] = useState("");
+  const [postDescription, setPostDescription] = useState("");
+  const [recentResults, setRecentResults] = useState([]);
+  const [audioUrl, setAudioUrl] = useState("");
 
-      recentResults: [],
-      //   postID: location.state,
-    };
-  }
+  /*
+  const postComment = () => {
+    const payload = {
+      'user_id' = ,
+      'post_id': this.props.postId,
+    }
+}
+*/
 
-  componentDidMount() {
-    const URL = 'http://127.0.0.1:5000/api/forum?postid=' + this.props.postId;
+  useEffect(() => {
+    const URL = "http://127.0.0.1:5000/api/post?postid=" + postID;
     axios
       .get(URL)
       .then((response) => {
-        let recentResults = response['data']['recentResults'];
-
-        this.setState({
-          username: response['data']['user_id']['username'],
-          userImage: response['data']['user_id']['image_url'],
-          postText: response['data']['text'],
-          postDescription: response['data']['description'],
-          recentResults: recentResults,
-          audioUrl: response['data']['audio_id']['sound_url'],
-        });
+        setUserName(userName);
+        setUserImage(userImage);
+        setPostText(postText);
+        setPostDescription(postDescription);
+        setRecentResults(recentResults);
+        setAudioUrl(audioUrl);
       })
       .catch((err) => console.log(err));
-  }
+  }, []);
 
-  isUserLoggedIn = () => {
-    return localStorage.getItem('userToken') !== null;
-  };
-
-  // Method to retrieve a text representation of time passed
-  retrieveTime = (datePosted) => {};
-
-  render() {
-    return (
-      <div>
-        <h3 className='post-title'>{this.state.postDescription}</h3>
-
-        <img src={this.state.userImage} />
-
-        <div className='messageArea'>
-          <h3>{this.state.username}</h3>
-          <p>{this.state.postText}</p>
-        </div>
-
-        <h3>Recent Results</h3>
-        {this.state.recentResults.map((comment, idx) => {
-          return (
-            <div className='comment-cell' key={idx}>
-              <CommentCell
-                username={comment['post_id']['user_id']['username']}
-                image={comment['post_id']['user_id']['image_url']}
-                datePosted={comment['date_posted']}
-                text={comment['text']}
-                commentId={comment['id']}
-                likeCount={comment['like_count']}
-                dislikeCount={comment['dislike_count']}
-              />
-            </div>
-          );
-        })}
+  return (
+    <div>
+      <h3 className="post-title">{postDescription}</h3>
+      <img src={userImage} />
+      <div className="messageArea">
+        <h3>{userName}</h3>
+        <p>{postText}</p>
       </div>
-    );
-  }
-}
 
-export default Post;
+      <div className="comment-area">
+        <label>Comment</label> <br />
+        <textarea rows="5" cols="40" name="Comment">
+          enter comment
+        </textarea>
+        <button type="button" id="comment" onClick={console.log("hi")}>
+          Comment
+        </button>
+      </div>
+
+      <h3>Recent Results</h3>
+      {recentResults.map((comment, idx) => {
+        return (
+          <div className="comment-cell" key={idx}>
+            <CommentCell
+              username={comment["post_id"]["user_id"]["username"]}
+              image={comment["post_id"]["user_id"]["image_url"]}
+              datePosted={comment["date_posted"]}
+              text={comment["text"]}
+              commentId={comment["id"]}
+              likeCount={comment["like_count"]}
+              dislikeCount={comment["dislike_count"]}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}

@@ -1,13 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import DiscoveredSong from '../Components/DiscoveredSong';
+import React from "react";
+import DiscoveredSong from "../Components/DiscoveredSong";
 
 export default function DiscoveredSongs(props) {
   const tracks = props;
 
   console.log(props[tracks]);
   <section>
-    <div className='dividerHeader'>
+    <div className="dividerHeader">
       <h2>Discovered Songs</h2>
     </div>
     {tracks.map((song) => {

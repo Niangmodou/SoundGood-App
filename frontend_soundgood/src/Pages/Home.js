@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PersonIcon from '../Icons/PersonIcon.png';
-import RecordIcon from '../Icons/RecordIcon.png';
-import ForumIcon from '../Icons/ForumIcon.png';
-import RecordButton from '../Icons/RecordButton.png';
-import MicRecorder from 'mic-recorder-to-mp3';
-import axios from 'axios';
-import { FaMeteor } from 'react-icons/fa';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PersonIcon from "../Icons/PersonIcon.png";
+import RecordIcon from "../Icons/RecordIcon.png";
+import ForumIcon from "../Icons/ForumIcon.png";
+import RecordButton from "../Icons/RecordButton.png";
+import MicRecorder from "mic-recorder-to-mp3";
+import axios from "axios";
 
 const MP3Recorder = new MicRecorder({ bitRate: 128 });
 
@@ -16,12 +15,11 @@ class Home extends Component {
 
     this.state = {
       isRecording: false,
-      blobURL: '',
+      blobURL: "",
       recorded: false,
-      description: '',
-      title: '',
+      description: "",
+      title: "",
     };
-    console.log('We are in home');
   }
 
   recordAudio = () => {
@@ -38,12 +36,7 @@ class Home extends Component {
     MP3Recorder.stop()
       .getMp3()
       .then(([buffer, blob]) => {
-        // const file = new File(buffer, 'audio.mp3', {
-        //   type: blob.type,
-        //   lastModified: Date.now(),
-        // });
         this.setState({ recorded: true });
-        console.log(this.state.recorded);
 
         const blobURL = URL.createObjectURL(blob);
 
@@ -55,7 +48,7 @@ class Home extends Component {
   };
 
   createPost = () => {
-    this.setState({ recording: false });
+    this.setState({ isRecording: false });
     const data = {
       title: this.state.title,
       description: this.state.description,
@@ -63,16 +56,17 @@ class Home extends Component {
     };
 
     const config = {
-      headers: { Authorization: `Bearer ${localStorage['userToken']}` },
+      headers: { Authorization: `Bearer ${localStorage["userToken"]}` },
     };
-    console.log('CREATE POST');
+    console.log("CREATE POST");
     axios
-      .post('http://127.0.0.1:5000/api/createpost', data, config)
+      .post("http://127.0.0.1:5000/api/createpost", data, config)
       .then((promise) => {
-        if (promise['data']['status'] === 'success') {
+        if (promise["data"]["status"] === "success") {
           this.setState({ recorded: false });
         }
       });
+    
   };
 
   signOut = () => {
@@ -87,22 +81,22 @@ class Home extends Component {
           this.state.recorded ? (
             <div>
               <input
-                placeholder='Title'
-                className='input'
-                type='text'
-                id='email'
-                name='email'
+                placeholder="Title"
+                className="input"
+                type="text"
+                id="email"
+                name="email"
                 value={this.state.title}
                 onChange={(e) => {
                   this.setState({ title: e.target.value });
                 }}
               />
               <input
-                placeholder='Description'
-                className='input'
-                type='text'
-                id='email'
-                name='email'
+                placeholder="Description"
+                className="input"
+                type="text"
+                id="email"
+                name="email"
                 value={this.state.description}
                 onChange={(e) => {
                   this.setState({ description: e.target.value });
@@ -118,14 +112,14 @@ class Home extends Component {
           )
         ) : (
           <div>
-            <header className='navbar'>
-              <Link to='/profile'>
+            <header className="navbar">
+              <Link to="/profile">
                 <img src={PersonIcon} />
               </Link>
-              <Link to='/savedsongs'>
+              <Link to="/savedsongs">
                 <img src={RecordIcon} />
               </Link>
-              <Link to='/forum'>
+              <Link to="/forum">
                 <img src={ForumIcon} />
               </Link>
             </header>
@@ -135,7 +129,7 @@ class Home extends Component {
                 <img src={RecordButton} onClick={this.recordAudio} />
               </div>
 
-              <a href='/login'>
+              <a href="/login">
                 <button onClick={this.signOut}>Logout</button>
               </a>
             </main>

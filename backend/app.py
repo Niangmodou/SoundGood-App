@@ -44,9 +44,9 @@ def retrieve_current_user():
         user_posts = Post.query.filter_by(user_id=user.id)
 
         serialized_posts = [post.as_dict() for post in user_posts]
-        
+
         data = {"user": user.as_dict(), "posts": serialized_posts}
-        print(data)
+
         response = jsonify(data)
         response.status_code = 200
     except Exception:
@@ -89,13 +89,9 @@ def update_user_data():
 
 
 # Endpoint to login user
-
-
 @app.route("/api/login", methods=["POST"])
 def login_auth():
-    print(request)
     data = request.get_json()
-    print(data)
     if data:
         username = data["username"]
         password = data["password"]
@@ -127,13 +123,14 @@ def login_auth():
 @app.route("/api/register", methods=["POST"])
 def register_auth():
     data = request.get_json()
-    print(data)
+
     if data:
         first_name = data["first_name"]
         last_name = data["last_name"]
         username = data["username"]
         password = data["password"]
         email_address = data["email_address"]
+        image_url = data["image_url"]
 
         password_salt = password + SALT
         password_hash = hashlib.sha256(password_salt.encode("utf-8")).hexdigest()
@@ -153,6 +150,7 @@ def register_auth():
                 last_name=last_name,
                 password=password_hash,
                 email_address=email_address,
+                image_url=image_url,
             )
             db.session.add(new_user)
             db.session.commit()
@@ -164,7 +162,6 @@ def register_auth():
             response = jsonify(
                 {"status": "Succesfully created user", "token": access_token}
             )
-            print(response)
             response.status_code = 200
 
     else:
@@ -199,27 +196,27 @@ def get_all_recordings():
 @app.route("/api/forum", methods=["GET"])
 def retrieve_forum_posts():
     try:
-        print("FORUM!!!")
         all_posts = list(Post.query.all())
 
         # Serialization
         serialized_posts = []
         for post in all_posts:
             post_dict = post.as_dict()
-            
+
             # Retrieving the user
-            user_id = post_dict['user_id']
+            user_id = post_dict["user_id"]
 
             user = User.query.filter_by(id=user_id).first()
 
-            post_dict['user'] = user.as_dict()
+            post_dict["user"] = user.as_dict()
 
-            del post_dict['user_id']
+            del post_dict["user_id"]
 
             serialized_posts.append(post_dict)
 
-        data = {"posts": serialized_posts}
-        print(data)
+        # Reverse to sort in ascending order
+        reverse_posts = serialized_posts[::-1]
+        data = {"posts": reverse_posts}
 
         response = jsonify(data)
         response.status_code = 200
@@ -234,22 +231,16 @@ def retrieve_forum_posts():
 # Function to retrieve the details of a post given the ID
 @app.route("/api/post", methods=["GET"])
 def retrieve_post_given_id():
-    print("POST-----------")
     try:
         post_id = int(request.args.get("postid"))
-        print("Post ID", post_id)
-        print(Post.query.all())
         requested_post = Post.query.filter_by(id=post_id).first()
-        print(requested_post.as_dict())
+
         # Sorting in descending order
-        recent_results = list(requested_post.comments.query.all())
-        print(recent_results)
+        recent_results = list(requested_post.comments.query.all())[::-1]
         data = {"post": requested_post.as_dict(), "recentResults": recent_results}
-        print("DATA")
-        print(data)
+
         response = jsonify(data)
         response.status_code = 200
-        print("RESP", response)
 
     except Exception:
         response = jsonify({"status": ERROR})
@@ -382,10 +373,9 @@ def create_new_post():
             audio_id=new_audio.id,
             description=request_json["title"],
             text=request_json["description"],
-            date_posted=datetime.datetime.now()
+            date_posted=datetime.datetime.now(),
         )
-        
-        print(new_post.as_dict())
+
         db.session.add(new_post)
         db.session.commit()
         response = jsonify({"status": "success"})
