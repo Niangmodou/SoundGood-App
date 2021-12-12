@@ -20,13 +20,26 @@ export default function Post() {
   const [recentResults, setRecentResults] = useState([]);
   const [audioUrl, setAudioUrl] = useState("");
   const [topTwoResults, setTopTwoResults] = useState([]);
+  const[comment, setComment] = useState("");
   /*
   const postComment = () => {
     const payload = {
-      'user_id' = ,
-      'post_id': this.props.postId,
-    }
-}
+      'postId': postID,
+      'comment': comment,
+    };
+    const URL = "http://127.0.0.1:5000/api/createcomment";
+    axios
+        .post(URL, payload)
+        .then((resp) => {
+          if (resp["data"]["status"] === "success") {
+            navigate("/");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+  }
 */
 
   useEffect(() => {
@@ -34,12 +47,12 @@ export default function Post() {
     axios
       .get(URL)
       .then((response) => {
-        setUserName(response["data"]["post"]["user_id"]);
-        //setUserImage(response["data"]["post"]["userImage"]);
+        setUserName(response["data"]["user"]["username"]);
+        setUserImage(response["data"]["user"]["user_url"]);
         setPostText(response["data"]["post"]["text"]);
         setPostDescription(response["data"]["post"]["description"]);
         //setRecentResults(response["data"]["recentResults"]);
-        setAudioUrl(response["data"]["post"]["audioid"]);
+        setAudioUrl(response["data"]["audio"]["sound_url"]);
       })
       .catch((err) => console.log(err));
     generateTopTwoResults(recentResults);
@@ -86,6 +99,7 @@ export default function Post() {
           cols="40"
           name="Comment"
           placeholder="Submit your comment"
+          onChange={(event) => setComment(event.target.value)}
         ></textarea>
         <br />
         <button type="button" id="comment" onClick={console.log("hi")}>

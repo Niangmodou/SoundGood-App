@@ -234,10 +234,13 @@ def retrieve_post_given_id():
     try:
         post_id = int(request.args.get("postid"))
         requested_post = Post.query.filter_by(id=post_id).first()
+        user = User.query.filter_by(id = requested_post.user_id).first()
+        audio = AudioRecording.query.filter_by(id = requested_post.audio_id).first()
 
         # Sorting in descending order
         recent_results = list(Comment.query.filter_by(post_id=post_id).all())[::-1]
-        data = {"post": requested_post.as_dict(), "recentResults": recent_results}
+        data = {"post": requested_post.as_dict(), "recentResults": recent_results,
+        "user": user.as_dict(), "audio": audio.as_dict()}
         print(data);
         response = jsonify(data)
         response.status_code = 200
@@ -310,7 +313,7 @@ def comment_post():
         db.session.add(new_comment)
         db.session.commit()
 
-        response = jsonify({"status": "sucess"})
+        response = jsonify({"status": "success"})
         response.status_code = 200
     except Exception:
         response = jsonify({"status": ERROR})
