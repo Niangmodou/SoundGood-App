@@ -32,7 +32,7 @@ export default function Post() {
         .post(URL, payload)
         .then((resp) => {
           if (resp["data"]["status"] === "success") {
-            navigate("/");
+            navigate("/post");
           }
         })
         .catch((err) => {
