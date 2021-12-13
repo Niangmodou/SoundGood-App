@@ -1,7 +1,7 @@
 # SoundGood | Development Process
 
 # Frontend Installation Process
-**Download Node.js & frontend dependencies** __
+**Download Node.js & frontend dependencies** <br />
 `cd` into frontend_soundgood __
 run `npm install` __
 run `npm install react-scripts` __
