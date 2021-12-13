@@ -39,7 +39,10 @@ const Login = () => {
   };
 
   // Checking whether user succesfully logged in
-  if (isLoggedIn) navigate("/");
+  if (isLoggedIn) {
+    navigate("/");
+    window.location.reload(false);
+  }
 
   return (
     <div className="loginPage">
