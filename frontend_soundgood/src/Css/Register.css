@@ -5,6 +5,7 @@ input {
   border-radius: 25px;
   padding: 10px;
   width: 75vw;
+  margin: 2px 0px;
 }
 
 .actionBtn {
@@ -21,12 +22,12 @@ input {
   filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.15));
 }
 
-.loginPage {
+.registerPage {
   margin-top: 20vh;
 }
 
-.loginPage h1,
-.loginPage strong,
-.loginPage h3 {
+.registerPage h1,
+.registerPage strong,
+.registerPage h3 {
   text-align: left;
 }

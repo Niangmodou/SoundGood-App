@@ -45,7 +45,7 @@ const Login = () => {
     <div className="loginPage">
       {/* <h1 onClick={() => navigate("/")}>SoundGood</h1> */}
       <h1>Login</h1>
-      <strong>Please sign in to continue</strong>
+      <h3>Please sign in to continue</h3>
       <div>
         <input
           type="text"

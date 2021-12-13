@@ -2,7 +2,7 @@ import { IconContext } from "react-icons";
 import React from "react";
 import axios from "axios";
 import CommentCell from "../Components/CommentCell";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaRegPlayCircle } from "react-icons/fa";
 import "../Css/Post.css";
@@ -32,26 +32,30 @@ export default function Post() {
   const [audioUrl, setAudioUrl] = useState("");
   const [topTwoResults, setTopTwoResults] = useState([]);
   const [comment, setComment] = useState("");
-  /*
+
   const postComment = () => {
     const payload = {
-      'postId': postID,
-      'comment': comment,
+      postId: postID,
+      comment: comment,
     };
+    console.log(payload);
     const URL = "http://127.0.0.1:5000/api/createcomment";
+    const token = localStorage.getItem("userToken");
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
     axios
-        .post(URL, payload)
-        .then((resp) => {
-          if (resp["data"]["status"] === "success") {
-            navigate("/post");
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    });
-  }
-*/
+      .post(URL, payload, config)
+      .then((resp) => {
+        if (resp["data"]["status"] === "success") {
+          console.log("successfuly commented!");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    setRecentResults(recentResults.concat(comment));
+  };
 
   useEffect(() => {
     const URL = "http://127.0.0.1:5000/api/post?postid=" + postID;
@@ -116,7 +120,7 @@ export default function Post() {
           onChange={(event) => setComment(event.target.value)}
         ></textarea>
         <br />
-        <button type="button" id="comment" onClick={console.log("hi")}>
+        <button type="button" id="comment" onClick={postComment}>
           Comment
         </button>
       </div>
@@ -127,7 +131,7 @@ export default function Post() {
         if (comment) {
           return (
             <div className="comment-cell">
-              <CommentCell
+              {/* <CommentCell
                 username={comment["post_id"]["user_id"]["username"]}
                 image={comment["post_id"]["user_id"]["image_url"]}
                 datePosted={comment["date_posted"]}
@@ -135,7 +139,8 @@ export default function Post() {
                 commentId={comment["id"]}
                 likeCount={comment["like_count"]}
                 dislikeCount={comment["dislike_count"]}
-              />
+              /> */}
+              {comment}
             </div>
           );
         }
@@ -145,7 +150,7 @@ export default function Post() {
         console.log(recentResults);
         return (
           <div className="comment-cell" key={idx}>
-            <CommentCell
+            {/* <CommentCell
               username={comment["post_id"]["user_id"]["username"]}
               image={comment["post_id"]["user_id"]["image_url"]}
               datePosted={comment["date_posted"]}
@@ -153,7 +158,8 @@ export default function Post() {
               commentId={comment["id"]}
               likeCount={comment["like_count"]}
               dislikeCount={comment["dislike_count"]}
-            />
+            /> */}
+            {comment}
           </div>
         );
       })}

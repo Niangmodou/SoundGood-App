@@ -129,7 +129,9 @@ class Home extends Component {
                 <img src={RecordButton} onClick={this.recordAudio} />
               </div>
               <a href="/login">
-                <button onClick={this.signOut}>Logout</button>
+                <button onClick={this.signOut} className="actionBtn">
+                  Logout
+                </button>
               </a>
             </main>
           </div>

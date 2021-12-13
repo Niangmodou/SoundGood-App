@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import "../Css/Register.css";
 
 const fs = require("fs");
 const AWS = require("aws-sdk");
@@ -85,56 +86,64 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h1 onClick={() => navigate("/")}>SoundGood</h1>
-
+    <div className="registerPage">
+      <h1>Register</h1>
       <div>
-        <label>Username</label>
         <input
           type="text"
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
         />{" "}
         <br />
-        <label>First Name</label>
         <input
           type="text"
           onChange={(e) => setFirstName(e.target.value)}
           placeholder="First Name"
         />{" "}
         <br />
-        <label>Last Name</label>
         <input
           type="text"
           onChange={(e) => setLastName(e.target.value)}
           placeholder="Last Name"
         />{" "}
         <br />
-        <label>Email</label>
         <input
           type="email"
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
         />{" "}
         <br />
-        <label>Password</label>
         <input
           type="password"
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter password"
         />{" "}
         <br />
-        <label>Profile Picture</label>
         <input type="file" name="filename" onChange={processUserImageUpload} />
       </div>
 
       <div>
-        <button type="button" id="register" onClick={registerUser}>
+        <button
+          type="button"
+          id="register"
+          onClick={registerUser}
+          className="actionBtn"
+        >
           Register
         </button>
-
         <p>
-          Have an account? <a href="/login">Login Instead</a>{" "}
+          Have an account?{" "}
+          <a
+            href="/login"
+            style={{
+              marginLeft: "3vw",
+              fontWeight: "bold",
+              textDecoration: "none",
+              color: "white",
+            }}
+          >
+            Login Instead
+          </a>{" "}
         </p>
       </div>
     </div>

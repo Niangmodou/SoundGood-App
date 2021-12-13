@@ -12,11 +12,9 @@
   align-items: left;
   text-align: left;
   justify-content: space-between;
-  background-color: turquoise;
 }
 
 .bottomLevel {
-  background-color: tomato;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
