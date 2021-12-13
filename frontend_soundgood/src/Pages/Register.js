@@ -48,20 +48,47 @@ const Register = () => {
 
   const registerUser = () => {
     // Waiting for image to be uploaded to Amazon S3
-    const awsPromise = uploadImageToAWS(selectedFile);
+    if (selectedFile) {
+      const awsPromise = uploadImageToAWS(selectedFile);
 
-    awsPromise.then((response) => {
-      const url = response["Location"];
+      awsPromise.then((response) => {
+        const url = response["Location"];
 
+        const payload = {
+          first_name: firstName,
+          last_name: lastName,
+          email_address: email,
+          password: password,
+          username: username,
+          image_url: url,
+        };
+
+        const URL = "http://127.0.0.1:5000/api/register";
+
+        axios
+          .post(URL, payload)
+          .then((resp) => {
+            if (resp["data"]["status"] === "Succesfully created user") {
+              const token = resp["data"]["token"];
+              localStorage.setItem("userToken", token);
+              navigate("/");
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+    } else {
+      const lib = require("../getImageUrl");
+      const avatarURL = lib.getRandomAvatarUrl();
       const payload = {
         first_name: firstName,
         last_name: lastName,
         email_address: email,
         password: password,
         username: username,
-        image_url: url,
+        image_url: avatarURL,
       };
-
       const URL = "http://127.0.0.1:5000/api/register";
 
       axios
@@ -71,24 +98,24 @@ const Register = () => {
             const token = resp["data"]["token"];
             localStorage.setItem("userToken", token);
             navigate("/");
+            window.location.reload(false);
           }
         })
         .catch((err) => {
           console.error(err);
         });
-    });
+    }
   };
 
   const processUserImageUpload = (event) => {
     setSelectedFile(event.target.files[0]);
-
     setIsFilePicked(true);
   };
 
   return (
     <div className="registerPage">
       <h1>Register</h1>
-      <div>
+      <div className="registerInputs">
         <input
           type="text"
           onChange={(e) => setUsername(e.target.value)}
@@ -120,6 +147,7 @@ const Register = () => {
         />{" "}
         <br />
         <input type="file" name="filename" onChange={processUserImageUpload} />
+        <label>Skip to do later</label>
       </div>
 
       <div>

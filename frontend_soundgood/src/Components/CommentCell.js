@@ -1,9 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-import LikeIcon from "../Icons/LikeIcon.png";
-import DislikeIcon from "../Icons/DislikeIcon.png";
-
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import assert from "assert";
 
 const isLoggedIn = () => {
@@ -11,13 +9,15 @@ const isLoggedIn = () => {
 };
 
 // Function to retrieve a text representation of time passed
-const retrieveTime = (datePosted) => {
-  if (datePosted == null) return "4h";
+const retrieveTime = (date) => {
+  console.log("new date passed in: ", date);
+  if (date == null) return "4h";
   // Removing GMT from time
-  const timeString = datePosted.replace(" GMT", "");
+  // const timeString = date.replace(" GMT", "");
+  // ^ this line above doesn't allow you to replace anything
 
   const endTime = Date.now();
-  const startTime = Date.parse(timeString);
+  const startTime = Date.parse(date);
 
   // time difference in ms
   let timeDiff = endTime - startTime;
@@ -85,30 +85,29 @@ const incrementDislikeCount = (commentId) => {
     .catch((err) => console.log(err));
 };
 
-const CommentCell = ({
-  commentId,
-  username,
-  image,
-  datePosted,
-  text,
-  likeCount,
-  dislikeCount,
-}) => {
+const CommentCell = (props) => {
+  const commentId = props.commentId || "";
+  const username = props.username || "";
+  const image = props.image || "";
+  const date = props.date || "";
+  const text = props.text || "";
+  const likeCount = props.likeCount || 0;
+  const dislikeCount = props.dislikeCount || 0;
   return (
     <div className="comment-cell">
       <h3 className="comment-name">{username}</h3>
       <img className="comment-image" src={image} />
-      <h3 className="comment-time">{retrieveTime(datePosted)}</h3>
+      <h3 className="comment-time">{retrieveTime(date)}</h3>
 
       <p className="comment">{text}</p>
 
       <div className="like-area" onClick={incrementLikeCount(commentId)}>
-        <img src={LikeIcon} />
+        <FaThumbsUp />
         <p>{likeCount}</p>
       </div>
 
       <div className="dislike-area" onClick={incrementDislikeCount(commentId)}>
-        <img src={DislikeIcon} />
+        <FaThumbsDown />
         <p>{dislikeCount}</p>
       </div>
     </div>

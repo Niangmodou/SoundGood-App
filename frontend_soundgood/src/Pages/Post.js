@@ -159,7 +159,8 @@ export default function Post() {
               likeCount={comment["like_count"]}
               dislikeCount={comment["dislike_count"]}
             /> */}
-            {comment}
+            <div className="comment">{comment}</div>
+            <CommentCell text={comment} date={new Date()} />
           </div>
         );
       })}
