@@ -1,0 +1,28 @@
+input {
+  background: #ffffff;
+  border: 1px solid #8e8e8e;
+  box-sizing: border-box;
+  border-radius: 25px;
+  padding: 10px;
+  width: 75vw;
+}
+
+.actionBtn {
+  width: 37vw;
+  height: auto;
+  font-size: 1.5em;
+  font-weight: bold;
+  background: white;
+  border-radius: 29px;
+  padding: 10px;
+  text-align: center;
+  margin-top: 20vh;
+
+  filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.15));
+}
+
+.loginPage {
+  display: flex;
+  flex-direction: column;
+  /* vertical-align: middle; */
+}

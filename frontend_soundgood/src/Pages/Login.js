@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import "../Css/Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -41,31 +42,46 @@ const Login = () => {
   if (isLoggedIn) navigate("/");
 
   return (
-    <div>
-      <h1 onClick={() => navigate("/")}>SoundGood</h1>
+    <div className="loginPage">
+      {/* <h1 onClick={() => navigate("/")}>SoundGood</h1> */}
+      <h1>Login</h1>
+      <strong>Please sign in to continue</strong>
       <div>
-        <label>Username</label>
         <input
           type="text"
           placeholder="Username"
           onChange={(event) => setUsername(event.target.value)}
         />{" "}
         <br />
-        <label>Password</label>
         <input
           type="password"
           placeholder="Enter password"
           onChange={(event) => setPassword(event.target.value)}
         />
       </div>
-      <div>
-        <button type="submit" value="login" onClick={loginUser}>
+      <div style={{ textAlign: "right" }}>
+        <button
+          className="actionBtn"
+          type="submit"
+          value="login"
+          onClick={loginUser}
+        >
           Login
         </button>
       </div>
       <p>{error}</p>
-      Already have an account?
-      <a href="/register">Register Instead</a>
+      Don't have an account?
+      <a
+        href="/register"
+        style={{
+          marginLeft: "3vw",
+          fontWeight: "bold",
+          textDecoration: "none",
+          color: "white",
+        }}
+      >
+        Sign Up
+      </a>
     </div>
   );
 };
