@@ -1,3 +1,4 @@
+import { IconContext } from "react-icons";
 import React from "react";
 import PlayIcon from "../Icons/RecordIcon.png";
 import { useState, useEffect } from "react";
@@ -69,11 +70,12 @@ const PostCell = ({ username, image, datePosted, text, postID }) => {
           </div>
           <h3 className="post-time">{retrieveTime(datePosted)}</h3>
         </div>
-        {/* <img className='post-play-btn' src={PlayIcon} /> */}
         <div className="bottomLevel">
-          <img className="post-image" src={image} />
+          {/* <img className="post-image" src={image} /> */}
           <div>Picture</div>
-          <FaRegPlayCircle />
+          <IconContext.Provider value={{ className: "btn" }}>
+            <FaRegPlayCircle />
+          </IconContext.Provider>
         </div>
       </div>
     </Link>

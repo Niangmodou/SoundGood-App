@@ -58,8 +58,8 @@ class Profile extends Component {
   };
 
   componentDidMount() {
-    const URL = 'http://127.0.0.1:5000/api/current_user';
-    const token = localStorage.getItem('userToken');
+    const URL = "http://127.0.0.1:5000/api/current_user";
+    const token = localStorage.getItem("userToken");
 
     const configs = {
       headers: { Authorization: `Bearer ${token}` },
@@ -83,9 +83,9 @@ class Profile extends Component {
 
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
-    const URL = 'http:://127.0.0.1:5000/api/update_user';
+    const URL = "http:://127.0.0.1:5000/api/update_user";
 
-    const token = localStorage.getItem('userToken');
+    const token = localStorage.getItem("userToken");
     const configs = {
       headers: { Authorization: `Bearer ${token}` },
     };
@@ -116,8 +116,8 @@ class Profile extends Component {
     return (
       <div>
         <header>
-          <div className='navbar'>
-            <Link to='/home'>
+          <div className="navbar">
+            <Link to="/">
               <IconContext.Provider
                 value={{ style: { color: "rgb(255, 255, 255)" } }}
               >
@@ -155,7 +155,7 @@ class Profile extends Component {
           <div className="dividerHeader">
             <h2>Discovered Songs</h2>
             {tracks.length != 0 ? (
-              <Link to='/discoveredSongs'>
+              <Link to="/discoveredSongs">
                 <p>View More</p>
               </Link>
             ) : (

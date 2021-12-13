@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import PersonIcon from "../Icons/PersonIcon.png";
 import RecordIcon from "../Icons/RecordIcon.png";
 import ForumIcon from "../Icons/ForumIcon.png";
@@ -66,12 +66,12 @@ class Home extends Component {
           this.setState({ recorded: false });
         }
       });
-    
   };
 
   signOut = () => {
     // localStorage.setItem('userToken', null);
     localStorage.clear();
+    // Navigate({to='/'})
   };
 
   render() {
@@ -128,7 +128,6 @@ class Home extends Component {
                 <h1>Tap to Record</h1>
                 <img src={RecordButton} onClick={this.recordAudio} />
               </div>
-
               <a href="/login">
                 <button onClick={this.signOut}>Logout</button>
               </a>

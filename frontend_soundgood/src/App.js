@@ -13,11 +13,16 @@ import Post from "./Pages/Post";
 const App = () => {
   const isLoggedIn = () => {
     return (
-      localStorage.getItem("userToken") !== null ||
+      localStorage.getItem("userToken") !== null &&
       localStorage.getItem("userToken") !== "null"
     );
   };
 
+  console.log(isLoggedIn());
+  console.log(
+    localStorage.getItem("userToken") !== null &&
+      localStorage.getItem("userToken") !== "null"
+  );
   return (
     <div className="App">
       {isLoggedIn() ? (

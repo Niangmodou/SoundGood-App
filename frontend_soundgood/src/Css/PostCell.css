@@ -12,16 +12,22 @@
   align-items: left;
   text-align: left;
   justify-content: space-between;
+  background-color: turquoise;
 }
 
 .bottomLevel {
-  /* background-color: tomato; */
+  background-color: tomato;
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
 }
 
 .post-description {
   /* background-color: yellowgreen; */
   inline-size: 22vw;
   overflow-wrap: break-word;
+}
+
+.btn {
+  font-size: 10vw;
 }
