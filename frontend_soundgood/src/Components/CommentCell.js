@@ -60,12 +60,14 @@ const retrieveTime = (date) => {
 const incrementLikeCount = (commentId) => {
   if (!isLoggedIn) return;
 
-  // TODO: Send the user token as a bearer token with the Axios request
   const userToken = localStorage.getItem("userToken");
-
-  const URL = `http://127.0.0.1:5000/api/likecomment?commentid=${commentId}`;
+  const configs = {
+    headers: {Authorization: `Bearer ${userToken}`}
+  }
+  const URL = `http://127.0.0.1:5000/api/likecomment`;
+  const payload = {"commentId": commentId}
   axios
-    .post(URL, { user: userToken })
+    .post(URL, payload, configs)
     .then((response) => assert(response["data"]["status"] === "success"))
     .catch((err) => console.log(err));
 };
@@ -74,13 +76,15 @@ const incrementLikeCount = (commentId) => {
 const incrementDislikeCount = (commentId) => {
   if (!isLoggedIn) return;
 
-  // TODO: Send the user token as a bearer token with the Axios request
   const userToken = localStorage.getItem("userToken");
 
-  // TODO: Send the user token as a bearer token with the Axios request
-  const URL = `http://127.0.0.1:5000/api/dislikecomment?commentid=${commentId}`;
+  const URL = `http://127.0.0.1:5000/api/dislikecomment`;
+  const configs = {
+    headers: {Authorization: `Bearer ${userToken}`}
+  }
+  const payload = {"commentId": commentId}
   axios
-    .post(URL, { user: userToken })
+    .post(URL, payload, configs)
     .then((response) => assert(response["data"]["status"] === "success"))
     .catch((err) => console.log(err));
 };
