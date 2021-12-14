@@ -77,7 +77,9 @@ export default function Post() {
         setAudioUrl(response["data"]["audio"]["sound_url"]);
       })
       .catch((err) => console.log(err));
+
     generateTopTwoResults(recentResults);
+
   }, []);
 
   const generateTopTwoResults = (results) => {
@@ -137,42 +139,45 @@ export default function Post() {
       </div>
 
       <h2>Top Results</h2>
-      {topTwoResults.map((comment) => {
-        //console.log("toptworesults", topTwoResults);
-        if (comment) {
+      <div className="comment-area">
+      {topTwoResults.map((currComment, idx) => {
+        if (currComment) {
           return (
-            <div className="comment-cell">
-              {/* <CommentCell
-                username={comment["post_id"]["user_id"]["username"]}
-                image={comment["post_id"]["user_id"]["image_url"]}
-                datePosted={comment["date_posted"]}
-                text={comment["text"]}
-                commentId={comment["id"]}
-                likeCount={comment["like_count"]}
-                dislikeCount={comment["dislike_count"]}
-              /> */}
-              {/* {comment} */}
+            <div className="comment-cell" key={idx}>
+              <CommentCell
+                username={currComment["user"]["username"]}
+                image={currComment["user"]["image_url"]}
+                datePosted={currComment["date_posted"]}
+                text={currComment["text"]}
+                commentId={currComment["id"]}
+                likeCount={currComment["like_count"]}
+                dislikeCount={currComment["dislike_count"]}
+              />
             </div>
           );
         }
       })}
+      </div>
+
       <h2>Recent Results</h2>
-      {recentResults.map((comment, idx) => {
-  
+      <div className="comment-area">
+      {recentResults.map((currComment, idx) => {
         return (
           <div className="comment-cell" key={idx}>
             <CommentCell
-              username={comment["user"]["username"]}
-              image={comment["user"]["image_url"]}
-              datePosted={comment["date_posted"]}
-              text={comment["text"]}
-              commentId={comment["id"]}
-              likeCount={comment["like_count"]}
-              dislikeCount={comment["dislike_count"]}
+              username={currComment["user"]["username"]}
+              image={currComment["user"]["image_url"]}
+              datePosted={currComment["date_posted"]}
+              text={currComment["text"]}
+              commentId={currComment["id"]}
+              likeCount={currComment["like_count"]}
+              dislikeCount={currComment["dislike_count"]}
             />
           </div>
         );
       })}
+      </div>
+      
     </div>
   );
 }

@@ -232,6 +232,7 @@ def retrieve_forum_posts():
 @app.route("/api/post", methods=["GET"])
 def retrieve_post_given_id():
     try:
+        print("POST")
         post_id = int(request.args.get("postid"))
         requested_post = Post.query.filter_by(id=post_id).first()
         user = User.query.filter_by(id=requested_post.user_id).first()
@@ -257,7 +258,7 @@ def retrieve_post_given_id():
             "user": user.as_dict(),
             "audio": audio.as_dict(),
         }
-        print(data)
+        
         response = jsonify(data)
         response.status_code = 200
 
@@ -274,17 +275,20 @@ def retrieve_post_given_id():
 @jwt_required()
 def like_comment():
     try:
+        print("LIKING")
+        print(request)
         request_json = request.get_json()
         print(request_json)
         if request_json:
             comment_id = int(request_json["commentId"])
-
+    
             # Retrieve user from user token
             # TODO: Keep track of which comment user has liked
             # Prevent double counting
             _ = get_jwt_identity()["username"]
 
             comment = Comment.query.filter_by(id=comment_id).first()
+  
             comment.like_count += 1
         
             db.session.commit()
@@ -296,7 +300,8 @@ def like_comment():
             response = jsonify({"status": ERROR})
             response.status_code = 400
 
-    except Exception:
+    except Exception as e:
+        print(e)
         response = jsonify({"status": ERROR})
         response.status_code = 400
 
@@ -316,7 +321,7 @@ def comment_post():
         request_json = request.get_json()
         post_id = int(request_json["postId"])
         comment = request_json["comment"]
-
+        
         # Create a new comment
         new_comment = Comment(
             post_id=int(post_id),
@@ -344,6 +349,7 @@ def comment_post():
 @jwt_required()
 def dislike_comment():
     try:
+        print("DISLIKE")
         request_json = request.get_json()
         if request_json:
             comment_id = int(request_json["commentId"])
