@@ -406,7 +406,12 @@ def retrieve_user_posts():
 
         # Retrieve all the comments of each post
         for post in serialized_posts:
-            post["comments"] = list(Comment.query.filter_by(post_id=int(post["id"])))
+            comments = list(Comment.query.filter_by(post_id=int(post["id"])))
+
+            # Serializing comments
+            comments = [comment.as_dict() for comment in comments]
+            
+            post["comments"] = comments
 
         data = {"posts": serialized_posts}
         response = jsonify(data)
