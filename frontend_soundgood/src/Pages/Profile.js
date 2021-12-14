@@ -113,10 +113,8 @@ class Profile extends Component {
   render() {
     return (
 <div>
-      {this.state.editing}
+      {this.state.editing.value === true}
         ?
-            // Allow user to edit their fields
-      <div>
       <div>
           <label >First Name</label>
           <input
@@ -144,9 +142,7 @@ class Profile extends Component {
               </button>
         </div>
         </div>
-        </div>
     :
-    <div>
     <div>
         <header>
           <div className="navbar">
@@ -212,7 +208,6 @@ class Profile extends Component {
             />
           </Routes>
         </section>
-      </div>
       </div>
 </div>
 
