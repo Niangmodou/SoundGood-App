@@ -103,6 +103,7 @@ class Profile extends Component {
         console.log(response);
       })
       .catch((err) => console.log(err));
+    this.setState({ editing: false });
   };
 
   doneEditing = () => {
@@ -111,7 +112,35 @@ class Profile extends Component {
 
   render() {
     // Allow user to edit their fields
-    if (this.state.editing) this.doneEditing();
+    if (this.state.editing.value == true){
+      <div>
+          <label >First Name</label>
+          <input
+            type='text'
+            onChange={e => this.setState({firstName: e.target.value})}
+            placeholder='First Name'
+          /> <br/>
+
+          <label>Last Name</label>
+          <input
+            type='text'
+            onChange={e => this.setState({lastName: e.target.value})}
+            placeholder='Last Name'
+          /> <br/>
+
+          <label>Email</label>
+          <input
+            type='email'
+            onChange={e => this.setState({lastName: e.target.value})}
+            placeholder='Email'
+          /> <br/>
+        <div>
+            <button onClick={() => this.setState({editing: false})}>
+              button
+              </button>
+        </div>
+        </div> 
+    }
 
     return (
       <div>
@@ -154,7 +183,7 @@ class Profile extends Component {
         <section>
           <div className="dividerHeader">
             <h2>Discovered Songs</h2>
-            {tracks.length != 0 ? (
+            {tracks.length !== 0 ? (
               <Link to="/discoveredSongs">
                 <p>View More</p>
               </Link>
