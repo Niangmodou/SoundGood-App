@@ -70,20 +70,21 @@ class Profile extends Component {
       .then((response) => {
         console.log(response);
         this.setState({
-          username: response["data"]["username"],
-          firstName: response["data"]["first_name"],
-          lastName: response["data"]["last_name"],
-          email: response["data"]["email"],
-          imageUrl: response["data"]["image_url"],
+          username: response["data"]["user"]["username"],
+          firstName: response["data"]["user"]["first_name"],
+          lastName: response["data"]["user"]["last_name"],
+          email: response["data"]["user"]["email_address"],
+          imageUrl: response["data"]["user"]["image_url"],
           songPosts: response["data"]["song_posts"],
         });
+        console.log("HELLO", this.state.email)
       })
       .catch((err) => console.log(err));
   }
 
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
-    const URL = "http:://127.0.0.1:5000/api/update_user";
+    const URL = "http://127.0.0.1:5000/api/update_user";
 
     const token = localStorage.getItem("userToken");
     const configs = {
@@ -91,7 +92,6 @@ class Profile extends Component {
     };
 
     const newData = {
-      username: this.state.username,
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -101,6 +101,7 @@ class Profile extends Component {
       .post(URL, newData, configs)
       .then((response) => {
         console.log(response);
+        if(response["data"]["status"] === "Succesfully edited user") console.log("Success")
       })
       .catch((err) => console.log(err));
     this.setState({ editing: false });
@@ -112,38 +113,37 @@ class Profile extends Component {
 
   render() {
     return (
-<div>
-      {this.state.editing.value === true}
-        ?
       <div>
-          <label >First Name</label>
-          <input
-            type='text'
-            onChange={e => this.setState({firstName: e.target.value})}
-            placeholder='First Name'
-          /> <br/>
+            {this.state.editing === true ? (
+              <div>
+                <label >First Name</label>
+                <input
+                  type='text'
+                  onChange={e => this.setState({firstName: e.target.value})}
+                  placeholder='First Name'
+                /> <br/>
 
-          <label>Last Name</label>
-          <input
-            type='text'
-            onChange={e => this.setState({lastName: e.target.value})}
-            placeholder='Last Name'
-          /> <br/>
+                <label>Last Name</label>
+                <input
+                  type='text'
+                  onChange={e => this.setState({lastName: e.target.value})}
+                  placeholder='Last Name'
+                /> <br/>
 
-          <label>Email</label>
-          <input
-            type='email'
-            onChange={e => this.setState({lastName: e.target.value})}
-            placeholder='Email'
-          /> <br/>
-        <div>
-            <button onClick={this.editUserInfo}>
-              Save
-              </button>
-        </div>
-        </div>
-    :
-    <div>
+                <label>Email</label>
+                <input
+                  type='email'
+                  onChange={e => this.setState({lastName: e.target.value})}
+                  placeholder='Email'
+                /> <br/>
+              <div>
+                  <button onClick={this.editUserInfo}>
+                    Save
+                  </button>
+              </div>
+            </div>
+            ) : (
+              <div>
         <header>
           <div className="navbar">
             <Link to="/">
@@ -156,7 +156,7 @@ class Profile extends Component {
               </IconContext.Provider>
             </Link>
 
-            <h1>kendrick Lamar</h1>
+            <h1>{this.state.username}</h1>
 
             <button onClick={() => this.setState({ editing: true })}>
               <FaPen />
@@ -209,7 +209,11 @@ class Profile extends Component {
           </Routes>
         </section>
       </div>
-</div>
+            )}
+
+            
+        </div>
+
 
       );        
   }

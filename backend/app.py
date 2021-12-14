@@ -58,32 +58,36 @@ def retrieve_current_user():
 
 # Endpoint to update the user
 @app.route("/api/update_user", methods=["POST"])
-@jwt_required
+@jwt_required()
 def update_user_data():
-    current_username = get_jwt_identity()["username"]
+    try:
+        current_username = get_jwt_identity()["username"]
 
-    request_json = request.get_json()
-    if request_json:
-        username = request_json["data"]["username"]
-        first_name = request_json["data"]["firstName"]
-        last_name = request_json["data"]["lastName"]
-        email = request_json["data"]["email"]
+        request_json = request.get_json()
+        if request_json:
+            first_name = request_json["firstName"]
+            last_name = request_json["lastName"]
+            email = request_json["email"]
 
-        # Retrieve current user
-        user = User.query.filter_by(username=current_username).first()
+            # Retrieve current user
+            user = User.query.filter_by(username=current_username).first()
+            
+            user.email = email
+            user.first_name = first_name
+            user.last_name = last_name
 
-        user.username = username
-        user.email = email
-        user.first_name = first_name
-        user.last_name = last_name
+            db.session.commit()
 
-        db.session.commit()
+            response = jsonify({"status": "Succesfully edited user"})
+            response.status_code = 200
+        else:
+            response = jsonify({"status": ERROR})
+            response.status_code = 500
 
-        response = jsonify({"status": "Succesfully edited user"})
-        response.status_code = 200
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 500
 
-    response = jsonify({"status": ERROR})
-    response.status_code = 500
 
     return response
 
