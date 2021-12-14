@@ -89,7 +89,7 @@ class CommentCell extends Component {
   // Function to increment the like of a comment
   incrementLikeCount = () => {
     if (!this.isLoggedIn) return;
-    console.log("Liking")
+
     const userToken = localStorage.getItem("userToken");
     const configs = {
       headers: {Authorization: `Bearer ${userToken}`}
@@ -110,9 +110,7 @@ class CommentCell extends Component {
   incrementDislikeCount = () => {
     if (!this.isLoggedIn) return;
 
-    console.log("Disliking")
     const userToken = localStorage.getItem("userToken");
-
     const URL = `http://127.0.0.1:5000/api/dislikecomment`;
     const configs = {
       headers: {Authorization: `Bearer ${userToken}`}

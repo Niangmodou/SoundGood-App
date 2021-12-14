@@ -99,7 +99,7 @@ export default function Post() {
     setTopTwoResults(res);
   };
 
-  console.log("RECENT RESULTS", recentResults)
+  console.log("TOP TWO RESULTS", topTwoResults)
 
   return (
     <div>
@@ -140,6 +140,7 @@ export default function Post() {
 
       <h2>Top Results</h2>
       <div className="comment-area">
+
       {topTwoResults.map((currComment, idx) => {
         if (currComment) {
           return (
