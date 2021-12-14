@@ -58,9 +58,9 @@ export default function Post() {
   };
 
   const playSound = () => {
-    const player = new Audio(audioUrl)
-    player.play()
-  }
+    const player = new Audio(audioUrl);
+    player.play();
+  };
 
   useEffect(() => {
     const URL = "http://127.0.0.1:5000/api/post?postid=" + postID;
@@ -109,7 +109,10 @@ export default function Post() {
           <h3>{userName}</h3>
           <p>{postText}</p>
         </div>
-        <IconContext.Provider onClick={playSound} value={{ className: "playBtn" }}>
+        <IconContext.Provider
+          onClick={playSound}
+          value={{ className: "playBtn" }}
+        >
           <div>
             <FaRegPlayCircle />
           </div>
