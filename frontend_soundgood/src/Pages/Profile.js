@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { IconContext } from "react-icons";
 import { FaPen, FaTimesCircle, FaTrophy } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -111,8 +111,12 @@ class Profile extends Component {
   };
 
   render() {
-    // Allow user to edit their fields
-    if (this.state.editing.value == true){
+    return (
+<div>
+      {this.state.editing}
+        ?
+            // Allow user to edit their fields
+      <div>
       <div>
           <label >First Name</label>
           <input
@@ -135,15 +139,15 @@ class Profile extends Component {
             placeholder='Email'
           /> <br/>
         <div>
-            <button onClick={() => this.setState({editing: false})}>
-              button
+            <button onClick={this.editUserInfo}>
+              Save
               </button>
         </div>
-        </div> 
-    }
-
-    return (
-      <div>
+        </div>
+        </div>
+    :
+    <div>
+    <div>
         <header>
           <div className="navbar">
             <Link to="/">
@@ -163,7 +167,6 @@ class Profile extends Component {
             </button>
           </div>
         </header>
-
         <main>
           <div className="image-cropper">
             <img
@@ -210,7 +213,10 @@ class Profile extends Component {
           </Routes>
         </section>
       </div>
-    );
+      </div>
+</div>
+
+      );        
   }
 }
 export default Profile;
