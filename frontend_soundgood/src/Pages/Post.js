@@ -54,10 +54,10 @@ export default function Post() {
       .catch((err) => {
         console.error(err);
       });
-    setRecentResults(recentResults.concat(comment));
   };
 
   const playSound = () => {
+    console.log(audioUrl)
     const player = new Audio(audioUrl);
     player.play();
   };
@@ -73,7 +73,7 @@ export default function Post() {
         if (image) setUserImage(image);
         setPostText(response["data"]["post"]["text"]);
         setPostDescription(response["data"]["post"]["description"]);
-        //setRecentResults(response["data"]["recentResults"]);
+        setRecentResults(response["data"]["recentResults"]);
         setAudioUrl(response["data"]["audio"]["sound_url"]);
       })
       .catch((err) => console.log(err));
@@ -97,6 +97,8 @@ export default function Post() {
     setTopTwoResults(res);
   };
 
+  console.log("RECENT RESULTS", recentResults)
+
   return (
     <div>
       <h1 className="post-title">{postDescription}</h1>
@@ -110,11 +112,12 @@ export default function Post() {
           <p>{postText}</p>
         </div>
         <IconContext.Provider
-          onClick={playSound}
           value={{ className: "playBtn" }}
         >
           <div>
-            <FaRegPlayCircle />
+            <FaRegPlayCircle 
+               onClick={playSound}
+            />
           </div>
         </IconContext.Provider>
       </div>
@@ -135,7 +138,7 @@ export default function Post() {
 
       <h2>Top Results</h2>
       {topTwoResults.map((comment) => {
-        console.log("toptworesults", topTwoResults);
+        //console.log("toptworesults", topTwoResults);
         if (comment) {
           return (
             <div className="comment-cell">
@@ -148,27 +151,25 @@ export default function Post() {
                 likeCount={comment["like_count"]}
                 dislikeCount={comment["dislike_count"]}
               /> */}
-              {comment}
+              {/* {comment} */}
             </div>
           );
         }
       })}
       <h2>Recent Results</h2>
       {recentResults.map((comment, idx) => {
-        console.log(recentResults);
+  
         return (
           <div className="comment-cell" key={idx}>
-            {/* <CommentCell
-              username={comment["post_id"]["user_id"]["username"]}
-              image={comment["post_id"]["user_id"]["image_url"]}
+            <CommentCell
+              username={comment["user"]["username"]}
+              image={comment["user"]["image_url"]}
               datePosted={comment["date_posted"]}
               text={comment["text"]}
               commentId={comment["id"]}
               likeCount={comment["like_count"]}
               dislikeCount={comment["dislike_count"]}
-            /> */}
-            <div className="comment">{comment}</div>
-            <CommentCell text={comment} date={new Date()} />
+            />
           </div>
         );
       })}

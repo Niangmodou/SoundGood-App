@@ -239,9 +239,21 @@ def retrieve_post_given_id():
 
         # Sorting in descending order
         recent_results = list(Comment.query.filter_by(post_id=post_id).all())[::-1]
+
+        recent_results_serialized = []
+
+        for comment in recent_results:
+            comment_dict = comment.as_dict()
+
+            comment_dict['user'] = User.query.filter_by(id=int(comment_dict["user_id"])).first().as_dict()
+
+            del comment_dict["user_id"]
+
+            recent_results_serialized.append(comment_dict)
+            
         data = {
             "post": requested_post.as_dict(),
-            "recentResults": recent_results,
+            "recentResults": recent_results_serialized,
             "user": user.as_dict(),
             "audio": audio.as_dict(),
         }
@@ -263,6 +275,7 @@ def retrieve_post_given_id():
 def like_comment():
     try:
         request_json = request.get_json()
+        print(request_json)
         if request_json:
             comment_id = int(request_json["commentId"])
 
@@ -273,7 +286,7 @@ def like_comment():
 
             comment = Comment.query.filter_by(id=comment_id).first()
             comment.like_count += 1
-
+        
             db.session.commit()
 
             response = jsonify({"status": "success"})
@@ -298,7 +311,7 @@ def comment_post():
         username = get_jwt_identity()["username"]
 
         # Finding the user
-        user_commented = User.query.filter_by(username=username)
+        user_commented = User.query.filter_by(username=username).first()
 
         request_json = request.get_json()
         post_id = int(request_json["postId"])
@@ -306,7 +319,7 @@ def comment_post():
 
         # Create a new comment
         new_comment = Comment(
-            post_id=post_id,
+            post_id=int(post_id),
             user_id=user_commented.id,
             text=comment,
             like_count=0,

@@ -13,11 +13,10 @@ const retrieveTime = (date) => {
   console.log("new date passed in: ", date);
   if (date == null) return "4h";
   // Removing GMT from time
-  // const timeString = date.replace(" GMT", "");
-  // ^ this line above doesn't allow you to replace anything
+  const timeString = date.replace(" GMT", "");
 
   const endTime = Date.now();
-  const startTime = Date.parse(date);
+  const startTime = Date.parse(timeString);
 
   // time difference in ms
   let timeDiff = endTime - startTime;
@@ -59,7 +58,7 @@ const retrieveTime = (date) => {
 // Function to increment the like of a comment
 const incrementLikeCount = (commentId) => {
   if (!isLoggedIn) return;
-
+  console.log("Liking")
   const userToken = localStorage.getItem("userToken");
   const configs = {
     headers: {Authorization: `Bearer ${userToken}`}
@@ -68,14 +67,17 @@ const incrementLikeCount = (commentId) => {
   const payload = {"commentId": commentId}
   axios
     .post(URL, payload, configs)
-    .then((response) => assert(response["data"]["status"] === "success"))
+    .then((response) => {
+      console.log(response)
+      assert(response["data"]["status"] === "success")
+    })
     .catch((err) => console.log(err));
 };
 
 // Function to increment the dislike of a comment
 const incrementDislikeCount = (commentId) => {
   if (!isLoggedIn) return;
-
+  console.log("Disliking")
   const userToken = localStorage.getItem("userToken");
 
   const URL = `http://127.0.0.1:5000/api/dislikecomment`;
@@ -93,10 +95,12 @@ const CommentCell = (props) => {
   const commentId = props.commentId || "";
   const username = props.username || "";
   const image = props.image || "";
-  const date = props.date || "";
+  const date = props.datePosted || "";
   const text = props.text || "";
   const likeCount = props.likeCount || 0;
   const dislikeCount = props.dislikeCount || 0;
+  console.log("commentId: ", commentId)
+  
   return (
     <div className="comment-cell">
       <h3 className="comment-name">{username}</h3>
@@ -105,13 +109,17 @@ const CommentCell = (props) => {
 
       <p className="comment">{text}</p>
 
-      <div className="like-area" onClick={incrementLikeCount(commentId)}>
-        <FaThumbsUp />
+      <div className="like-area" >
+        <FaThumbsUp 
+          onClick={incrementLikeCount(commentId)}
+        />
         <p>{likeCount}</p>
       </div>
 
-      <div className="dislike-area" onClick={incrementDislikeCount(commentId)}>
-        <FaThumbsDown />
+      <div className="dislike-area">
+        <FaThumbsDown 
+          onClick={incrementDislikeCount(commentId)}
+        />
         <p>{dislikeCount}</p>
       </div>
     </div>
