@@ -44,18 +44,18 @@ class Forum extends Component {
               <FaHome />
             </IconContext.Provider>
           </Link>
-            <header className="navbar">
-              <Link to="/profile">
-                <img src={PersonIcon} />
-              </Link>
-              <Link to="/savedsongs">
-                <img src={RecordIcon} />
-              </Link>
-              <Link to="/forum">
-                <img src={ForumIcon} />
-              </Link>
-            </header>
-      </div>
+          <header className="navbar">
+            <Link to="/profile">
+              <img src={PersonIcon} />
+            </Link>
+            <Link to="/savedsongs">
+              <img src={RecordIcon} />
+            </Link>
+            <Link to="/forum">
+              <img src={ForumIcon} />
+            </Link>
+          </header>
+        </div>
         <h1>Forums</h1>
 
         <div className="forum-area">

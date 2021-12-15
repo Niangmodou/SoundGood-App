@@ -14,7 +14,7 @@ import "../Css/Post.css";
 export default function Post() {
   const location = useLocation();
   const postID = location.state;
-/*
+  /*
   const avatarImages = [
     "https://cdn-icons.flaticon.com/png/512/2202/premium/2202112.png?token=exp=1639355020~hmac=e9247db153a478004fa1ab5d71ac43ce",
     "https://cdn-icons.flaticon.com/png/512/706/premium/706807.png?token=exp=1639355020~hmac=0e2a2ab7bba80a82666a38ee556d170d",
@@ -28,7 +28,7 @@ export default function Post() {
   ];
  */
   const [userImage, setUserImage] = useState("");
-  
+
   const [userName, setUserName] = useState("");
   const [postText, setPostText] = useState("");
   const [postDescription, setPostDescription] = useState("");

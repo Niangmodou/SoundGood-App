@@ -72,7 +72,7 @@ def update_user_data():
 
             # Retrieve current user
             user = User.query.filter_by(username=current_username).first()
-            
+
             user.email = email
             user.first_name = first_name
             user.last_name = last_name
@@ -90,7 +90,6 @@ def update_user_data():
         response = jsonify({"status": ERROR})
         response.status_code = 500
 
-
     return response
 
 
@@ -101,6 +100,7 @@ def get_all_users():
     response = jsonify({"data": [user.as_dict() for user in users]})
 
     return response
+
 
 # Endpoint to login user
 @app.route("/api/login", methods=["POST"])
@@ -261,12 +261,14 @@ def retrieve_post_given_id():
         for comment in recent_results:
             comment_dict = comment.as_dict()
 
-            comment_dict['user'] = User.query.filter_by(id=int(comment_dict["user_id"])).first().as_dict()
+            comment_dict["user"] = (
+                User.query.filter_by(id=int(comment_dict["user_id"])).first().as_dict()
+            )
 
             del comment_dict["user_id"]
 
             recent_results_serialized.append(comment_dict)
-            
+
         data = {
             "post": requested_post.as_dict(),
             "recentResults": recent_results_serialized,
@@ -295,16 +297,16 @@ def like_comment():
         print(request_json)
         if request_json:
             comment_id = int(request_json["commentId"])
-    
+
             # Retrieve user from user token
             # TODO: Keep track of which comment user has liked
             # Prevent double counting
             _ = get_jwt_identity()["username"]
 
             comment = Comment.query.filter_by(id=comment_id).first()
-  
+
             comment.like_count += 1
-        
+
             db.session.commit()
 
             response = jsonify({"status": "success"})
@@ -335,7 +337,7 @@ def comment_post():
         request_json = request.get_json()
         post_id = int(request_json["postId"])
         comment = request_json["comment"]
-        
+
         # Create a new comment
         new_comment = Comment(
             post_id=int(post_id),
@@ -401,7 +403,7 @@ def create_new_post():
         request_json = request.get_json()
         if request_json:
             current_user = User.query.filter_by(username=username).first()
-       
+
             new_audio = AudioRecording(
                 user_id=current_user.id, sound_url=request_json["soundUrl"]
             )
@@ -441,7 +443,7 @@ def retrieve_user_posts():
     try:
         name = get_jwt_identity()["username"]
         current_user = User.query.filter_by(username=name).first()
-        all_posts = Post.query.filter_by(user_id = current_user.id)
+        all_posts = Post.query.filter_by(user_id=current_user.id)
         # Serialization
         serialized_posts = []
         for post in all_posts:
@@ -509,23 +511,21 @@ def retrieve_user_information():
         request_json = request.get_json()
         if request_json:
             user_id = int(request_json["userId"])
-            current_user = User.query.filter_by(id = user_id).first().as_dict()
-            
+            current_user = User.query.filter_by(id=user_id).first().as_dict()
+
             posts = Post.query.filter_by(user_id=user_id)
             post_serialized = [post.as_dict() for post in posts]
-            
-            response = jsonify({
-                "user": current_user,
-                "posts": post_serialized
-            })
+
+            response = jsonify({"user": current_user, "posts": post_serialized})
 
             response.status_code = 200
-        
+
     except Exception:
         response = jsonify({"status": ERROR})
         response.status_code = 400
 
     return response
+
 
 if __name__ == "__main__":
     app.run(debug=True)

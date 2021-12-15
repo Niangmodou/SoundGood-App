@@ -63,8 +63,8 @@ class SavedSongs extends Component {
         <h1>Your Posts </h1>
         <div className="forum-area">
           {this.state.posts.map((post, idx) => {
-            console.log(post)
-            console.log(post["image_url"])
+            console.log(post);
+            console.log(post["image_url"]);
             return (
               <div className="" key={idx}>
                 <PostCell
