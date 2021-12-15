@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
+import PersonIcon from "../Icons/PersonIcon.png";
+import RecordIcon from "../Icons/RecordIcon.png";
+import ForumIcon from "../Icons/ForumIcon.png";
 import PostCell from "../Components/PostCell.js";
 import "../Css/Forum.css";
 
@@ -30,6 +34,19 @@ class Forum extends Component {
   render() {
     return (
       <div>
+        <div>
+            <header className="navbar">
+              <Link to="/profile">
+                <img src={PersonIcon} />
+              </Link>
+              <Link to="/savedsongs">
+                <img src={RecordIcon} />
+              </Link>
+              <Link to="/forum">
+                <img src={ForumIcon} />
+              </Link>
+            </header>
+      </div>
         <h1>Forums</h1>
 
         <div className="forum-area">

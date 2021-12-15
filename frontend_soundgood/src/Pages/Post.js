@@ -1,6 +1,9 @@
 import { IconContext } from "react-icons";
 import React from "react";
 import axios from "axios";
+import PersonIcon from "../Icons/PersonIcon.png";
+import RecordIcon from "../Icons/RecordIcon.png";
+import ForumIcon from "../Icons/ForumIcon.png";
 import CommentCell from "../Components/CommentCell";
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -102,7 +105,21 @@ export default function Post() {
   console.log("TOP TWO RESULTS", topTwoResults)
 
   return (
+    
     <div>
+      <div>
+            <header className="navbar">
+              <Link to="/profile">
+                <img src={PersonIcon} />
+              </Link>
+              <Link to="/savedsongs">
+                <img src={RecordIcon} />
+              </Link>
+              <Link to="/forum">
+                <img src={ForumIcon} />
+              </Link>
+            </header>
+      </div>
       <h1 className="post-title">{postDescription}</h1>
       <div class="imageAndMessage">
         <div class="image-cropper">

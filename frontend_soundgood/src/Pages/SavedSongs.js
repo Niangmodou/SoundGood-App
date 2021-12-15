@@ -1,6 +1,10 @@
 import React, { Component } from "react";
+import { useLocation, Link } from "react-router-dom";
 import PostCell from "../Components/PostCell";
 import axios from "axios";
+import PersonIcon from "../Icons/PersonIcon.png";
+import RecordIcon from "../Icons/RecordIcon.png";
+import ForumIcon from "../Icons/ForumIcon.png";
 
 class SavedSongs extends Component {
   constructor() {
@@ -33,6 +37,19 @@ class SavedSongs extends Component {
   render() {
     return (
       <div>
+        <div>
+            <header className="navbar">
+              <Link to="/profile">
+                <img src={PersonIcon} />
+              </Link>
+              <Link to="/savedsongs">
+                <img src={RecordIcon} />
+              </Link>
+              <Link to="/forum">
+                <img src={ForumIcon} />
+              </Link>
+            </header>
+      </div>
         <h1>Your Posts </h1>
         {this.state.posts.map((post, idx) => {
           return (
