@@ -6,6 +6,8 @@ import RecordIcon from "../Icons/RecordIcon.png";
 import ForumIcon from "../Icons/ForumIcon.png";
 import PostCell from "../Components/PostCell.js";
 import "../Css/Forum.css";
+import { FaHome } from "react-icons/fa";
+import { IconContext } from "react-icons";
 
 class Forum extends Component {
   constructor() {
@@ -35,6 +37,13 @@ class Forum extends Component {
     return (
       <div>
         <div>
+          <Link to="/">
+            <IconContext.Provider
+              value={{ style: { color: "rgb(0, 0, 0)", fontSize: "2em" } }}
+            >
+              <FaHome />
+            </IconContext.Provider>
+          </Link>
             <header className="navbar">
               <Link to="/profile">
                 <img src={PersonIcon} />
