@@ -201,6 +201,7 @@ def get_all_recordings():
 def retrieve_forum_posts():
     try:
         all_posts = list(Post.query.all())
+        print(all_posts)
 
         # Serialization
         serialized_posts = []
@@ -423,23 +424,29 @@ def create_new_post():
 @jwt_required()
 def retrieve_user_posts():
     try:
-        username = get_jwt_identity()["username"]
-        current_user = User.query.filter_by(username=username)
+        name = get_jwt_identity()["username"]
+        current_user = User.query.filter_by(username=name).first()
+        all_posts = Post.query.filter_by(user_id = current_user.id)
+        # Serialization
+        serialized_posts = []
+        for post in all_posts:
+            post_dict = post.as_dict()
+            print(post.as_dict())
+            # Retrieving the user
+            user_id = post_dict["user_id"]
 
-        user_posts = Post.query.filter(user_id=current_user.id)
+            user = User.query.filter_by(id=user_id).first()
 
-        serialized_posts = [post.as_dict() for post in user_posts]
+            post_dict["user"] = user.as_dict()
 
-        # Retrieve all the comments of each post
-        for post in serialized_posts:
-            comments = list(Comment.query.filter_by(post_id=int(post["id"])))
+            del post_dict["user_id"]
 
-            # Serializing comments
-            comments = [comment.as_dict() for comment in comments]
+            serialized_posts.append(post_dict)
 
-            post["comments"] = comments
-
-        data = {"posts": serialized_posts}
+        # Reverse to sort in ascending order
+        reverse_posts = serialized_posts[::-1]
+        data = {"posts": reverse_posts}
+        print(data)
         response = jsonify(data)
         response.status_code = 200
     except Exception:

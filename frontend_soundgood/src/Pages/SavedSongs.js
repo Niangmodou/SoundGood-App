@@ -23,9 +23,9 @@ class SavedSongs extends Component {
       .get(URL, config)
       .then((response) => {
         console.log(response);
-        const posts = response["data"]["posts"];
-        console.log(posts);
-        this.setState({ posts: posts });
+        const postsdata = response["data"]["posts"];
+        console.log(postsdata);
+        this.setState({ posts: postsdata });
       })
       .catch((err) => console.error(err));
   }
@@ -33,12 +33,12 @@ class SavedSongs extends Component {
   render() {
     return (
       <div>
-        <h1>Saved Posts </h1>
+        <h1>Your Posts </h1>
         {this.state.posts.map((post, idx) => {
           return (
             <div className="post-cell" key={idx}>
               <PostCell
-                username={post["user_id"]["username"]}
+                username={post["user"]["username"]}
                 image={post["image_url"]}
                 datePosted={post["date_posted"]}
                 text={post["description"]}
