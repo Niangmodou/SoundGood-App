@@ -59,7 +59,7 @@ const PostCell = ({ username, image, datePosted, text, postID }) => {
   useEffect(() => {
     setPostId(postId);
   }, []);
-  console.log(image)
+  console.log(image);
   return (
     <Link to="/post" state={postID}>
       <div className="post-cell">
@@ -71,7 +71,9 @@ const PostCell = ({ username, image, datePosted, text, postID }) => {
           <h3 className="post-time">{retrieveTime(datePosted)}</h3>
         </div>
         <div className="bottomLevel">
-           <img className="post-image" src={image} /> 
+          <div className="image-cropper">
+            <img className="" src={image} />
+          </div>
           <IconContext.Provider value={{ className: "btn" }}>
             <FaRegPlayCircle />
           </IconContext.Provider>
