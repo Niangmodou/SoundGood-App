@@ -17,7 +17,7 @@ const Login = () => {
       password: password,
     };
 
-    const URL = "http://127.0.0.1:5000/api/login";
+    const URL = "https://tandon-soundgood.herokuapp.com/api/login";
 
     axios
       .post(URL, payload)

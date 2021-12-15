@@ -101,7 +101,7 @@ class CommentCell extends Component {
     const configs = {
       headers: { Authorization: `Bearer ${userToken}` },
     };
-    const URL = `http://127.0.0.1:5000/api/likecomment`;
+    const URL = `https://tandon-soundgood.herokuapp.com/api/likecomment`;
     const payload = { commentId: this.state.commentId };
     axios
       .post(URL, payload, configs)
@@ -118,7 +118,7 @@ class CommentCell extends Component {
     if (!this.isLoggedIn) return;
 
     const userToken = localStorage.getItem("userToken");
-    const URL = `http://127.0.0.1:5000/api/dislikecomment`;
+    const URL = `https://tandon-soundgood.herokuapp.com/api/dislikecomment`;
     const configs = {
       headers: { Authorization: `Bearer ${userToken}` },
     };
