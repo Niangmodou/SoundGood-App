@@ -67,7 +67,10 @@ const Login = () => {
           className="actionBtn"
           type="submit"
           value="login"
-          onClick={loginUser}
+          onClick={() => {
+            if (username.trim() && password.trim()) loginUser();
+            else alert("Fill in all fields");
+          }}
         >
           Login
         </button>

@@ -10,10 +10,11 @@ h2 {
   border-bottom: 1px solid white;
   padding: 10px 0px;
   text-align: left;
+  margin: 0;
 }
 
 .messageArea {
-  background-color: white;
+  background-color: rgb(194, 189, 189);
   border-radius: 20px;
   padding: 2px;
   color: black;
@@ -54,9 +55,18 @@ img {
   margin-top: 10px;
   text-align: left;
   margin: 40px 0px;
+  /* background-color: navajowhite; */
 }
 
-.comment-area textarea {
+.comment-section {
+  margin-top: 5px;
+  text-align: left;
+  margin: 40px 0px;
+  /* background-color: rgb(0, 211, 18); */
+  /* border: 2px solid red; */
+}
+
+textarea {
   border-radius: 10px;
   height: 5vh;
   padding: 2px;

@@ -1,0 +1,24 @@
+.comment-cell {
+  /* background-color: blue; */
+  /* border: 3px solid orange; */
+  display: flex;
+  flex-direction: column;
+}
+
+.like-dislike-row {
+  display: flex;
+  flex-direction: row;
+}
+h3 {
+  margin: 0;
+}
+
+.dislike-area,
+.like-area {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  /* background-color: peru; */
+  width: 20vw;
+}

@@ -34,32 +34,32 @@ const tracks = [
     comments: 17,
   },
 ];
- const uploadImageToAWS = (fileToUpload) => {
-    // S3 bucket configurations
-    const ID = "us-east-1:a5ed82ab-852e-4099-b87b-949ef005b381";
-    const bucketRegion = "us-east-1";
-    const bucketName = "soundgoodimages";
+const uploadImageToAWS = (fileToUpload) => {
+  // S3 bucket configurations
+  const ID = "us-east-1:a5ed82ab-852e-4099-b87b-949ef005b381";
+  const bucketRegion = "us-east-1";
+  const bucketName = "soundgoodimages";
 
-    AWS.config.update({
-      region: bucketRegion,
-      credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: ID,
-      }),
-    });
+  AWS.config.update({
+    region: bucketRegion,
+    credentials: new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: ID,
+    }),
+  });
 
-    // S3 Upload parameters
-    const params = {
-      Bucket: bucketName,
-      Key: fileToUpload.name,
-      Body: fileToUpload,
-    };
-
-    let upload = new AWS.S3.ManagedUpload({
-      params: params,
-    });
-
-    return upload.promise();
+  // S3 Upload parameters
+  const params = {
+    Bucket: bucketName,
+    Key: fileToUpload.name,
+    Body: fileToUpload,
   };
+
+  let upload = new AWS.S3.ManagedUpload({
+    params: params,
+  });
+
+  return upload.promise();
+};
 class Profile extends Component {
   constructor() {
     super();
@@ -72,7 +72,7 @@ class Profile extends Component {
       lastName: "",
       email: "",
       score: 0,
-      selectedFile:"",
+      selectedFile: "",
       imageUrl: "",
       songPosts: [],
     };
@@ -102,11 +102,10 @@ class Profile extends Component {
           imageUrl: response["data"]["user"]["image_url"],
           songPosts: response["data"]["song_posts"],
         });
-        console.log("HELLO", this.state.email)
+        console.log("HELLO", this.state.email);
       })
       .catch((err) => console.log(err));
-  } 
-
+  }
 
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
@@ -121,27 +120,27 @@ class Profile extends Component {
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      imageUrl: this.state.imageUrl
+      imageUrl: this.state.imageUrl,
     };
 
     axios
       .post(URL, newData, configs)
       .then((response) => {
         console.log(response);
-        if(response["data"]["status"] === "Succesfully edited user") console.log("Success")
+        if (response["data"]["status"] === "Succesfully edited user")
+          console.log("Success");
       })
       .catch((err) => console.log(err));
     this.setState({ editing: false });
   };
   processUserImageUpload = (event) => {
-    this.setState({selectedFile :event.target.files[0]});
-const awsPromise = uploadImageToAWS(this.state.selectedFile);
+    this.setState({ selectedFile: event.target.files[0] });
+    const awsPromise = uploadImageToAWS(this.state.selectedFile);
 
-      awsPromise.then((response) => {
-        this.setState({imageUrl:response["Location"]});
-
-  });
-    }
+    awsPromise.then((response) => {
+      this.setState({ imageUrl: response["Location"] });
+    });
+  };
   doneEditing = () => {
     this.setState({ editing: false });
   };
@@ -149,109 +148,120 @@ const awsPromise = uploadImageToAWS(this.state.selectedFile);
   render() {
     return (
       <div>
-            {this.state.editing === true ? (
-              <div>
-                <label >First Name</label>
-                <input
-                  type='text'
-                  onChange={e => this.setState({firstName: e.target.value})}
-                  placeholder='First Name'
-                /> <br/>
-
-                <label>Last Name</label>
-                <input
-                  type='text'
-                  onChange={e => this.setState({lastName: e.target.value})}
-                  placeholder='Last Name'
-                /> <br/>
-
-                <label>Email</label>
-                <input
-                  type='email'
-                  onChange={e => this.setState({lastName: e.target.value})}
-                  placeholder='Email'
-                /> <br/>
-                <input type="file" name="filename" onChange={this.processUserImageUpload} />
-              <div>
-                  <button onClick={this.editUserInfo}>
-                    Save
-                  </button>
-              </div>
-            </div>
-            ) : (
-              <div>
-        <header>
-          <div className="navbar">
-            <Link to="/">
-              <IconContext.Provider
-                value={{ style: { color: "rgb(255, 255, 255)" } }}
-              >
-                <div>
-                  <FaTimesCircle />
-                </div>
-              </IconContext.Provider>
-            </Link>
-
-            <h1>{this.state.username}</h1>
-
-            <button onClick={() => this.setState({ editing: true })}>
-              <FaPen />
-            </button>
-          </div>
-        </header>
-        <main>
-          <div className="image-cropper">
-            <img
-              className="profilePic"
-              src={this.state.imageUrl}
-              //src="https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg"
-              alt="Profilepicture"
+        {this.state.editing === true ? (
+          <div>
+            <label>First Name</label>
+            <input
+              type="text"
+              onChange={(e) => this.setState({ firstName: e.target.value })}
+              placeholder="First Name"
+            />{" "}
+            <br />
+            <label>Last Name</label>
+            <input
+              type="text"
+              onChange={(e) => this.setState({ lastName: e.target.value })}
+              placeholder="Last Name"
+            />{" "}
+            <br />
+            <label>Email</label>
+            <input
+              type="email"
+              onChange={(e) => this.setState({ email: e.target.value })}
+              placeholder="Email"
+            />{" "}
+            <br />
+            <input
+              type="file"
+              name="filename"
+              onChange={this.processUserImageUpload}
             />
-          </div>
-
-          <div className="trophies">
-            <FaTrophy />
-            <strong>13,459</strong>
-          </div>
-        </main>
-
-        <section>
-          <div className="dividerHeader">
-            <h2>Discovered Songs</h2>
-            {tracks.length !== 0 ? (
-              <Link to="/discoveredSongs">
-                <p>View More</p>
-              </Link>
-            ) : (
-              <div></div>
-            )}
-          </div>
-
-          {tracks.length !== 0 ? (
-            tracks.map((song) => {
-              return <DiscoveredSong song={song} />;
-            })
-          ) : (
             <div>
-              <h3>You have not created any posts :(</h3>
+              <button
+                onClick={() => {
+                  if (
+                    this.firstName.trim() &&
+                    this.lastName.trim() &&
+                    this.email.trim()
+                  )
+                    this.editUserInfo();
+                  alert("Fill in all fields");
+                }}
+              >
+                Save
+              </button>
             </div>
-          )}
+          </div>
+        ) : (
+          <div>
+            <header>
+              <div className="navbar">
+                <Link to="/">
+                  <IconContext.Provider
+                    value={{ style: { color: "rgb(255, 255, 255)" } }}
+                  >
+                    <div>
+                      <FaTimesCircle />
+                    </div>
+                  </IconContext.Provider>
+                </Link>
 
-          <Routes>
-            <Route
-              path="/discoveredSongs"
-              element={<DiscoveredSongs tracks={tracks} />}
-            />
-          </Routes>
-        </section>
+                <h1>{this.state.username}</h1>
+
+                <button onClick={() => this.setState({ editing: true })}>
+                  <FaPen />
+                </button>
+              </div>
+            </header>
+            <main>
+              <div className="image-cropper">
+                <img
+                  className="profilePic"
+                  src={this.state.imageUrl}
+                  //src="https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg"
+                  alt="Profilepicture"
+                />
+              </div>
+
+              <div className="trophies">
+                <FaTrophy />
+                <strong>13,459</strong>
+              </div>
+            </main>
+
+            <section>
+              <div className="dividerHeader">
+                <h2>Discovered Songs</h2>
+                {tracks.length !== 0 ? (
+                  <Link to="/discoveredSongs">
+                    <p>View More</p>
+                  </Link>
+                ) : (
+                  <div></div>
+                )}
+              </div>
+
+              {tracks.length !== 0 ? (
+                tracks.map((song) => {
+                  return <DiscoveredSong song={song} />;
+                })
+              ) : (
+                <div>
+                  <h3>You have not created any posts :(</h3>
+                </div>
+              )}
+
+              <Routes>
+                <Route
+                  path="/discoveredSongs"
+                  element={<DiscoveredSongs tracks={tracks} />}
+                />
+              </Routes>
+            </section>
+          </div>
+        )}
       </div>
-            )}
-
-            
-        </div>
-
-
-      );        
+    );
   }
 }
 export default Profile;
