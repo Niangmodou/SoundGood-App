@@ -232,13 +232,7 @@ class Profile extends Component {
             <section>
               <div className="dividerHeader">
                 <h2>Discovered Songs</h2>
-                {tracks.length !== 0 ? (
-                  <Link to="/discoveredSongs">
-                    <p>View More</p>
-                  </Link>
-                ) : (
-                  <div></div>
-                )}
+                
               </div>
 
               {tracks.length !== 0 ? (
