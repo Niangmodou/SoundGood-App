@@ -133,21 +133,25 @@ class CommentCell extends Component {
   render() {
     return (
       <div className="comment-cell">
-        <h3 className="comment-name">{this.state.username}</h3>
-        <img className="comment-image" src={this.state.image} />
-        <h3 className="comment-time">{this.retrieveTime}</h3>
+        <div className="image-cropper">
+          <img src={this.state.image} />
+        </div>
+        <div>
+          <h3 className="comment-name">{this.state.username}</h3>
+          <h3 className="comment-time">{this.retrieveTime}</h3>
 
-        <p className="comment">{this.state.text}</p>
+          <p className="comment">{this.state.text}</p>
 
-        <div className="like-dislike-row">
-          <div className="like-area">
-            <FaThumbsUp onClick={this.incrementLikeCount} />
-            <p>{this.state.likeCount}</p>
-          </div>
+          <div className="like-dislike-row">
+            <div className="like-area">
+              <FaThumbsUp onClick={this.incrementLikeCount} />
+              <p>{this.state.likeCount}</p>
+            </div>
 
-          <div className="dislike-area">
-            <FaThumbsDown onClick={this.incrementDislikeCount} />
-            <p>{this.state.dislikeCount}</p>
+            <div className="dislike-area">
+              <FaThumbsDown onClick={this.incrementDislikeCount} />
+              <p>{this.state.dislikeCount}</p>
+            </div>
           </div>
         </div>
       </div>

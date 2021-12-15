@@ -115,7 +115,7 @@ class Profile extends Component {
     const awsPromise = this.uploadImageToAWS(this.state.selectedFile);
 
     awsPromise.then((response) => {
-      const imgUrl = response["Location"]
+      const imgUrl = response["Location"];
       const URL = "http://127.0.0.1:5000/api/update_user";
 
       const token = localStorage.getItem("userToken");
@@ -129,7 +129,7 @@ class Profile extends Component {
         lastName: this.state.lastName,
         imageUrl: imgUrl,
       };
-      console.log(newData)
+      console.log(newData);
       axios
         .post(URL, newData, configs)
         .then((response) => {
@@ -139,8 +139,7 @@ class Profile extends Component {
         })
         .catch((err) => console.log(err));
       this.setState({ editing: false });
-
-    })
+    });
   };
 
   processUserImageUpload = (event) => {
@@ -187,14 +186,14 @@ class Profile extends Component {
             <div>
               <button
                 onClick={() => {
-                  console.log(this.state.firstName);
-                  if (
-                    this.state.firstName.trim() &&
-                    this.state.lastName.trim() &&
-                    this.state.email.trim()
-                  )
-                    this.editUserInfo();
-                  alert("Fill in all fields");
+                  // console.log(this.state.firstName);
+                  // if (
+                  //   this.state.firstName.trim() &&
+                  //   this.state.lastName.trim() &&
+                  //   this.state.email.trim()
+                  // )
+                  this.editUserInfo();
+                  // alert("Fill in all fields");
                 }}
               >
                 Save
