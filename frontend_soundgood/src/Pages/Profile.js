@@ -167,7 +167,9 @@ class Profile extends Component {
             <label>Email</label>
             <input
               type="email"
-              onChange={(e) => this.setState({ email: e.target.value })}
+              onChange={(e) => {
+                this.setState({ email: e.target.value });
+              }}
               placeholder="Email"
             />{" "}
             <br />
@@ -179,10 +181,11 @@ class Profile extends Component {
             <div>
               <button
                 onClick={() => {
+                  console.log(this.state.firstName);
                   if (
-                    this.firstName.trim() &&
-                    this.lastName.trim() &&
-                    this.email.trim()
+                    this.state.firstName.trim() &&
+                    this.state.lastName.trim() &&
+                    this.state.email.trim()
                   )
                     this.editUserInfo();
                   alert("Fill in all fields");
