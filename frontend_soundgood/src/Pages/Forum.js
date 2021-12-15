@@ -20,7 +20,7 @@ class Forum extends Component {
     console.log("mounted succesffully");
     // Pull all recordings from the backend
     axios
-      .get("https://tandon-soundgood.herokuapp.com/api/forum")
+      .get("http://127.0.0.1:5000/api/forum")
       .then((response) => {
         const posts = response["data"]["posts"];
 

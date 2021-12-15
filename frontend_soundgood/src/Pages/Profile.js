@@ -83,7 +83,7 @@ class Profile extends Component {
   };
 
   componentDidMount() {
-    const URL = "https://tandon-soundgood.herokuapp.com/api/current_user";
+    const URL = "http://127.0.0.1:5000/api/current_user";
     const token = localStorage.getItem("userToken");
 
     const configs = {
@@ -109,7 +109,7 @@ class Profile extends Component {
 
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
-    const URL = "https://tandon-soundgood.herokuapp.com/api/update_user";
+    const URL = "http://127.0.0.1:5000/api/update_user";
 
     const token = localStorage.getItem("userToken");
     const configs = {
@@ -232,7 +232,13 @@ class Profile extends Component {
             <section>
               <div className="dividerHeader">
                 <h2>Discovered Songs</h2>
-                
+                {tracks.length !== 0 ? (
+                  <Link to="/discoveredSongs">
+                    <p>View More</p>
+                  </Link>
+                ) : (
+                  <div></div>
+                )}
               </div>
 
               {tracks.length !== 0 ? (

@@ -42,7 +42,7 @@ export default function Post() {
       comment: comment,
     };
     console.log(payload);
-    const URL = "https://tandon-soundgood.herokuapp.com/api/createcomment";
+    const URL = "http://127.0.0.1:5000/api/createcomment";
     const token = localStorage.getItem("userToken");
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -52,7 +52,6 @@ export default function Post() {
       .then((resp) => {
         if (resp["data"]["status"] === "success") {
           console.log("successfuly commented!");
-          window.location.reload(false);
         }
       })
       .catch((err) => {
@@ -67,7 +66,7 @@ export default function Post() {
   };
 
   useEffect(async () => {
-    const URL = "https://tandon-soundgood.herokuapp.com/api/post?postid=" + postID;
+    const URL = "http://127.0.0.1:5000/api/post?postid=" + postID;
     axios
       .get(URL)
       .then((response) => {

@@ -165,7 +165,7 @@ def register_auth():
                 email_address=email_address,
                 image_url=image_url,
             )
-            
+
             db.session.add(new_user)
             db.session.commit()
 
@@ -396,33 +396,39 @@ def dislike_comment():
 @app.route("/api/createpost", methods=["POST"])
 @jwt_required()
 def create_new_post():
-    username = get_jwt_identity()["username"]
+    try:
+        username = get_jwt_identity()["username"]
 
-    request_json = request.get_json()
-    if request_json:
-        current_user = User.query.filter_by(username=username).first()
+        request_json = request.get_json()
+        if request_json:
+            current_user = User.query.filter_by(username=username).first()
+       
+            new_audio = AudioRecording(
+                user_id=current_user.id, sound_url=request_json["soundUrl"]
+            )
 
-        new_audio = AudioRecording(
-            user_id=current_user.id, sound_url=request_json["soundUrl"]
-        )
+            db.session.add(new_audio)
+            db.session.commit()
 
-        db.session.add(new_audio)
-        db.session.commit()
+            new_post = Post(
+                user_id=current_user.id,
+                audio_id=new_audio.id,
+                description=request_json["title"],
+                text=request_json["description"],
+                date_posted=datetime.datetime.now(),
+            )
 
-        new_post = Post(
-            user_id=current_user.id,
-            audio_id=new_audio.id,
-            description=request_json["title"],
-            text=request_json["description"],
-            date_posted=datetime.datetime.now(),
-        )
+            db.session.add(new_post)
+            db.session.commit()
+            response = jsonify({"status": "success"})
+            response.status_code = 200
 
-        db.session.add(new_post)
-        db.session.commit()
-        response = jsonify({"status": "success"})
-        response.status_code = 200
+        else:
+            response = jsonify({"status": ERROR})
+            response.status_code = 400
 
-    else:
+    except Exception as err:
+        print(err)
         response = jsonify({"status": ERROR})
         response.status_code = 400
 

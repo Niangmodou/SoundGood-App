@@ -19,7 +19,7 @@ class SavedSongs extends Component {
   componentDidMount() {
     if (localStorage.getItem("userToken") === null) return;
 
-    const URL = "https://tandon-soundgood.herokuapp.com/api/userposts";
+    const URL = "http://127.0.0.1:5000/api/userposts";
     const token = localStorage.getItem("userToken");
     const config = {
       headers: { Authorization: `Bearer ${token}` },

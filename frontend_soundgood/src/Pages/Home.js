@@ -7,6 +7,8 @@ import RecordButton from "../Icons/RecordButton.png";
 import MicRecorder from "mic-recorder-to-mp3";
 import axios from "axios";
 
+const AWS = require("aws-sdk");
+
 const MP3Recorder = new MicRecorder({ bitRate: 128 });
 
 class Home extends Component {
@@ -21,6 +23,7 @@ class Home extends Component {
       title: "",
     };
   }
+  
 
   recordAudio = () => {
     // Start Recording process
@@ -31,6 +34,34 @@ class Home extends Component {
       .catch((err) => console.error(err));
   };
 
+  // Function to upload audio to Amazon S3 bucket and retrieve the url
+  uploadAudioToAws = (fileToUpload) => {
+    // S3 bucket configurations
+    const ID = "us-east-1:a5ed82ab-852e-4099-b87b-949ef005b381";
+    const bucketRegion = "us-east-1";
+    const bucketName = "soundgoodimages";
+
+    AWS.config.update({
+      region: bucketRegion,
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: ID,
+      }),
+    });
+    // S3 Upload parameters
+    const params = {
+      Bucket: bucketName,
+      Key: fileToUpload.name,
+      ContentType: fileToUpload.type,
+      Body: fileToUpload
+    };
+
+    let upload = new AWS.S3.ManagedUpload({
+      params: params,
+    });
+
+    upload.promise().then((response) => this.setState({blobURL: response["Location"]}))
+  };
+
   stopRecording = () => {
     // Stop Recording process
     MP3Recorder.stop()
@@ -38,16 +69,16 @@ class Home extends Component {
       .then(([buffer, blob]) => {
         this.setState({ recorded: true });
 
-        const blobURL = URL.createObjectURL(blob);
+        // Upload this blob to AWS
+        var d = new Date();
+        var file = new File([blob],d.valueOf(),{ type:"audio/wav" })
 
-        const player = new Audio(blobURL);
-        player.play();
-
-        this.setState({ blobURL: blobURL });
+        this.uploadAudioToAws(file)
       });
   };
 
   createPost = () => {
+    console.log(this.state.blobURL)
     this.setState({ isRecording: false });
     const data = {
       title: this.state.title,
@@ -59,8 +90,9 @@ class Home extends Component {
       headers: { Authorization: `Bearer ${localStorage["userToken"]}` },
     };
     console.log("CREATE POST");
+    console.log(data)
     axios
-      .post("https://tandon-soundgood.herokuapp.com/api/createpost", data, config)
+      .post("http://127.0.0.1:5000/api/createpost", data, config)
       .then((promise) => {
         if (promise["data"]["status"] === "success") {
           this.setState({ recorded: false });
