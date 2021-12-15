@@ -52,6 +52,7 @@ export default function Post() {
       .then((resp) => {
         if (resp["data"]["status"] === "success") {
           console.log("successfuly commented!");
+          window.location.reload(false);
         }
       })
       .catch((err) => {
