@@ -58,7 +58,7 @@ class Profile extends Component {
   };
 
   componentDidMount() {
-    const URL = "http://127.0.0.1:5000/api/current_user";
+    const URL = "https://tandon-soundgood.herokuapp.com/api/current_user";
     const token = localStorage.getItem("userToken");
 
     const configs = {
@@ -116,7 +116,7 @@ class Profile extends Component {
 
     awsPromise.then((response) => {
       const imgUrl = response["Location"]
-      const URL = "http://127.0.0.1:5000/api/update_user";
+      const URL = "https://tandon-soundgood.herokuapp.com/api/update_user";
 
       const token = localStorage.getItem("userToken");
       const configs = {
