@@ -34,32 +34,7 @@ const tracks = [
     comments: 17,
   },
 ];
-const uploadImageToAWS = (fileToUpload) => {
-  // S3 bucket configurations
-  const ID = "us-east-1:a5ed82ab-852e-4099-b87b-949ef005b381";
-  const bucketRegion = "us-east-1";
-  const bucketName = "soundgoodimages";
 
-  AWS.config.update({
-    region: bucketRegion,
-    credentials: new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: ID,
-    }),
-  });
-
-  // S3 Upload parameters
-  const params = {
-    Bucket: bucketName,
-    Key: fileToUpload.name,
-    Body: fileToUpload,
-  };
-
-  let upload = new AWS.S3.ManagedUpload({
-    params: params,
-  });
-
-  return upload.promise();
-};
 class Profile extends Component {
   constructor() {
     super();
@@ -107,40 +82,71 @@ class Profile extends Component {
       .catch((err) => console.log(err));
   }
 
+  // Function to upload an image to Amazon S3 bucket and retrieve the url
+  uploadImageToAWS = (fileToUpload) => {
+    // S3 bucket configurations
+    const ID = "us-east-1:a5ed82ab-852e-4099-b87b-949ef005b381";
+    const bucketRegion = "us-east-1";
+    const bucketName = "soundgoodimages";
+
+    AWS.config.update({
+      region: bucketRegion,
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: ID,
+      }),
+    });
+
+    // S3 Upload parameters
+    const params = {
+      Bucket: bucketName,
+      Key: fileToUpload.name,
+      Body: fileToUpload,
+    };
+
+    let upload = new AWS.S3.ManagedUpload({
+      params: params,
+    });
+
+    return upload.promise();
+  };
+
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
-    const URL = "http://127.0.0.1:5000/api/update_user";
-
-    const token = localStorage.getItem("userToken");
-    const configs = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-
-    const newData = {
-      email: this.state.email,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      imageUrl: this.state.imageUrl,
-    };
-
-    axios
-      .post(URL, newData, configs)
-      .then((response) => {
-        console.log(response);
-        if (response["data"]["status"] === "Succesfully edited user")
-          console.log("Success");
-      })
-      .catch((err) => console.log(err));
-    this.setState({ editing: false });
-  };
-  processUserImageUpload = (event) => {
-    this.setState({ selectedFile: event.target.files[0] });
-    const awsPromise = uploadImageToAWS(this.state.selectedFile);
+    const awsPromise = this.uploadImageToAWS(this.state.selectedFile);
 
     awsPromise.then((response) => {
-      this.setState({ imageUrl: response["Location"] });
-    });
+      const imgUrl = response["Location"]
+      const URL = "http://127.0.0.1:5000/api/update_user";
+
+      const token = localStorage.getItem("userToken");
+      const configs = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      const newData = {
+        email: this.state.email,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        imageUrl: imgUrl,
+      };
+      console.log(newData)
+      axios
+        .post(URL, newData, configs)
+        .then((response) => {
+          console.log(response);
+          if (response["data"]["status"] === "Succesfully edited user")
+            console.log("Success");
+        })
+        .catch((err) => console.log(err));
+      this.setState({ editing: false });
+
+    })
   };
+
+  processUserImageUpload = (event) => {
+    this.setState({ selectedFile: event.target.files[0] });
+  };
+
   doneEditing = () => {
     this.setState({ editing: false });
   };
