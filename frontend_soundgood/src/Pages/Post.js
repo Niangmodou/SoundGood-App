@@ -60,12 +60,12 @@ export default function Post() {
   };
 
   const playSound = () => {
-    console.log(audioUrl)
+    console.log(audioUrl);
     const player = new Audio(audioUrl);
     player.play();
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     const URL = "http://127.0.0.1:5000/api/post?postid=" + postID;
     axios
       .get(URL)
@@ -78,18 +78,18 @@ export default function Post() {
         setPostDescription(response["data"]["post"]["description"]);
         setRecentResults(response["data"]["recentResults"]);
         setAudioUrl(response["data"]["audio"]["sound_url"]);
+        generateTopTwoResults(response["data"]["recentResults"]);
       })
       .catch((err) => console.log(err));
-
-    generateTopTwoResults(recentResults);
-
   }, []);
 
   const generateTopTwoResults = (results) => {
     // Getting top 2 elements (literally a heap problem)
     let lib = require("../Heap Classes.js");
+    console.log("RECENT RESULTS: ", recentResults);
     let topTwo = new lib.MinHeap();
     results.forEach((result) => {
+      console.log(result);
       topTwo.insert(result);
       if (topTwo.size() > 2) topTwo.remove();
     });
@@ -102,23 +102,20 @@ export default function Post() {
     setTopTwoResults(res);
   };
 
-  console.log("TOP TWO RESULTS", topTwoResults)
-
   return (
-    
     <div>
       <div>
-            <header className="navbar">
-              <Link to="/profile">
-                <img src={PersonIcon} />
-              </Link>
-              <Link to="/savedsongs">
-                <img src={RecordIcon} />
-              </Link>
-              <Link to="/forum">
-                <img src={ForumIcon} />
-              </Link>
-            </header>
+        <header className="navbar">
+          <Link to="/profile">
+            <img src={PersonIcon} />
+          </Link>
+          <Link to="/savedsongs">
+            <img src={RecordIcon} />
+          </Link>
+          <Link to="/forum">
+            <img src={ForumIcon} />
+          </Link>
+        </header>
       </div>
       <h1 className="post-title">{postDescription}</h1>
       <div class="imageAndMessage">
@@ -130,13 +127,9 @@ export default function Post() {
           <h3>{userName}</h3>
           <p>{postText}</p>
         </div>
-        <IconContext.Provider
-          value={{ className: "playBtn" }}
-        >
+        <IconContext.Provider value={{ className: "playBtn" }}>
           <div>
-            <FaRegPlayCircle 
-               onClick={playSound}
-            />
+            <FaRegPlayCircle onClick={playSound} />
           </div>
         </IconContext.Provider>
       </div>
@@ -156,10 +149,29 @@ export default function Post() {
       </div>
 
       <h2>Top Results</h2>
-      <div className="comment-area">
+      <div className="comment-section">
+        {topTwoResults.map((currComment, idx) => {
+          if (currComment) {
+            return (
+              <div className="comment-cell" key={idx}>
+                <CommentCell
+                  username={currComment["user"]["username"]}
+                  image={currComment["user"]["image_url"]}
+                  datePosted={currComment["date_posted"]}
+                  text={currComment["text"]}
+                  commentId={currComment["id"]}
+                  likeCount={currComment["like_count"]}
+                  dislikeCount={currComment["dislike_count"]}
+                />
+              </div>
+            );
+          }
+        })}
+      </div>
 
-      {topTwoResults.map((currComment, idx) => {
-        if (currComment) {
+      <h2>Recent Results</h2>
+      <div className="comment-section">
+        {recentResults.map((currComment, idx) => {
           return (
             <div className="comment-cell" key={idx}>
               <CommentCell
@@ -173,29 +185,8 @@ export default function Post() {
               />
             </div>
           );
-        }
-      })}
+        })}
       </div>
-
-      <h2>Recent Results</h2>
-      <div className="comment-area">
-      {recentResults.map((currComment, idx) => {
-        return (
-          <div className="comment-cell" key={idx}>
-            <CommentCell
-              username={currComment["user"]["username"]}
-              image={currComment["user"]["image_url"]}
-              datePosted={currComment["date_posted"]}
-              text={currComment["text"]}
-              commentId={currComment["id"]}
-              likeCount={currComment["like_count"]}
-              dislikeCount={currComment["dislike_count"]}
-            />
-          </div>
-        );
-      })}
-      </div>
-      
     </div>
   );
 }
