@@ -102,7 +102,15 @@ class Home extends Component {
                   this.setState({ description: e.target.value });
                 }}
               />
-              <button onClick={this.createPost}>Submit</button>
+              <button
+                onClick={() => {
+                  if (this.state.description.trim() && this.state.title.trim())
+                    this.createPost();
+                  else alert("Fill in all fields");
+                }}
+              >
+                Submit
+              </button>
             </div>
           ) : (
             <div>

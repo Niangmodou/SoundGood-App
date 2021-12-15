@@ -154,7 +154,17 @@ const Register = () => {
         <button
           type="button"
           id="register"
-          onClick={registerUser}
+          onClick={() => {
+            if (
+              password.trim() &&
+              email.trim() &&
+              username.trim() &&
+              firstName.trim() &&
+              lastName.trim()
+            )
+              registerUser();
+            else alert("Fill in all fields");
+          }}
           className="actionBtn"
         >
           Register
