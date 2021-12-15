@@ -92,6 +92,15 @@ def update_user_data():
     return response
 
 
+@app.route("/api/allusers", methods=["GET"])
+def get_all_users():
+    users = User.query.all()
+    print(users)
+
+    response = jsonify({"data": [user.as_dict() for user in users]})
+
+    return response
+
 # Endpoint to login user
 @app.route("/api/login", methods=["POST"])
 def login_auth():
@@ -156,6 +165,7 @@ def register_auth():
                 email_address=email_address,
                 image_url=image_url,
             )
+            
             db.session.add(new_user)
             db.session.commit()
 
