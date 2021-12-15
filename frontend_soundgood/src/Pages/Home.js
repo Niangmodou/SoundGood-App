@@ -5,6 +5,9 @@ import RecordIcon from "../Icons/RecordIcon.png";
 import ForumIcon from "../Icons/ForumIcon.png";
 import RecordButton from "../Icons/RecordButton.png";
 import MicRecorder from "mic-recorder-to-mp3";
+import { FaHome } from "react-icons/fa";
+import { IconContext } from "react-icons";
+
 import axios from "axios";
 
 const AWS = require("aws-sdk");
@@ -23,7 +26,6 @@ class Home extends Component {
       title: "",
     };
   }
-  
 
   recordAudio = () => {
     // Start Recording process
@@ -52,14 +54,16 @@ class Home extends Component {
       Bucket: bucketName,
       Key: fileToUpload.name,
       ContentType: fileToUpload.type,
-      Body: fileToUpload
+      Body: fileToUpload,
     };
 
     let upload = new AWS.S3.ManagedUpload({
       params: params,
     });
 
-    upload.promise().then((response) => this.setState({blobURL: response["Location"]}))
+    upload
+      .promise()
+      .then((response) => this.setState({ blobURL: response["Location"] }));
   };
 
   stopRecording = () => {
@@ -71,14 +75,14 @@ class Home extends Component {
 
         // Upload this blob to AWS
         var d = new Date();
-        var file = new File([blob],d.valueOf(),{ type:"audio/wav" })
+        var file = new File([blob], d.valueOf(), { type: "audio/wav" });
 
-        this.uploadAudioToAws(file)
+        this.uploadAudioToAws(file);
       });
   };
 
   createPost = () => {
-    console.log(this.state.blobURL)
+    console.log(this.state.blobURL);
     this.setState({ isRecording: false });
     const data = {
       title: this.state.title,
@@ -90,7 +94,7 @@ class Home extends Component {
       headers: { Authorization: `Bearer ${localStorage["userToken"]}` },
     };
     console.log("CREATE POST");
-    console.log(data)
+    console.log(data);
     axios
       .post("http://127.0.0.1:5000/api/createpost", data, config)
       .then((promise) => {
@@ -152,6 +156,13 @@ class Home extends Component {
           )
         ) : (
           <div>
+            <Link to="/">
+              <IconContext.Provider
+                value={{ style: { color: "rgb(0, 0, 0)", fontSize: "2em" } }}
+              >
+                <FaHome />
+              </IconContext.Provider>
+            </Link>
             <header className="navbar">
               <Link to="/profile">
                 <img src={PersonIcon} />
