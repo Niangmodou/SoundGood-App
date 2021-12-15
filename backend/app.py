@@ -68,6 +68,7 @@ def update_user_data():
             first_name = request_json["firstName"]
             last_name = request_json["lastName"]
             email = request_json["email"]
+            image_url = request_json["imageUrl"]
 
             # Retrieve current user
             user = User.query.filter_by(username=current_username).first()
@@ -75,6 +76,7 @@ def update_user_data():
             user.email = email
             user.first_name = first_name
             user.last_name = last_name
+            user.image_url = image_url
 
             db.session.commit()
 
