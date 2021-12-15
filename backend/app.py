@@ -481,5 +481,30 @@ def approve_answer():
     return response
 
 
+# Endpoint to retireve a user's information given a user id
+@app.route("/api/retrieveuser", methods=["GET"])
+def retrieve_user_information():
+    try:
+        request_json = request.get_json()
+        if request_json:
+            user_id = int(request_json["userId"])
+            current_user = User.query.filter_by(id = user_id).first().as_dict()
+            
+            posts = Post.query.filter_by(user_id=user_id)
+            post_serialized = [post.as_dict() for post in posts]
+            
+            response = jsonify({
+                "user": current_user,
+                "posts": post_serialized
+            })
+
+            response.status_code = 200
+        
+    except Exception:
+        response = jsonify({"status": ERROR})
+        response.status_code = 400
+
+    return response
+
 if __name__ == "__main__":
     app.run(debug=True)
