@@ -92,7 +92,7 @@ class Home extends Component {
     console.log("CREATE POST");
     console.log(data)
     axios
-      .post("http://127.0.0.1:5000/api/createpost", data, config)
+      .post("https://tandon-soundgood.herokuapp.com/api/createpost", data, config)
       .then((promise) => {
         if (promise["data"]["status"] === "success") {
           this.setState({ recorded: false });

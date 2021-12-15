@@ -63,7 +63,7 @@ const Register = () => {
           image_url: url,
         };
 
-        const URL = "http://127.0.0.1:5000/api/register";
+        const URL = "https://tandon-soundgood.herokuapp.com/api/register";
 
         axios
           .post(URL, payload)
@@ -89,7 +89,7 @@ const Register = () => {
         username: username,
         image_url: avatarURL,
       };
-      const URL = "http://127.0.0.1:5000/api/register";
+      const URL = "https://tandon-soundgood.herokuapp.com/api/register";
 
       axios
         .post(URL, payload)
