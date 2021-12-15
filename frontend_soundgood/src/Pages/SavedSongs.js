@@ -5,6 +5,7 @@ import axios from "axios";
 import PersonIcon from "../Icons/PersonIcon.png";
 import RecordIcon from "../Icons/RecordIcon.png";
 import ForumIcon from "../Icons/ForumIcon.png";
+import "../Css/SavedSongs.css";
 
 class SavedSongs extends Component {
   constructor() {
@@ -38,32 +39,34 @@ class SavedSongs extends Component {
     return (
       <div>
         <div>
-            <header className="navbar">
-              <Link to="/profile">
-                <img src={PersonIcon} />
-              </Link>
-              <Link to="/savedsongs">
-                <img src={RecordIcon} />
-              </Link>
-              <Link to="/forum">
-                <img src={ForumIcon} />
-              </Link>
-            </header>
-      </div>
+          <header className="navbar">
+            <Link to="/profile">
+              <img src={PersonIcon} />
+            </Link>
+            <Link to="/savedsongs">
+              <img src={RecordIcon} />
+            </Link>
+            <Link to="/forum">
+              <img src={ForumIcon} />
+            </Link>
+          </header>
+        </div>
         <h1>Your Posts </h1>
-        {this.state.posts.map((post, idx) => {
-          return (
-            <div className="post-cell" key={idx}>
-              <PostCell
-                username={post["user"]["username"]}
-                image={post["image_url"]}
-                datePosted={post["date_posted"]}
-                text={post["description"]}
-                postID={post["id"]}
-              />
-            </div>
-          );
-        })}
+        <div className="forum-area">
+          {this.state.posts.map((post, idx) => {
+            return (
+              <div className="" key={idx}>
+                <PostCell
+                  username={post["user"]["username"]}
+                  image={post["image_url"]}
+                  datePosted={post["date_posted"]}
+                  text={post["description"]}
+                  postID={post["id"]}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
