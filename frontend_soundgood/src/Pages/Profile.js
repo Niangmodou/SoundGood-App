@@ -7,7 +7,7 @@ import "../Css/Profile.css";
 import DiscoveredSongs from "./DiscoveredSongs.js";
 import { Route, Routes } from "react-router";
 import axios from "axios";
-
+const AWS = require("aws-sdk");
 const tracks = [
   {
     name: "Miina Tarjamo",
@@ -34,7 +34,32 @@ const tracks = [
     comments: 17,
   },
 ];
+ const uploadImageToAWS = (fileToUpload) => {
+    // S3 bucket configurations
+    const ID = "us-east-1:a5ed82ab-852e-4099-b87b-949ef005b381";
+    const bucketRegion = "us-east-1";
+    const bucketName = "soundgoodimages";
 
+    AWS.config.update({
+      region: bucketRegion,
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: ID,
+      }),
+    });
+
+    // S3 Upload parameters
+    const params = {
+      Bucket: bucketName,
+      Key: fileToUpload.name,
+      Body: fileToUpload,
+    };
+
+    let upload = new AWS.S3.ManagedUpload({
+      params: params,
+    });
+
+    return upload.promise();
+  };
 class Profile extends Component {
   constructor() {
     super();
@@ -47,7 +72,7 @@ class Profile extends Component {
       lastName: "",
       email: "",
       score: 0,
-
+      selectedFile:"",
       imageUrl: "",
       songPosts: [],
     };
@@ -80,7 +105,8 @@ class Profile extends Component {
         console.log("HELLO", this.state.email)
       })
       .catch((err) => console.log(err));
-  }
+  } 
+
 
   // Function to update user data to the backend once it has been edited
   editUserInfo = () => {
@@ -95,6 +121,7 @@ class Profile extends Component {
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
+      imageUrl: this.state.imageUrl
     };
 
     axios
@@ -106,7 +133,15 @@ class Profile extends Component {
       .catch((err) => console.log(err));
     this.setState({ editing: false });
   };
+  processUserImageUpload = (event) => {
+    this.setState({selectedFile :event.target.files[0]});
+const awsPromise = uploadImageToAWS(this.state.selectedFile);
 
+      awsPromise.then((response) => {
+        this.setState({imageUrl:response["Location"]});
+
+  });
+    }
   doneEditing = () => {
     this.setState({ editing: false });
   };
@@ -136,6 +171,7 @@ class Profile extends Component {
                   onChange={e => this.setState({lastName: e.target.value})}
                   placeholder='Email'
                 /> <br/>
+                <input type="file" name="filename" onChange={this.processUserImageUpload} />
               <div>
                   <button onClick={this.editUserInfo}>
                     Save
@@ -167,8 +203,8 @@ class Profile extends Component {
           <div className="image-cropper">
             <img
               className="profilePic"
-              //src={this.state.imageUrl}
-              src="https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg"
+              src={this.state.imageUrl}
+              //src="https://upload.wikimedia.org/wikipedia/commons/3/32/Pulitzer2018-portraits-kendrick-lamar.jpg"
               alt="Profilepicture"
             />
           </div>
