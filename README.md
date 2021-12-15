@@ -10,6 +10,7 @@ run `npm install jquery` <br />
 # Backend Installation Process
 **Download Python Flask & backend dependencies** <br />
 run `source env/bin/activate` to start virtual enviroment <br />
+run `pip install -r requirements.txt` to start virtual enviroment <br />
 
 # Starting the application <br />
 Must have 2 terminals simultaneously open <br />

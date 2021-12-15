@@ -5,6 +5,8 @@ import axios from "axios";
 import PersonIcon from "../Icons/PersonIcon.png";
 import RecordIcon from "../Icons/RecordIcon.png";
 import ForumIcon from "../Icons/ForumIcon.png";
+import { FaHome } from "react-icons/fa";
+import { IconContext } from "react-icons";
 import "../Css/SavedSongs.css";
 
 class SavedSongs extends Component {
@@ -39,6 +41,13 @@ class SavedSongs extends Component {
     return (
       <div>
         <div>
+          <Link to="/">
+            <IconContext.Provider
+              value={{ style: { color: "rgb(0, 0, 0)", fontSize: "2em" } }}
+            >
+              <FaHome />
+            </IconContext.Provider>
+          </Link>
           <header className="navbar">
             <Link to="/profile">
               <img src={PersonIcon} />
@@ -54,8 +63,8 @@ class SavedSongs extends Component {
         <h1>Your Posts </h1>
         <div className="forum-area">
           {this.state.posts.map((post, idx) => {
-            console.log(post)
-            console.log(post["image_url"])
+            console.log(post);
+            console.log(post["image_url"]);
             return (
               <div className="" key={idx}>
                 <PostCell

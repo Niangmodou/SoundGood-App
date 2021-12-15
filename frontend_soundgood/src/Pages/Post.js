@@ -8,6 +8,7 @@ import CommentCell from "../Components/CommentCell";
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaRegPlayCircle } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
 import "../Css/Post.css";
 
 export default function Post() {
@@ -105,6 +106,13 @@ export default function Post() {
   return (
     <div>
       <div>
+        <Link to="/">
+          <IconContext.Provider
+            value={{ style: { color: "rgb(0, 0, 0)", fontSize: "2em" } }}
+          >
+            <FaHome />
+          </IconContext.Provider>
+        </Link>
         <header className="navbar">
           <Link to="/profile">
             <img src={PersonIcon} />
