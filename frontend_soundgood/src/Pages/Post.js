@@ -13,7 +13,7 @@ import "../Css/Post.css";
 export default function Post() {
   const location = useLocation();
   const postID = location.state;
-
+/*
   const avatarImages = [
     "https://cdn-icons.flaticon.com/png/512/2202/premium/2202112.png?token=exp=1639355020~hmac=e9247db153a478004fa1ab5d71ac43ce",
     "https://cdn-icons.flaticon.com/png/512/706/premium/706807.png?token=exp=1639355020~hmac=0e2a2ab7bba80a82666a38ee556d170d",
@@ -25,9 +25,9 @@ export default function Post() {
     "https://cdn-icons.flaticon.com/png/512/805/premium/805370.png?token=exp=1639355020~hmac=92076295495a4bddefbe3c96597459ed",
     "https://cdn-icons-png.flaticon.com/512/6373/6373499.png",
   ];
-  const [userImage, setUserImage] = useState(
-    avatarImages[Math.floor(Math.random() * avatarImages.length)]
-  );
+ */
+  const [userImage, setUserImage] = useState("");
+  
   const [userName, setUserName] = useState("");
   const [postText, setPostText] = useState("");
   const [postDescription, setPostDescription] = useState("");
@@ -41,7 +41,7 @@ export default function Post() {
       postId: postID,
       comment: comment,
     };
-    console.log(payload);
+    //console.log(payload);
     const URL = "http://127.0.0.1:5000/api/createcomment";
     const token = localStorage.getItem("userToken");
     const config = {
@@ -60,7 +60,7 @@ export default function Post() {
   };
 
   const playSound = () => {
-    console.log(audioUrl);
+    //console.log(audioUrl);
     const player = new Audio(audioUrl);
     player.play();
   };
@@ -70,10 +70,9 @@ export default function Post() {
     axios
       .get(URL)
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         setUserName(response["data"]["user"]["username"]);
-        const image = response["data"]["user"]["user_url"];
-        if (image) setUserImage(image);
+        setUserImage(response["data"]["user"]["image_url"]);
         setPostText(response["data"]["post"]["text"]);
         setPostDescription(response["data"]["post"]["description"]);
         setRecentResults(response["data"]["recentResults"]);
@@ -86,10 +85,10 @@ export default function Post() {
   const generateTopTwoResults = (results) => {
     // Getting top 2 elements (literally a heap problem)
     let lib = require("../Heap Classes.js");
-    console.log("RECENT RESULTS: ", recentResults);
+    //console.log("RECENT RESULTS: ", recentResults);
     let topTwo = new lib.MinHeap();
     results.forEach((result) => {
-      console.log(result);
+      //console.log(result);
       topTwo.insert(result);
       if (topTwo.size() > 2) topTwo.remove();
     });
@@ -120,7 +119,7 @@ export default function Post() {
       <h1 className="post-title">{postDescription}</h1>
       <div class="imageAndMessage">
         <div class="image-cropper">
-          {console.log("Image", userImage)}
+          {/*console.log("Image", userImage)*/}
           <img src={userImage} />
         </div>
         <div className="messageArea">

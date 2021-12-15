@@ -97,7 +97,6 @@ def update_user_data():
 @app.route("/api/allusers", methods=["GET"])
 def get_all_users():
     users = User.query.all()
-    print(users)
 
     response = jsonify({"data": [user.as_dict() for user in users]})
 
@@ -213,7 +212,6 @@ def get_all_recordings():
 def retrieve_forum_posts():
     try:
         all_posts = list(Post.query.all())
-        print(all_posts)
 
         # Serialization
         serialized_posts = []
@@ -275,7 +273,6 @@ def retrieve_post_given_id():
             "user": user.as_dict(),
             "audio": audio.as_dict(),
         }
-        
         response = jsonify(data)
         response.status_code = 200
 
@@ -464,7 +461,6 @@ def retrieve_user_posts():
         # Reverse to sort in ascending order
         reverse_posts = serialized_posts[::-1]
         data = {"posts": reverse_posts}
-        print(data)
         response = jsonify(data)
         response.status_code = 200
     except Exception:

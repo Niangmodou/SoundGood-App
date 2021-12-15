@@ -56,7 +56,7 @@ class Forum extends Component {
               <div key={idx}>
                 <PostCell
                   username={post["user"]["username"]}
-                  image={post["image_url"]}
+                  image={post["user"]["image_url"]}
                   datePosted={post["date_posted"]}
                   text={post["description"]}
                   postID={post["id"]}
